@@ -54,6 +54,7 @@ namespace PolandVisaAuto
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.txtPass = new System.Windows.Forms.TextBox();
@@ -76,12 +77,12 @@ namespace PolandVisaAuto
             this.cbxCity = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.emailErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.PasserrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.buttonColumn = new DataGridViewButtonColumn();
+            this.deleteColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.cityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lastNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.redLineDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priorityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.purposeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.countAdultDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.countChildDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -94,7 +95,8 @@ namespace PolandVisaAuto
             this.dobDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.arrivalDtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nationalityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.redLineDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.emailErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.PasserrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -328,6 +330,7 @@ namespace PolandVisaAuto
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.button1);
             this.groupBox4.Controls.Add(this.label15);
             this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Controls.Add(this.txtPass);
@@ -338,6 +341,16 @@ namespace PolandVisaAuto
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Призначити дату подачі документів 4";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(125, 30);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(73, 70);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Сделать бяку\r\n";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label15
             // 
@@ -547,13 +560,14 @@ namespace PolandVisaAuto
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.buttonColumn,
+            this.deleteColumn,
             this.cityDataGridViewTextBoxColumn,
             this.lastNameDataGridViewTextBoxColumn,
             this.nameDataGridViewTextBoxColumn,
+            this.redLineDataGridViewTextBoxColumn,
+            this.priorityDataGridViewTextBoxColumn,
             this.purposeDataGridViewTextBoxColumn,
             this.countAdultDataGridViewTextBoxColumn,
             this.countChildDataGridViewTextBoxColumn,
@@ -565,30 +579,20 @@ namespace PolandVisaAuto
             this.statusDataGridViewTextBoxColumn,
             this.dobDataGridViewTextBoxColumn,
             this.arrivalDtDataGridViewTextBoxColumn,
-            this.nationalityDataGridViewTextBoxColumn,
-            this.redLineDataGridViewTextBoxColumn});
+            this.nationalityDataGridViewTextBoxColumn});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1080, 572);
             this.dataGridView1.TabIndex = 0;
-            dataGridView1.CellClick += new DataGridViewCellEventHandler(dataGridView1_CellClick);
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
-            // emailErrorProvider
+            // deleteColumn
             // 
-            this.emailErrorProvider.BlinkRate = 500;
-            this.emailErrorProvider.ContainerControl = this;
-            // 
-            // PasserrorProvider
-            // 
-            this.PasserrorProvider.BlinkRate = 500;
-            this.PasserrorProvider.ContainerControl = this;
-            // 
-            // buttonColumn
-            // 
-            this.buttonColumn.UseColumnTextForButtonValue = true;
-            this.buttonColumn.Text = "Удалить";
-            this.buttonColumn.Name = "deleteColumn";
+            this.deleteColumn.Name = "deleteColumn";
+            this.deleteColumn.Text = "Удалить";
+            this.deleteColumn.HeaderText = "";
+            this.deleteColumn.UseColumnTextForButtonValue = true;
             // 
             // cityDataGridViewTextBoxColumn
             // 
@@ -608,34 +612,46 @@ namespace PolandVisaAuto
             this.nameDataGridViewTextBoxColumn.HeaderText = "Имя";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             // 
+            // redLineDataGridViewTextBoxColumn
+            // 
+            this.redLineDataGridViewTextBoxColumn.DataPropertyName = "RedLine";
+            this.redLineDataGridViewTextBoxColumn.HeaderText = "Крайняя дата";
+            this.redLineDataGridViewTextBoxColumn.Name = "redLineDataGridViewTextBoxColumn";
+            // 
+            // priorityDataGridViewTextBoxColumn
+            // 
+            this.priorityDataGridViewTextBoxColumn.DataPropertyName = "PriorityStr";
+            this.priorityDataGridViewTextBoxColumn.HeaderText = "Приоритет";
+            this.priorityDataGridViewTextBoxColumn.Name = "priorityDataGridViewTextBoxColumn";
+            // 
             // purposeDataGridViewTextBoxColumn
             // 
             this.purposeDataGridViewTextBoxColumn.DataPropertyName = "Purpose";
-            this.purposeDataGridViewTextBoxColumn.HeaderText = "Purpose";
+            this.purposeDataGridViewTextBoxColumn.HeaderText = "Цель визита";
             this.purposeDataGridViewTextBoxColumn.Name = "purposeDataGridViewTextBoxColumn";
             // 
             // countAdultDataGridViewTextBoxColumn
             // 
             this.countAdultDataGridViewTextBoxColumn.DataPropertyName = "CountAdult";
-            this.countAdultDataGridViewTextBoxColumn.HeaderText = "CountAdult";
+            this.countAdultDataGridViewTextBoxColumn.HeaderText = "К-во взрослых";
             this.countAdultDataGridViewTextBoxColumn.Name = "countAdultDataGridViewTextBoxColumn";
             // 
             // countChildDataGridViewTextBoxColumn
             // 
             this.countChildDataGridViewTextBoxColumn.DataPropertyName = "CountChild";
-            this.countChildDataGridViewTextBoxColumn.HeaderText = "CountChild";
+            this.countChildDataGridViewTextBoxColumn.HeaderText = "К-во детей";
             this.countChildDataGridViewTextBoxColumn.Name = "countChildDataGridViewTextBoxColumn";
             // 
             // categoryDataGridViewTextBoxColumn
             // 
             this.categoryDataGridViewTextBoxColumn.DataPropertyName = "Category";
-            this.categoryDataGridViewTextBoxColumn.HeaderText = "Category";
+            this.categoryDataGridViewTextBoxColumn.HeaderText = "Категория";
             this.categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
             // 
             // receiptDataGridViewTextBoxColumn
             // 
             this.receiptDataGridViewTextBoxColumn.DataPropertyName = "Receipt";
-            this.receiptDataGridViewTextBoxColumn.HeaderText = "Receipt";
+            this.receiptDataGridViewTextBoxColumn.HeaderText = "Квитанция";
             this.receiptDataGridViewTextBoxColumn.Name = "receiptDataGridViewTextBoxColumn";
             // 
             // emailDataGridViewTextBoxColumn
@@ -647,44 +663,48 @@ namespace PolandVisaAuto
             // passwordDataGridViewTextBoxColumn
             // 
             this.passwordDataGridViewTextBoxColumn.DataPropertyName = "Password";
-            this.passwordDataGridViewTextBoxColumn.HeaderText = "Password";
+            this.passwordDataGridViewTextBoxColumn.HeaderText = "Пароль";
             this.passwordDataGridViewTextBoxColumn.Name = "passwordDataGridViewTextBoxColumn";
             // 
             // passportEndDateDataGridViewTextBoxColumn
             // 
             this.passportEndDateDataGridViewTextBoxColumn.DataPropertyName = "PassportEndDate";
-            this.passportEndDateDataGridViewTextBoxColumn.HeaderText = "PassportEndDate";
+            this.passportEndDateDataGridViewTextBoxColumn.HeaderText = "Дата оконч. пасспорта";
             this.passportEndDateDataGridViewTextBoxColumn.Name = "passportEndDateDataGridViewTextBoxColumn";
             // 
             // statusDataGridViewTextBoxColumn
             // 
             this.statusDataGridViewTextBoxColumn.DataPropertyName = "Status";
-            this.statusDataGridViewTextBoxColumn.HeaderText = "Status";
+            this.statusDataGridViewTextBoxColumn.HeaderText = "Статус";
             this.statusDataGridViewTextBoxColumn.Name = "statusDataGridViewTextBoxColumn";
             // 
             // dobDataGridViewTextBoxColumn
             // 
             this.dobDataGridViewTextBoxColumn.DataPropertyName = "Dob";
-            this.dobDataGridViewTextBoxColumn.HeaderText = "Dob";
+            this.dobDataGridViewTextBoxColumn.HeaderText = "Дата рождения";
             this.dobDataGridViewTextBoxColumn.Name = "dobDataGridViewTextBoxColumn";
             // 
             // arrivalDtDataGridViewTextBoxColumn
             // 
             this.arrivalDtDataGridViewTextBoxColumn.DataPropertyName = "ArrivalDt";
-            this.arrivalDtDataGridViewTextBoxColumn.HeaderText = "ArrivalDt";
+            this.arrivalDtDataGridViewTextBoxColumn.HeaderText = "Дата выезда";
             this.arrivalDtDataGridViewTextBoxColumn.Name = "arrivalDtDataGridViewTextBoxColumn";
             // 
             // nationalityDataGridViewTextBoxColumn
             // 
             this.nationalityDataGridViewTextBoxColumn.DataPropertyName = "Nationality";
-            this.nationalityDataGridViewTextBoxColumn.HeaderText = "Nationality";
+            this.nationalityDataGridViewTextBoxColumn.HeaderText = "Национальность";
             this.nationalityDataGridViewTextBoxColumn.Name = "nationalityDataGridViewTextBoxColumn";
             // 
-            // redLineDataGridViewTextBoxColumn
+            // emailErrorProvider
             // 
-            this.redLineDataGridViewTextBoxColumn.DataPropertyName = "RedLine";
-            this.redLineDataGridViewTextBoxColumn.HeaderText = "RedLine";
-            this.redLineDataGridViewTextBoxColumn.Name = "redLineDataGridViewTextBoxColumn";
+            this.emailErrorProvider.BlinkRate = 500;
+            this.emailErrorProvider.ContainerControl = this;
+            // 
+            // PasserrorProvider
+            // 
+            this.PasserrorProvider.BlinkRate = 500;
+            this.PasserrorProvider.ContainerControl = this;
             // 
             // PVAutoFill
             // 
@@ -768,7 +788,6 @@ namespace PolandVisaAuto
         private Label label17;
         private Label label16;
         private DateTimePicker dtRedLine;
-        private DataGridViewButtonColumn buttonColumn;
         private DataGridViewTextBoxColumn cityDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn lastNameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
@@ -785,6 +804,9 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn arrivalDtDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nationalityDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn redLineDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn priorityDataGridViewTextBoxColumn;
+        private Button button1;
+        private DataGridViewButtonColumn deleteColumn;
 
     }
 }

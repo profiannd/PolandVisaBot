@@ -9,7 +9,6 @@ C:\PolandVisaMonitor\PolandVisaMonitor\PolandVisaAuto\obj\Release\PolandVisaAuto
 C:\PolandVisaMonitor\PolandVisaMonitor\PolandVisaAuto\obj\Release\PolandVisaAuto.csproj.GenerateResource.Cache
 C:\PolandVisaMonitor\PolandVisaMonitor\PolandVisaAuto\obj\Release\PolandVisaAuto.exe
 C:\PolandVisaMonitor\PolandVisaMonitor\PolandVisaAuto\obj\Release\PolandVisaAuto.pdb
-C:\PolandVisaMonitor\PolandVisaAuto\bin\Release\PolandVisaAuto.exe.config
 C:\PolandVisaMonitor\PolandVisaAuto\bin\Release\PolandVisaAuto.exe
 C:\PolandVisaMonitor\PolandVisaAuto\bin\Release\PolandVisaAuto.pdb
 C:\PolandVisaMonitor\PolandVisaAuto\bin\Release\pvhelper.dll
@@ -20,3 +19,5 @@ C:\PolandVisaMonitor\PolandVisaAuto\obj\Release\PolandVisaAuto.Properties.Resour
 C:\PolandVisaMonitor\PolandVisaAuto\obj\Release\PolandVisaAuto.csproj.GenerateResource.Cache
 C:\PolandVisaMonitor\PolandVisaAuto\obj\Release\PolandVisaAuto.exe
 C:\PolandVisaMonitor\PolandVisaAuto\obj\Release\PolandVisaAuto.pdb
+C:\PolandVisaMonitor\PolandVisaAuto\bin\Release\PolandVisaAuto.exe.config
+C:\PolandVisaMonitor\PolandVisaAuto\bin\Release\log4net.dll

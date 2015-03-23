@@ -23,25 +23,36 @@ namespace PolandVisaAuto
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
             try
             {
+                Logger.Info("");
+                Logger.Info("=========================================Program started=====================================");
+                Logger.Info("");
                 Application.Run(new PVAutoFill());
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 MyHandler(null, null);
             }
         }
 
         static void MyHandler(object sender, UnhandledExceptionEventArgs args)
         {
-            Thread.Sleep(5000);
-            Process.Start("PolandVisaAuto.exe");
-            Application.Exit();
+            Logger.Error((Exception)args.ExceptionObject);
+            rerunApp();
         }
         // Handle the UI exceptions by showing a dialog box, and asking the user whether 
         // or not they wish to abort execution. 
         private static void Form1_UIThreadException(object sender, ThreadExceptionEventArgs t)
         {
-            MyHandler(null, null);
+            Logger.Error(t.Exception);
+            rerunApp();
+        }
+
+        private static void rerunApp()
+        {
+            Thread.Sleep(5000);
+            Process.Start("PolandVisaAuto.exe");
+            Application.Exit();
         }
     }
 }

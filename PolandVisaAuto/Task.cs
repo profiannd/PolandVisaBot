@@ -43,6 +43,8 @@ namespace PolandVisaAuto
         public string Nationality { get; set; }
         [Browsable(false)]
         public int Priority { get; set; }
+        [XmlIgnoreAttribute]
+        public string PriorityStr { get { return Const.GetListPriority()[Priority]; } }
 
         public string RedLine { get; set; }
         [Browsable(false)]
@@ -108,11 +110,11 @@ namespace PolandVisaAuto
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("");
-            sb.AppendLine("Крайняя дата подачи заявки: " + RedLine);
+            sb.AppendLine(string.Format("Крайняя дата подачи заявки: {0}, приоритет {1}",RedLine, PriorityStr));
             sb.AppendLine("");
             sb.AppendLine("Город: " + City);
             sb.AppendLine("Мета візиту: " + Purpose);
-            sb.AppendLine("Кількість заявників: " + CountAdult + " К-сть дітей "+CountChild);
+            sb.AppendLine(string.Format("Кількість заявників: {0}, К-сть дітей {1}",CountAdult,CountChild));
             sb.AppendLine("Візова категорія: " + Category);
             sb.AppendLine("Номер квитанції: " + Receipt);
             sb.AppendLine("Email: " + Email);
@@ -130,9 +132,9 @@ namespace PolandVisaAuto
             if (x.RedLineDt < y.RedLineDt)
                 return -1;
             if (x.Priority > y.Priority)
-                return 1;
-            if (x.Priority < y.Priority)
                 return -1;
+            if (x.Priority < y.Priority)
+                return 1;
             return 0;
         }
     }

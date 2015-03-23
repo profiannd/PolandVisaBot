@@ -71,11 +71,15 @@ namespace PolandVisaAuto
                     RedLine = dtRedLine.Text,
                     Priority = cbxPriority.SelectedIndex
                 };
+
+            Logger.Info("Задание добавленно " + task.GetInfo());
             _visaTasks.Add(task);
             VisaTask.Save(_visaTasks);
             dataGridView1.Refresh();
-
+            
             _engine.RefreshViewTabs();
+
+            txtPass.Text = txtName.Text = txtBillNum.Text = txtEmail.Text = txtLastName.Text = txtName.Text = string.Empty;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -143,10 +147,18 @@ namespace PolandVisaAuto
         {
             if (e.RowIndex < 0 || e.ColumnIndex != dataGridView1.Columns["deleteColumn"].Index)
                 return;
-
-            _engine.DeleteTask(dataGridView1.Rows[e.RowIndex].DataBoundItem as VisaTask);
+            VisaTask vt = dataGridView1.Rows[e.RowIndex].DataBoundItem as VisaTask;
+            Logger.Warning("Удаляю задание "+ vt.GetInfo());
+            _engine.DeleteTask(vt);
             dataGridView1.Rows.RemoveAt(e.RowIndex);
             VisaTask.Save(_visaTasks);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string temp = string.Format("{0}.{1}", txtLastName.Text, txtName.Text);// Const.GetTranslit(string.Format("{0}.{1}", txtLastName.Text, txtName.Text));
+            txtEmail.Text = string.Format("{0}@gmail.com",temp);
+            txtPass.Text = temp.Replace(".","");
         }
     }
 }

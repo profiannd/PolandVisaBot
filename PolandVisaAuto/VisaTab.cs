@@ -19,7 +19,7 @@ namespace PolandVisaAuto
         public List<VisaTask> Tasks = new List<VisaTask>();
         public bool IsTabExists { get; set; }
         private TabPage _tabPage;
-
+        private VisaComparer vc = new VisaComparer();
         public delegate void TaskDelegate(VisaTask task);
         public event TaskDelegate TaskEvent;
 
@@ -72,7 +72,7 @@ namespace PolandVisaAuto
                 {
                     case RotEvents.Start:
                         {
-                            Tasks.Sort(new VisaComparer());
+                            Tasks.Sort(vc);
                             _currentTask = Tasks[0];
                             webBrowser.Navigate(Const.url);
                             _enum = RotEvents.Firsthl;
@@ -116,6 +116,7 @@ namespace PolandVisaAuto
                         {
                             string showStopper = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
                             richText.Text = "Свободна дата: " + showStopper;
+                            Logger.Info(_currentTask.City + ": "+ richText.Text);
                             if (!showStopper.Contains("No date(s) available"))
                             {
                                 var apointmentDate = ProcessDate(showStopper);
@@ -126,6 +127,14 @@ namespace PolandVisaAuto
                                     TurnAlarmOn(true);
                                     break;
                                 }
+                                else
+                                {
+                                    foreach (VisaTask visaTask in Tasks)
+                                    {
+                                        if (apointmentDate < visaTask.RedLineDt)
+                                            _currentTask = visaTask;
+                                    }
+                                }
                             }
                             webBrowser.Document.GetElementById("ctl00_plhMain_btnCancel").InvokeMember("click");
                             _enum = RotEvents.FirstCombo;
@@ -133,6 +142,7 @@ namespace PolandVisaAuto
                         }
                     case RotEvents.FillReceipt:
                         {
+                            Logger.Info(_currentTask.City+": Номер квитанции: " + _currentTask.Receipt);
                             webBrowser.Document.GetElementById("ctl00_plhMain_repAppReceiptDetails_ctl01_txtReceiptNumber").SetAttribute("value", _currentTask.Receipt);
                             webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                             _enum = RotEvents.FillEmail;
@@ -140,6 +150,7 @@ namespace PolandVisaAuto
                         }
                     case RotEvents.FillEmail:
                         {
+                            Logger.Info(string.Format("{0}: Email: {1} Pass: {2}", _currentTask.City,_currentTask.Email, _currentTask.Password));
                             webBrowser.Document.GetElementById("ctl00_plhMain_txtEmailID").SetAttribute("value", _currentTask.Email);
                             webBrowser.Document.GetElementById("ctl00_plhMain_txtPassword").SetAttribute("value", _currentTask.Password);
                             webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmitDetails").InvokeMember("click");
@@ -148,6 +159,7 @@ namespace PolandVisaAuto
                         }
                     case RotEvents.GetData:
                         {
+                            Logger.Warning("Дружищще, отправляй меня быстрее "+ _currentTask.GetInfo());
                             richText.AppendText(_currentTask.GetInfo());
                             webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxPPTEXPDT").SetAttribute("value", _currentTask.PassportEndDate);
                             webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboTitle").SetAttribute("selectedIndex", _currentTask.StatusCode);
@@ -171,29 +183,30 @@ namespace PolandVisaAuto
                         }
                         case RotEvents.Stop:
                         {
+                            Logger.Info(_currentTask.City + " ну, все, отправил. ищем следующего.");
                             TurnAlarmOn(false);
-//                            Tasks.Remove(_currentTask);
-//                            if (TaskEvent != null)
-//                            {
-//                                TaskEvent(_currentTask);
-//                                _currentTask = null;
-//                            }
-//                            _enum = RotEvents.Start;
-//
-//                            if (Tasks.Count == 0 && TabEvent != null)
-//                            {
-//                                TabEvent(_tabPage);
-//                            }
+                            Tasks.Remove(_currentTask);
+                            if (TaskEvent != null)
+                            {
+                                TaskEvent(_currentTask);
+                                _currentTask = null;
+                            }
+                            _enum = RotEvents.Start;
+
+                            if (Tasks.Count == 0 && TabEvent != null)
+                            {
+                                TabEvent(_tabPage);
+                            }
                             break;
                         }
                 }
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 TurnAlarmOn(false);
                 _allowStep = true;
                 _enum = RotEvents.Start;
-                Debug.Write(ex.ToString());
             }
         }
 
@@ -204,6 +217,9 @@ namespace PolandVisaAuto
             {
                 TabEvent(_tabPage);
             }
+            _enum = RotEvents.Start;
+            _allowStep = true;
+            TurnAlarmOn(false);
         }
 
         private void TurnAlarmOn(bool on)

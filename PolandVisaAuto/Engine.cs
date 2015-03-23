@@ -21,7 +21,7 @@ namespace PolandVisaAuto
             _visaTasks = visaTasks;
             _cityTasks = new Dictionary<string, VisaTab>();
             _timer = new Timer();
-            _timer.Interval = 1000;
+            _timer.Interval = 1500;
             _timer.Tick += _timer_Tick;
         }
 
@@ -37,7 +37,7 @@ namespace PolandVisaAuto
             {
                 _cityTasks.Remove(s);
             }
-
+            _toRemove.Clear();
             foreach (KeyValuePair<string, VisaTab> keyValuePair in _cityTasks)
             {
                 keyValuePair.Value.DoStep();
@@ -63,9 +63,10 @@ namespace PolandVisaAuto
             {
                 if (!_cityTasks.ContainsKey(vt.City))
                 {
+                    Logger.Info("Создаю новый таб " + vt.City);
                     TabPage tabPage = new TabPage(vt.City);
                     WebBrowser webBrowser1 = new WebBrowser();
-                    webBrowser1.Size = new Size(837, 400);
+                    webBrowser1.Size = new Size(837, 300);
                     webBrowser1.Dock = DockStyle.Top;
                     webBrowser1.Location = new Point(0, 0);
                     webBrowser1.Name = "webBrowser" + vt.City;
@@ -73,7 +74,7 @@ namespace PolandVisaAuto
 
                     RichTextBox richText = new RichTextBox();
                     richText.Name = "richText";
-                    richText.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                    richText.Font = new Font("Arial", 10F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(204)));
                     richText.Location = new Point(0, 303);
                     richText.Size = new Size(837, 200);
                     richText.Dock = DockStyle.Bottom;
@@ -115,6 +116,7 @@ namespace PolandVisaAuto
 
         private void Value_TabEvent(TabPage tab)
         {
+            Logger.Info("Удаляю таб " + tab.Text);
             _toRemove.Add(tab.Text);
             _tabControl.TabPages.Remove(tab);
         }
