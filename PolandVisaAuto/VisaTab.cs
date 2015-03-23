@@ -151,6 +151,14 @@ namespace PolandVisaAuto
                     case RotEvents.Submit:
                         {
                             string showStopper = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                            if (showStopper.Contains("Number of Persons should not be"))
+                            {
+                                Logger.Warning("Сбой в работе сайта. Ошибка: " + showStopper);
+                                _currentTask = null;
+                                _enum = RotEvents.Start;
+                                _allowStep = true;
+                                break;
+                            }
                             richText.Text = "Свободна дата: " + showStopper;
                             Logger.Info(_currentTask.City + ": "+ richText.Text);
                             if (!showStopper.Contains("No date(s) available"))
