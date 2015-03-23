@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolandVisaAuto", "PolandVisaAuto.csproj", "{37701672-F751-452F-9741-27D34D31E7C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolandVisa", "..\PolandVisa\PolandVisa.csproj", "{198F7690-734E-4068-B60E-1273F89B54F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pvhelper", "..\pvhelper\pvhelper.csproj", "{D77FF53B-1D53-45F2-83CC-9B4903B80286}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37701672-F751-452F-9741-27D34D31E7C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37701672-F751-452F-9741-27D34D31E7C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37701672-F751-452F-9741-27D34D31E7C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37701672-F751-452F-9741-27D34D31E7C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{198F7690-734E-4068-B60E-1273F89B54F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198F7690-734E-4068-B60E-1273F89B54F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198F7690-734E-4068-B60E-1273F89B54F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198F7690-734E-4068-B60E-1273F89B54F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D77FF53B-1D53-45F2-83CC-9B4903B80286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D77FF53B-1D53-45F2-83CC-9B4903B80286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D77FF53B-1D53-45F2-83CC-9B4903B80286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D77FF53B-1D53-45F2-83CC-9B4903B80286}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
