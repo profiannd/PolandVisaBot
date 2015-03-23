@@ -31,3 +31,15 @@ c:\PolandVisaMonitor\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.Properties.Reso
 c:\PolandVisaMonitor\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.csproj.GenerateResource.Cache
 c:\PolandVisaMonitor\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.exe
 c:\PolandVisaMonitor\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.pdb
+C:\PVM\PolandVisaAuto\bin\Debug\PolandVisaAuto.exe.config
+C:\PVM\PolandVisaAuto\bin\Debug\PolandVisaAuto.exe
+C:\PVM\PolandVisaAuto\bin\Debug\PolandVisaAuto.pdb
+C:\PVM\PolandVisaAuto\bin\Debug\log4net.dll
+C:\PVM\PolandVisaAuto\bin\Debug\pvhelper.dll
+C:\PVM\PolandVisaAuto\bin\Debug\pvhelper.pdb
+C:\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.csprojResolveAssemblyReference.cache
+C:\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.PVAutoFill.resources
+C:\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.Properties.Resources.resources
+C:\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.csproj.GenerateResource.Cache
+C:\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.exe
+C:\PVM\PolandVisaAuto\obj\Debug\PolandVisaAuto.pdb

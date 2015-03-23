@@ -72,10 +72,30 @@ namespace PolandVisaAuto
                     webBrowser1.Name = "webBrowser" + vt.City;
                     tabPage.Controls.Add(webBrowser1);
 
+                    Button deleteTask = new Button();
+                    deleteTask.Location = new System.Drawing.Point(200, 400);
+                    deleteTask.Name = "deleteTask";
+                    deleteTask.Size = new System.Drawing.Size(200, 40);
+                    deleteTask.TabIndex = 4;
+                    deleteTask.Text = "Удалить задачу";
+                    deleteTask.UseVisualStyleBackColor = true;
+                    deleteTask.Visible = false;
+                    tabPage.Controls.Add(deleteTask);
+
+                    Button renewTask = new Button();
+                    renewTask.Location = new System.Drawing.Point(650, 400);
+                    renewTask.Name = "renewTask";
+                    renewTask.Size = new System.Drawing.Size(200, 40);
+                    renewTask.TabIndex = 4;
+                    renewTask.Text = "Возобновить задачу";
+                    renewTask.UseVisualStyleBackColor = true;
+                    renewTask.Visible = false;
+                    tabPage.Controls.Add(renewTask);
+
                     RichTextBox richText = new RichTextBox();
                     richText.Name = "richText";
                     richText.Font = new Font("Arial", 10F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(204)));
-                    richText.Location = new Point(0, 403);
+                    richText.Location = new Point(0, 451);
                     richText.Size = new Size(837, 200);
                     richText.Dock = DockStyle.Bottom;
                     tabPage.Controls.Add(richText);

@@ -122,7 +122,7 @@ namespace PolandVisaAuto
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1094, 607);
+            this.tabControl1.Size = new System.Drawing.Size(1094, 662);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl_DrawItem);
             // 
@@ -141,7 +141,7 @@ namespace PolandVisaAuto
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1086, 578);
+            this.tabPage1.Size = new System.Drawing.Size(1086, 633);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Добавить задание";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -149,7 +149,7 @@ namespace PolandVisaAuto
             // cbxPriority
             // 
             this.cbxPriority.FormattingEnabled = true;
-            this.cbxPriority.Location = new System.Drawing.Point(815, 490);
+            this.cbxPriority.Location = new System.Drawing.Point(815, 568);
             this.cbxPriority.Name = "cbxPriority";
             this.cbxPriority.Size = new System.Drawing.Size(222, 24);
             this.cbxPriority.TabIndex = 18;
@@ -157,7 +157,7 @@ namespace PolandVisaAuto
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(538, 490);
+            this.label17.Location = new System.Drawing.Point(538, 568);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(129, 17);
             this.label17.TabIndex = 17;
@@ -166,7 +166,7 @@ namespace PolandVisaAuto
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(538, 459);
+            this.label16.Location = new System.Drawing.Point(538, 537);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(237, 17);
             this.label16.TabIndex = 16;
@@ -176,7 +176,7 @@ namespace PolandVisaAuto
             // 
             this.dtRedLine.CustomFormat = "dd/MM/yyyy";
             this.dtRedLine.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtRedLine.Location = new System.Drawing.Point(815, 454);
+            this.dtRedLine.Location = new System.Drawing.Point(815, 532);
             this.dtRedLine.Name = "dtRedLine";
             this.dtRedLine.Size = new System.Drawing.Size(222, 23);
             this.dtRedLine.TabIndex = 15;
@@ -198,9 +198,9 @@ namespace PolandVisaAuto
             this.groupBox5.Controls.Add(this.cbxStatus);
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Location = new System.Drawing.Point(530, 173);
+            this.groupBox5.Location = new System.Drawing.Point(530, 195);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(526, 257);
+            this.groupBox5.Size = new System.Drawing.Size(526, 276);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Призначити дату подачі документів 5";
@@ -209,7 +209,7 @@ namespace PolandVisaAuto
             // 
             this.dtArrivalDate.CustomFormat = "dd/MM/yyyy";
             this.dtArrivalDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtArrivalDate.Location = new System.Drawing.Point(285, 183);
+            this.dtArrivalDate.Location = new System.Drawing.Point(285, 197);
             this.dtArrivalDate.Name = "dtArrivalDate";
             this.dtArrivalDate.Size = new System.Drawing.Size(222, 23);
             this.dtArrivalDate.TabIndex = 16;
@@ -219,7 +219,7 @@ namespace PolandVisaAuto
             // 
             this.dtDob.CustomFormat = "dd/MM/yyyy";
             this.dtDob.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtDob.Location = new System.Drawing.Point(285, 150);
+            this.dtDob.Location = new System.Drawing.Point(285, 158);
             this.dtDob.Name = "dtDob";
             this.dtDob.Size = new System.Drawing.Size(222, 23);
             this.dtDob.TabIndex = 15;
@@ -238,7 +238,7 @@ namespace PolandVisaAuto
             // cbxNation
             // 
             this.cbxNation.FormattingEnabled = true;
-            this.cbxNation.Location = new System.Drawing.Point(285, 218);
+            this.cbxNation.Location = new System.Drawing.Point(285, 235);
             this.cbxNation.Name = "cbxNation";
             this.cbxNation.Size = new System.Drawing.Size(222, 24);
             this.cbxNation.TabIndex = 13;
@@ -246,7 +246,7 @@ namespace PolandVisaAuto
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 218);
+            this.label12.Location = new System.Drawing.Point(6, 235);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(108, 17);
             this.label12.TabIndex = 12;
@@ -255,7 +255,7 @@ namespace PolandVisaAuto
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 183);
+            this.label11.Location = new System.Drawing.Point(6, 197);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(125, 17);
             this.label11.TabIndex = 10;
@@ -264,7 +264,7 @@ namespace PolandVisaAuto
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 156);
+            this.label10.Location = new System.Drawing.Point(6, 164);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(127, 17);
             this.label10.TabIndex = 8;
@@ -272,7 +272,7 @@ namespace PolandVisaAuto
             // 
             // txtLastName
             // 
-            this.txtLastName.Location = new System.Drawing.Point(285, 121);
+            this.txtLastName.Location = new System.Drawing.Point(285, 124);
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(222, 23);
             this.txtLastName.TabIndex = 7;
@@ -280,7 +280,7 @@ namespace PolandVisaAuto
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 120);
+            this.label9.Location = new System.Drawing.Point(8, 124);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(70, 17);
             this.label9.TabIndex = 6;
@@ -335,7 +335,7 @@ namespace PolandVisaAuto
             this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Controls.Add(this.txtPass);
             this.groupBox4.Controls.Add(this.txtEmail);
-            this.groupBox4.Location = new System.Drawing.Point(34, 315);
+            this.groupBox4.Location = new System.Drawing.Point(34, 356);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(469, 115);
             this.groupBox4.TabIndex = 4;
@@ -392,7 +392,7 @@ namespace PolandVisaAuto
             // 
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.txtBillNum);
-            this.groupBox3.Location = new System.Drawing.Point(34, 173);
+            this.groupBox3.Location = new System.Drawing.Point(34, 195);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(469, 115);
             this.groupBox3.TabIndex = 3;
@@ -417,9 +417,9 @@ namespace PolandVisaAuto
             // 
             // btnaddTask
             // 
-            this.btnaddTask.Location = new System.Drawing.Point(168, 479);
+            this.btnaddTask.Location = new System.Drawing.Point(140, 532);
             this.btnaddTask.Name = "btnaddTask";
-            this.btnaddTask.Size = new System.Drawing.Size(197, 27);
+            this.btnaddTask.Size = new System.Drawing.Size(244, 58);
             this.btnaddTask.TabIndex = 2;
             this.btnaddTask.Text = "Добавить задание";
             this.btnaddTask.UseVisualStyleBackColor = true;
@@ -589,9 +589,9 @@ namespace PolandVisaAuto
             // 
             // deleteColumn
             // 
+            this.deleteColumn.HeaderText = "";
             this.deleteColumn.Name = "deleteColumn";
             this.deleteColumn.Text = "Удалить";
-            this.deleteColumn.HeaderText = "";
             this.deleteColumn.UseColumnTextForButtonValue = true;
             // 
             // cityDataGridViewTextBoxColumn
@@ -710,7 +710,7 @@ namespace PolandVisaAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1094, 607);
+            this.ClientSize = new System.Drawing.Size(1094, 662);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

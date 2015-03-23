@@ -13,6 +13,8 @@ namespace PolandVisaAuto
     {
         private WebBrowser webBrowser;
         private RichTextBox richText;
+        private Button deleteTask;
+        private Button renewTask;
         private bool _allowStep = true;
         private RotEvents _enum = RotEvents.Start;
         private VisaTask _currentTask = null;
@@ -45,10 +47,44 @@ namespace PolandVisaAuto
             initSound();
             Tasks.Add(task);
             _tabPage = tabPage;
+
             richText = (RichTextBox)_tabPage.Controls.Find("richText", true)[0];
             webBrowser = (WebBrowser)_tabPage.Controls.Find("webBrowser" + task.City, true)[0];
             webBrowser.ScriptErrorsSuppressed = true;
             webBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_DocumentCompleted);
+            
+            renewTask = (Button) _tabPage.Controls.Find("renewTask", true)[0];
+            renewTask.Click += new System.EventHandler(this.renewTask_click);
+
+            deleteTask = (Button)_tabPage.Controls.Find("deleteTask", true)[0];
+            deleteTask.Click += new System.EventHandler(this.deleteTask_click);
+
+        }
+
+        private void deleteTask_click(object sender, EventArgs e)
+        {
+            Tasks.Remove(_currentTask);
+            if (TaskEvent != null)
+            {
+                TaskEvent(_currentTask);
+                _currentTask = null;
+            }
+            _enum = RotEvents.Start;
+
+            if (Tasks.Count == 0 && TabEvent != null)
+            {
+                TabEvent(_tabPage);
+            }
+
+            _allowStep = true;
+        }
+
+        private void renewTask_click(object sender, EventArgs e)
+        {
+            TurnAlarmOn(false);
+            _currentTask = null;
+            _enum = RotEvents.Start;
+            _allowStep = true;
         }
 
         void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -178,80 +214,87 @@ namespace PolandVisaAuto
                                 }
                             }
 
-                            _enum = RotEvents.StopPicture1;
+                            _enum = RotEvents.Stop;
                             break;
                         }
-                    case RotEvents.StopPicture1://ctl00_plhMain_VS, ctl00_plhMain_lblMsg
+                    case RotEvents.Stop:
                         {
-                            string error1 = string.Empty;
-                            string error2 = string.Empty;
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
-                            {
-                                error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                            }
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null)
-                            {
-                                error2 = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
-                            }
-                            if (!string.IsNullOrEmpty(error1) || !string.IsNullOrEmpty(error2))
-                            {
-                                Logger.Info(_currentTask.City + " ошибка. первая картинка. 1: "+ error1 +" 2: "+ error2);
-                                _enum = RotEvents.StopPicture1;
-                                break;
-                            }
-                            Logger.Info(_currentTask.City + " подтверждение первой картинки.");
-                            _enum = RotEvents.StopPicture2;
-
-                            break;
-                        }
-                    case RotEvents.StopPicture2://ctl00_plhMain_lblMsg
-                        {
-                            string error1 = string.Empty;
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
-                            {
-                                error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                            }
-                            if (!string.IsNullOrEmpty(error1))
-                            {
-                                Logger.Info(_currentTask.City + " ошибка. вторая картинка.  " + error1);
-                                _enum = RotEvents.StopPicture2;
-                                break;
-                            }
-                            Logger.Info(_currentTask.City + " подтверждение второй картинки.");
-                            _enum = RotEvents.StopPicture3;
-
-                            break;
-                        }
-                    case RotEvents.StopPicture3://ctl00_plhMain_lblMsg
-                        {
-                            string error1 = string.Empty;
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
-                            {
-                                error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                            }
-                            if (!string.IsNullOrEmpty(error1))
-                            {
-                                Logger.Info(_currentTask.City + " ошибка. третья картинка.  " + error1);
-                                _enum = RotEvents.StopPicture2;
-                                break;
-                            }
-                            Logger.Info(_currentTask.City + " ну, все, отправил. ищем следующего.");
-
                             TurnAlarmOn(false);
-                            Tasks.Remove(_currentTask);
-                            if (TaskEvent != null)
-                            {
-                                TaskEvent(_currentTask);
-                                _currentTask = null;
-                            }
-                            _enum = RotEvents.Start;
-
-                            if (Tasks.Count == 0 && TabEvent != null)
-                            {
-                                TabEvent(_tabPage);
-                            }
+                            renewTask.Visible = true;
+                            deleteTask.Visible = true;
                             break;
                         }
+                    //case RotEvents.StopPicture1://ctl00_plhMain_VS, ctl00_plhMain_lblMsg
+                    //    {
+                    //        string error1 = string.Empty;
+                    //        string error2 = string.Empty;
+                    //        if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
+                    //        {
+                    //            error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                    //        }
+                    //        if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null)
+                    //        {
+                    //            error2 = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
+                    //        }
+                    //        if (!string.IsNullOrEmpty(error1) || !string.IsNullOrEmpty(error2))
+                    //        {
+                    //            Logger.Info(_currentTask.City + " ошибка. первая картинка. 1: "+ error1 +" 2: "+ error2);
+                    //            _enum = RotEvents.StopPicture1;
+                    //            break;
+                    //        }
+                    //        Logger.Info(_currentTask.City + " подтверждение первой картинки.");
+                    //        _enum = RotEvents.StopPicture2;
+
+                    //        break;
+                    //    }
+                    //case RotEvents.StopPicture2://ctl00_plhMain_lblMsg
+                    //    {
+                    //        string error1 = string.Empty;
+                    //        if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
+                    //        {
+                    //            error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                    //        }
+                    //        if (!string.IsNullOrEmpty(error1))
+                    //        {
+                    //            Logger.Info(_currentTask.City + " ошибка. вторая картинка.  " + error1);
+                    //            _enum = RotEvents.StopPicture2;
+                    //            break;
+                    //        }
+                    //        Logger.Info(_currentTask.City + " подтверждение второй картинки.");
+                    //        _enum = RotEvents.StopPicture3;
+
+                    //        break;
+                    //    }
+                    //case RotEvents.StopPicture3://ctl00_plhMain_lblMsg
+                    //    {
+                    //        string error1 = string.Empty;
+                    //        if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
+                    //        {
+                    //            error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                    //        }
+                    //        if (!string.IsNullOrEmpty(error1))
+                    //        {
+                    //            Logger.Info(_currentTask.City + " ошибка. третья картинка.  " + error1);
+                    //            _enum = RotEvents.StopPicture2;
+                    //            break;
+                    //        }
+                    //        Logger.Info(_currentTask.City + " ну, все, отправил. ищем следующего.");
+
+                    //        TurnAlarmOn(false);
+                    //        Tasks.Remove(_currentTask);
+                    //        if (TaskEvent != null)
+                    //        {
+                    //            TaskEvent(_currentTask);
+                    //            _currentTask = null;
+                    //        }
+                    //        _enum = RotEvents.Start;
+
+                    //        if (Tasks.Count == 0 && TabEvent != null)
+                    //        {
+                    //            TabEvent(_tabPage);
+                    //        }
+                    //        break;
+                    //    }
                 }
             }
             catch (Exception ex)

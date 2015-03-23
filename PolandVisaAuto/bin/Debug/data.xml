@@ -1,44 +1,49 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <ArrayOfVisaTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <VisaTask>
     <City>Рівне</City>
     <CityCode>4</CityCode>
     <Purpose>Подача документів</Purpose>
-
-<PurposeCode>1</PurposeCode>
-
-<CountAdult>1</CountAdult>
-
-<CountChild>0</CountChild>
-
-<Category>Національна Віза</Category>
-
-<CategoryCode>1</CategoryCode>
-
-<Receipt>2686/7109/2545</Receipt>
-
-<Email>IAROSLAV.BABUSHCHAK@gmail.com</Email>
-
-<Password>IAROSLAVBABUSHCHAK</Password>
-
-<PassportEndDate>27/07/2019</PassportEndDate>
-
-<Status>Mr.</Status>
-
-<StatusCode>2</StatusCode>
-
-<Name>BABUSHCHAK</Name>
-
-<LastName>IAROSLAV</LastName>
-
-<Dob>16/05/1960</Dob>
-
-<ArrivalDt>10/07/2015</ArrivalDt>
-
-<Nationality>UKRAINE</Nationality>
-
-<Priority>2</Priority>
-
-<RedLine>31/05/2015</RedLine>
+    <PurposeCode>1</PurposeCode>
+    <CountAdult>1</CountAdult>
+    <CountChild>0</CountChild>
+    <Category>Національна Віза</Category>
+    <CategoryCode>1</CategoryCode>
+    <Receipt>2686/7109/2545</Receipt>
+    <Email>IAROSLAV.BABUSHCHAK@gmail.com</Email>
+    <Password>IAROSLAVBABUSHCHAK</Password>
+    <PassportEndDate>27/07/2019</PassportEndDate>
+    <Status>Mr.</Status>
+    <StatusCode>2</StatusCode>
+    <Name>BABUSHCHAK</Name>
+    <LastName>IAROSLAV</LastName>
+    <Dob>16/05/1960</Dob>
+    <ArrivalDt>10/07/2015</ArrivalDt>
+    <Nationality>UKRAINE</Nationality>
+    <Priority>2</Priority>
+    <RedLine>31/05/2015</RedLine>
+  </VisaTask>
+  <VisaTask>
+    <City>Луцьк</City>
+    <CityCode>5</CityCode>
+    <Purpose>Подача документів</Purpose>
+    <PurposeCode>1</PurposeCode>
+    <CountAdult>1</CountAdult>
+    <CountChild>0</CountChild>
+    <Category>Національна Віза</Category>
+    <CategoryCode>1</CategoryCode>
+    <Receipt />
+    <Email>baba@gmeil.com</Email>
+    <Password>baba1111</Password>
+    <PassportEndDate>19/03/2015</PassportEndDate>
+    <Status>Mr.</Status>
+    <StatusCode>2</StatusCode>
+    <Name>ali</Name>
+    <LastName>baba</LastName>
+    <Dob>19/03/2015</Dob>
+    <ArrivalDt>19/03/2015</ArrivalDt>
+    <Nationality>Ukrainians</Nationality>
+    <Priority>0</Priority>
+    <RedLine>19/03/2015</RedLine>
   </VisaTask>
 </ArrayOfVisaTask>

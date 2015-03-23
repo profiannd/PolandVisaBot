@@ -98,7 +98,7 @@ namespace PolandVisaAuto
             cbxPriority.DataSource = Const.GetListPriority();
 
             cbxStatus.SelectedItem = "Mr.";
-            cbxNation.SelectedItem = "Ukrainians";
+            cbxNation.SelectedItem = "UKRAINE";
 
             _visaTasks = VisaTask.DeSerialize();
             dataGridView1.DataSource = _visaTasks;
@@ -156,9 +156,12 @@ namespace PolandVisaAuto
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string temp = string.Format("{0}.{1}", txtLastName.Text, txtName.Text);// Const.GetTranslit(string.Format("{0}.{1}", txtLastName.Text, txtName.Text));
-            txtEmail.Text = string.Format("{0}@gmail.com",temp);
-            txtPass.Text = temp.Replace(".","");
+            txtEmail.Text = string.Format("{0}@gmeil.com", txtLastName.Text);
+            txtPass.Text = txtLastName.Text;
+            while (txtPass.Text.Length<8)
+            {
+                txtPass.Text = txtPass.Text + "1";
+            }
         }
     }
 }
