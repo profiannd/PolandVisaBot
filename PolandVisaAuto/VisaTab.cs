@@ -178,12 +178,65 @@ namespace PolandVisaAuto
                                 }
                             }
 
-                            _enum = RotEvents.Stop;
+                            _enum = RotEvents.StopPicture1;
                             break;
                         }
-                        case RotEvents.Stop:
+                    case RotEvents.StopPicture1://ctl00_plhMain_VS, ctl00_plhMain_lblMsg
                         {
+                            string error1 = string.Empty;
+                            string error2 = string.Empty;
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
+                            {
+                                error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                            }
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null)
+                            {
+                                error2 = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
+                            }
+                            if (!string.IsNullOrEmpty(error1) || !string.IsNullOrEmpty(error2))
+                            {
+                                Logger.Info(_currentTask.City + " ошибка. первая картинка. 1: "+ error1 +" 2: "+ error2);
+                                _enum = RotEvents.StopPicture1;
+                                break;
+                            }
+                            Logger.Info(_currentTask.City + " подтверждение первой картинки.");
+                            _enum = RotEvents.StopPicture2;
+
+                            break;
+                        }
+                    case RotEvents.StopPicture2://ctl00_plhMain_lblMsg
+                        {
+                            string error1 = string.Empty;
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
+                            {
+                                error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                            }
+                            if (!string.IsNullOrEmpty(error1))
+                            {
+                                Logger.Info(_currentTask.City + " ошибка. вторая картинка.  " + error1);
+                                _enum = RotEvents.StopPicture2;
+                                break;
+                            }
+                            Logger.Info(_currentTask.City + " подтверждение второй картинки.");
+                            _enum = RotEvents.StopPicture3;
+
+                            break;
+                        }
+                    case RotEvents.StopPicture3://ctl00_plhMain_lblMsg
+                        {
+                            string error1 = string.Empty;
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
+                            {
+                                error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                            }
+                            if (!string.IsNullOrEmpty(error1))
+                            {
+                                Logger.Info(_currentTask.City + " ошибка. третья картинка.  " + error1);
+                                _enum = RotEvents.StopPicture2;
+                                break;
+                            }
                             Logger.Info(_currentTask.City + " ну, все, отправил. ищем следующего.");
+
                             TurnAlarmOn(false);
                             Tasks.Remove(_currentTask);
                             if (TaskEvent != null)

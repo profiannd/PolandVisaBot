@@ -15,7 +15,10 @@ namespace pvhelper
         SecondCombo = 5,
         FillReceipt = 6,
         FillEmail = 7,
-        Stop = 8
+        StopPicture1 = 8,
+        StopPicture2 = 9,
+        StopPicture3 = 10
+
     }
 
     [StructLayout(LayoutKind.Sequential)]

@@ -28,3 +28,14 @@ C:\PolandVisaMonitor\PolandVisa\obj\Debug\PolandVisa.csprojResolveAssemblyRefere
 C:\PolandVisaMonitor\PolandVisa\obj\Debug\PolandVisaMonitor.Form1.resources
 C:\PolandVisaMonitor\PolandVisa\obj\Debug\PolandVisaMonitor.Properties.Resources.resources
 C:\PolandVisaMonitor\PolandVisa\obj\Debug\PolandVisa.csproj.GenerateResource.Cache
+c:\PolandVisaMonitor\PVM\PolandVisa\bin\Debug\PolandVisaMonitor.exe.config
+c:\PolandVisaMonitor\PVM\PolandVisa\bin\Debug\PolandVisaMonitor.exe
+c:\PolandVisaMonitor\PVM\PolandVisa\bin\Debug\PolandVisaMonitor.pdb
+c:\PolandVisaMonitor\PVM\PolandVisa\bin\Debug\pvhelper.dll
+c:\PolandVisaMonitor\PVM\PolandVisa\bin\Debug\pvhelper.pdb
+c:\PolandVisaMonitor\PVM\PolandVisa\obj\Debug\PolandVisa.csprojResolveAssemblyReference.cache
+c:\PolandVisaMonitor\PVM\PolandVisa\obj\Debug\PolandVisaMonitor.Form1.resources
+c:\PolandVisaMonitor\PVM\PolandVisa\obj\Debug\PolandVisaMonitor.Properties.Resources.resources
+c:\PolandVisaMonitor\PVM\PolandVisa\obj\Debug\PolandVisa.csproj.GenerateResource.Cache
+c:\PolandVisaMonitor\PVM\PolandVisa\obj\Debug\PolandVisaMonitor.exe
+c:\PolandVisaMonitor\PVM\PolandVisa\obj\Debug\PolandVisaMonitor.pdb

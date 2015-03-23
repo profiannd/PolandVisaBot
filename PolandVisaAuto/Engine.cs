@@ -66,7 +66,7 @@ namespace PolandVisaAuto
                     Logger.Info("Создаю новый таб " + vt.City);
                     TabPage tabPage = new TabPage(vt.City);
                     WebBrowser webBrowser1 = new WebBrowser();
-                    webBrowser1.Size = new Size(837, 300);
+                    webBrowser1.Size = new Size(837, 400);
                     webBrowser1.Dock = DockStyle.Top;
                     webBrowser1.Location = new Point(0, 0);
                     webBrowser1.Name = "webBrowser" + vt.City;
@@ -75,7 +75,7 @@ namespace PolandVisaAuto
                     RichTextBox richText = new RichTextBox();
                     richText.Name = "richText";
                     richText.Font = new Font("Arial", 10F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(204)));
-                    richText.Location = new Point(0, 303);
+                    richText.Location = new Point(0, 403);
                     richText.Size = new Size(837, 200);
                     richText.Dock = DockStyle.Bottom;
                     tabPage.Controls.Add(richText);
