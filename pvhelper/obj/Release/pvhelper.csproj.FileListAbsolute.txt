@@ -1,0 +1,10 @@
+C:\PolandVisaMonitor\PolandVisaMonitor\pvhelper\bin\Release\pvhelper.dll
+C:\PolandVisaMonitor\PolandVisaMonitor\pvhelper\bin\Release\pvhelper.pdb
+C:\PolandVisaMonitor\PolandVisaMonitor\pvhelper\obj\Release\pvhelper.csprojResolveAssemblyReference.cache
+C:\PolandVisaMonitor\PolandVisaMonitor\pvhelper\obj\Release\pvhelper.dll
+C:\PolandVisaMonitor\PolandVisaMonitor\pvhelper\obj\Release\pvhelper.pdb
+C:\PolandVisaMonitor\pvhelper\bin\Release\pvhelper.dll
+C:\PolandVisaMonitor\pvhelper\bin\Release\pvhelper.pdb
+C:\PolandVisaMonitor\pvhelper\obj\Release\pvhelper.csprojResolveAssemblyReference.cache
+C:\PolandVisaMonitor\pvhelper\obj\Release\pvhelper.dll
+C:\PolandVisaMonitor\pvhelper\obj\Release\pvhelper.pdb
