@@ -12,7 +12,9 @@ namespace PolandVisaAuto
         private Dictionary<string, VisaTab> _cityTasks;
         private TabControl _tabControl;
         private Timer _timer;
-        List<string> _toRemove = new List<string>();
+        private List<string> _toRemove = new List<string>();
+        private List<VisaTab> _activeTabs = new List<VisaTab>();
+        private int _activePointer = 0;
         public static Dictionary<TabPage, Color> TabColors = new Dictionary<TabPage, Color>();
 
         public Engine(BindingList<VisaTask> visaTasks, TabControl tabControl)
@@ -38,10 +40,39 @@ namespace PolandVisaAuto
                 _cityTasks.Remove(s);
             }
             _toRemove.Clear();
-            foreach (KeyValuePair<string, VisaTab> keyValuePair in _cityTasks)
+
+            VisaTab tab = GetVisaTabToStep();
+            if(tab != null)
+                tab.DoStep();
+//            foreach (KeyValuePair<string, VisaTab> keyValuePair in _cityTasks)
+//            {
+//                keyValuePair.Value.DoStep();
+//            }
+        }
+
+        private VisaTab GetVisaTabToStep()
+        {
+            if (_activeTabs.Count != 0)
             {
-                keyValuePair.Value.DoStep();
+                if (_activePointer >= _activeTabs.Count)
+                    _activePointer = 0;
+                return _activeTabs[_activePointer++];
             }
+            List<string> sListKey = new List<string>();
+            foreach (string key in _cityTasks.Keys)
+            {
+                sListKey.Add(key);
+            }
+
+            if (sListKey.Count == 0)
+                return null;
+
+            if(_activePointer >= sListKey.Count)
+                _activePointer = 0;
+            string newkey = sListKey[_activePointer++];
+            if (_cityTasks.ContainsKey(newkey))
+                return _cityTasks[newkey];
+            return null;
         }
 
         public void DeleteTask(VisaTask visaTask)
@@ -122,8 +153,18 @@ namespace PolandVisaAuto
                 pair.Value.TabEvent += Value_TabEvent;
                 pair.Value.TabEventEx -= Value_TabEventEx;
                 pair.Value.TabEventEx += Value_TabEventEx;
+                pair.Value.VisaEvent -= ValueVisaEvent;
+                pair.Value.VisaEvent += ValueVisaEvent;
             }
             _timer.Start();
+        }
+
+        void ValueVisaEvent(VisaTab tab, bool add)
+        {
+            if (add)
+                _activeTabs.Add(tab);
+            else
+                _activeTabs.Remove(tab);
         }
 
         void Value_TabEventEx(TabPage tab, bool alarm)

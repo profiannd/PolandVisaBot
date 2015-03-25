@@ -28,6 +28,9 @@ namespace PolandVisaAuto
         public delegate void TabDelegate(TabPage tab);
         public event TabDelegate TabEvent;
 
+        public delegate void TabDelegateMain(VisaTab visa, bool add);
+        public event TabDelegateMain VisaEvent;
+
         public delegate void TabDelegateEx(TabPage tab, bool alarm);
         public event TabDelegateEx TabEventEx;
 
@@ -63,6 +66,9 @@ namespace PolandVisaAuto
 
         private void deleteTask_click(object sender, EventArgs e)
         {
+            if (VisaEvent != null)
+                VisaEvent(this, false);
+
             Tasks.Remove(_currentTask);
             if (TaskEvent != null)
             {
@@ -82,6 +88,8 @@ namespace PolandVisaAuto
         private void renewTask_click(object sender, EventArgs e)
         {
             TurnAlarmOn(false);
+            if (VisaEvent != null)
+                VisaEvent(this, false);
             _currentTask = null;
             _enum = RotEvents.Start;
             _allowStep = true;
@@ -169,6 +177,8 @@ namespace PolandVisaAuto
                                     webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                                     _enum = RotEvents.FillReceipt;
                                     TurnAlarmOn(true);
+                                    if (VisaEvent != null)
+                                        VisaEvent(this, true);
                                     break;
                                 }
                                 else
@@ -194,6 +204,16 @@ namespace PolandVisaAuto
                         }
                     case RotEvents.FillEmail:
                         {
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+                            {
+                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                                Logger.Error("Надо исправить ошибку: \r\n " + text);
+                                richText.Text = "Надо исправить ошибку: \r\n " + text;
+                                renewTask.Visible = true;
+                                deleteTask.Visible = true;
+                                _enum = RotEvents.FillReceipt;
+                                break;
+                            }
                             Logger.Info(string.Format("{0}: Email: {1} Pass: {2}", _currentTask.City,_currentTask.Email, _currentTask.Password));
                             webBrowser.Document.GetElementById("ctl00_plhMain_txtEmailID").SetAttribute("value", _currentTask.Email);
                             webBrowser.Document.GetElementById("ctl00_plhMain_txtPassword").SetAttribute("value", _currentTask.Password);
@@ -203,6 +223,16 @@ namespace PolandVisaAuto
                         }
                     case RotEvents.GetData:
                         {
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText))
+                            {
+                                string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
+                                Logger.Error("Надо исправить ошибку: \r\n " + error);
+                                richText.Text ="Надо исправить ошибку: \r\n " + error;
+                                renewTask.Visible = true;
+                                deleteTask.Visible = true;
+                                _enum = RotEvents.FillEmail;
+                                break;
+                            }
                             Logger.Warning("Дружищще, отправляй меня быстрее "+ _currentTask.GetInfo());
                             richText.AppendText(_currentTask.GetInfo());
                             webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxPPTEXPDT").SetAttribute("value", _currentTask.PassportEndDate);
@@ -309,6 +339,8 @@ namespace PolandVisaAuto
             {
                 Logger.Error(ex);
                 TurnAlarmOn(false);
+                if (VisaEvent != null)
+                    VisaEvent(this, false);
                 _allowStep = true;
                 _enum = RotEvents.Start;
             }
