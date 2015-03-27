@@ -239,7 +239,6 @@ namespace PolandVisaAuto
                                 break;
                             }
 
-                            ImageToByte(getFirstImage());
                             Logger.Warning("Дружищще, отправляй меня быстрее "+ _currentTask.GetInfo());
                             richText.AppendText(_currentTask.GetInfo());
                             webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxPPTEXPDT").SetAttribute("value", _currentTask.PassportEndDate);
@@ -258,12 +257,43 @@ namespace PolandVisaAuto
                                     break;
                                 }
                             }
+                            Logger.Info("Start parsing cupture");
+                            string value = ImageResolver.Instance.GetCuptureString(ImageToByte(getFirstImage()));
+                            Logger.Info("End parsing cupture");
+                            
+                            //ctl00$plhMain$MyCaptchaControl1
+                            HtmlElementCollection elems = webBrowser.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
+                            HtmlElement elem = null;
+                            if (elems != null && elems.Count > 0)
+                            {
+                                elem = elems[0];
+                                elem.SetAttribute("value", value);
+                            }
+
+                            //ctl00_plhMain_btnSubmit
+                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
 
                             _enum = RotEvents.Stop;
                             break;
                         }
                     case RotEvents.Stop:
                         {
+                            //text 
+                            //name = ctl00$plhMain$MyCaptchaControl1
+
+
+                            //date
+                            //class = OpenDateAllocated   <a>
+
+
+                            //===============================
+
+
+                            //text
+                            //name =ctl00$plhMain$MyCaptchaControl1
+
+                            //table id = ctl00_plhMain_gvSlot
+
                             TurnAlarmOn(false);
                             renewTask.Visible = true;
                             deleteTask.Visible = true;
