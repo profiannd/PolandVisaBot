@@ -186,9 +186,12 @@ namespace DecaptcherAPI
             string passw;
             string answer_captcha;
 			double balance;
-            
 
-       // zzz
+
+            host = "api.decaptcher.com";
+            name = "ZorkiyKrot";
+            passw = "dcccchy179745";
+            port = 3500;
 
             p_pict_to = 0;
             p_pict_type = 0;

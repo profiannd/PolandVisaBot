@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Media;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using mshtml;
 using pvhelper;
 
 namespace PolandVisaAuto
 {
+
     public class VisaTab
     {
         private WebBrowser webBrowser;
@@ -233,6 +238,8 @@ namespace PolandVisaAuto
                                 _enum = RotEvents.FillEmail;
                                 break;
                             }
+
+                            ImageToByte(getFirstImage());
                             Logger.Warning("Дружищще, отправляй меня быстрее "+ _currentTask.GetInfo());
                             richText.AppendText(_currentTask.GetInfo());
                             webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxPPTEXPDT").SetAttribute("value", _currentTask.PassportEndDate);
@@ -262,77 +269,6 @@ namespace PolandVisaAuto
                             deleteTask.Visible = true;
                             break;
                         }
-                    //case RotEvents.StopPicture1://ctl00_plhMain_VS, ctl00_plhMain_lblMsg
-                    //    {
-                    //        string error1 = string.Empty;
-                    //        string error2 = string.Empty;
-                    //        if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
-                    //        {
-                    //            error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                    //        }
-                    //        if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null)
-                    //        {
-                    //            error2 = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
-                    //        }
-                    //        if (!string.IsNullOrEmpty(error1) || !string.IsNullOrEmpty(error2))
-                    //        {
-                    //            Logger.Info(_currentTask.City + " ошибка. первая картинка. 1: "+ error1 +" 2: "+ error2);
-                    //            _enum = RotEvents.StopPicture1;
-                    //            break;
-                    //        }
-                    //        Logger.Info(_currentTask.City + " подтверждение первой картинки.");
-                    //        _enum = RotEvents.StopPicture2;
-
-                    //        break;
-                    //    }
-                    //case RotEvents.StopPicture2://ctl00_plhMain_lblMsg
-                    //    {
-                    //        string error1 = string.Empty;
-                    //        if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
-                    //        {
-                    //            error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                    //        }
-                    //        if (!string.IsNullOrEmpty(error1))
-                    //        {
-                    //            Logger.Info(_currentTask.City + " ошибка. вторая картинка.  " + error1);
-                    //            _enum = RotEvents.StopPicture2;
-                    //            break;
-                    //        }
-                    //        Logger.Info(_currentTask.City + " подтверждение второй картинки.");
-                    //        _enum = RotEvents.StopPicture3;
-
-                    //        break;
-                    //    }
-                    //case RotEvents.StopPicture3://ctl00_plhMain_lblMsg
-                    //    {
-                    //        string error1 = string.Empty;
-                    //        if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null)
-                    //        {
-                    //            error1 = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                    //        }
-                    //        if (!string.IsNullOrEmpty(error1))
-                    //        {
-                    //            Logger.Info(_currentTask.City + " ошибка. третья картинка.  " + error1);
-                    //            _enum = RotEvents.StopPicture2;
-                    //            break;
-                    //        }
-                    //        Logger.Info(_currentTask.City + " ну, все, отправил. ищем следующего.");
-
-                    //        TurnAlarmOn(false);
-                    //        Tasks.Remove(_currentTask);
-                    //        if (TaskEvent != null)
-                    //        {
-                    //            TaskEvent(_currentTask);
-                    //            _currentTask = null;
-                    //        }
-                    //        _enum = RotEvents.Start;
-
-                    //        if (Tasks.Count == 0 && TabEvent != null)
-                    //        {
-                    //            TabEvent(_tabPage);
-                    //        }
-                    //        break;
-                    //    }
                 }
             }
             catch (Exception ex)
@@ -344,6 +280,67 @@ namespace PolandVisaAuto
                 _allowStep = true;
                 _enum = RotEvents.Start;
             }
+        }
+
+        [ComImport, InterfaceType((short)1), Guid("3050F669-98B5-11CF-BB82-00AA00BDCE0B")]
+        private interface IHTMLElementRenderFixed
+        {
+            void DrawToDC(IntPtr hdc);
+            void SetDocumentPrinter(string bstrPrinterName, IntPtr hdc);
+        }
+
+        public Bitmap getFirstImage()
+        {
+            IHTMLDocument2 doc = (IHTMLDocument2)webBrowser.Document.DomDocument;
+            foreach (IHTMLImgElement img in doc.images)
+            {
+                IHTMLElementRenderFixed render = (IHTMLElementRenderFixed)img;
+                Bitmap bmp = new Bitmap(img.width, img.height);
+                Graphics g = Graphics.FromImage(bmp);
+                IntPtr hdc = g.GetHdc();
+                render.DrawToDC(hdc);
+                g.ReleaseHdc(hdc);
+                return bmp;
+                //bmp.Save(@"C:\nameProp.bmp");
+
+
+                //imgRange.add((IHTMLControlElement)img);
+
+                //imgRange.execCommand("Copy", false, null);
+
+                //using (Bitmap bmp = (Bitmap)Clipboard.GetDataObject().GetData(DataFormats.Bitmap))
+                //{
+                //    bmp.Save(@"C:\" + img.nameProp);
+                //}
+            }
+            return null;
+        }
+
+        public Bitmap GetImage(string id)
+        {
+            HtmlElement e = webBrowser.Document.GetElementById(id);
+            IHTMLImgElement img = (IHTMLImgElement)e.DomElement;
+            IHTMLElementRenderFixed render = (IHTMLElementRenderFixed)img;
+
+            Bitmap bmp = new Bitmap(e.OffsetRectangle.Width, e.OffsetRectangle.Height); 
+            Graphics g = Graphics.FromImage(bmp);
+            IntPtr hdc = g.GetHdc();
+            render.DrawToDC(hdc);
+            g.ReleaseHdc(hdc);
+            return bmp;
+        }
+
+        public static byte[] ImageToByte(Image img)
+        {
+            byte[] byteArray = new byte[0];
+            using (MemoryStream stream = new MemoryStream())
+            {
+                img.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                stream.Close();
+
+                byteArray = stream.ToArray();
+            }
+            return byteArray;
         }
 
         public void CheckOnDeleteTask(VisaTask visaTask)

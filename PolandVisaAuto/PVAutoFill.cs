@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using System.Collections.Generic;
+using System.Configuration;
 using pvhelper;
 
 namespace PolandVisaAuto
@@ -30,6 +30,7 @@ namespace PolandVisaAuto
         private BindingList<VisaTask> _visaTasks;
         private Engine _engine;
 //        SoundPlayer sp;
+   
 
         public PVAutoFill()
         {

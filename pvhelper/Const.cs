@@ -36,8 +36,13 @@ namespace pvhelper
             //prepareTranslit();
         }
 
-        public static string url = "https://www.vfsvisaonline.com/poland-ukraine-appointment/(S(ytzs0pjoptifju555d1inlbs))/AppScheduling/AppWelcome.aspx?P=s2x6znRcBRv7WQQK7h4MTjZiPRbOsXKqJzddYBh3qCA%3d";
+        public const string url = "https://www.vfsvisaonline.com/poland-ukraine-appointment/(S(ytzs0pjoptifju555d1inlbs))/AppScheduling/AppWelcome.aspx?P=s2x6znRcBRv7WQQK7h4MTjZiPRbOsXKqJzddYBh3qCA%3d";
         public const string DateFormat = "dd/MM/yyyy";
+
+        public const string HOST = "host";
+        public const string NAME = "name";
+        public const string PASSW = "passw";
+        public const string PORT = "port";
 
         public static Dictionary<string, string> SettingsCities = FillConfigCities();
         private static Dictionary<string, string> transliter = new Dictionary<string, string>();
