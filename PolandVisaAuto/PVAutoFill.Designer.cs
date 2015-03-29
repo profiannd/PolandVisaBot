@@ -34,9 +34,16 @@ namespace PolandVisaAuto
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PVAutoFill));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.cbxPriority = new System.Windows.Forms.ComboBox();
-            this.label17 = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.radioinfo = new System.Windows.Forms.RadioButton();
+            this.radiocom = new System.Windows.Forms.RadioButton();
+            this.chbAutoResolveImage = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.cbxPriority = new System.Windows.Forms.ComboBox();
+            this.btnaddTask = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
             this.dtRedLine = new System.Windows.Forms.DateTimePicker();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dtArrivalDate = new System.Windows.Forms.DateTimePicker();
@@ -62,7 +69,6 @@ namespace PolandVisaAuto
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtBillNum = new System.Windows.Forms.TextBox();
-            this.btnaddTask = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbxCategory = new System.Windows.Forms.ComboBox();
             this.numCountC = new System.Windows.Forms.NumericUpDown();
@@ -95,10 +101,17 @@ namespace PolandVisaAuto
             this.dobDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.arrivalDtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nationalityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.emailErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.PasserrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -108,6 +121,7 @@ namespace PolandVisaAuto
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emailErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PasserrorProvider)).BeginInit();
             this.SuspendLayout();
@@ -128,14 +142,11 @@ namespace PolandVisaAuto
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.cbxPriority);
-            this.tabPage1.Controls.Add(this.label17);
-            this.tabPage1.Controls.Add(this.label16);
-            this.tabPage1.Controls.Add(this.dtRedLine);
+            this.tabPage1.Controls.Add(this.groupBox7);
+            this.tabPage1.Controls.Add(this.groupBox6);
             this.tabPage1.Controls.Add(this.groupBox5);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.groupBox3);
-            this.tabPage1.Controls.Add(this.btnaddTask);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
@@ -146,37 +157,119 @@ namespace PolandVisaAuto
             this.tabPage1.Text = "Добавить задание";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // cbxPriority
+            // groupBox7
             // 
-            this.cbxPriority.FormattingEnabled = true;
-            this.cbxPriority.Location = new System.Drawing.Point(815, 568);
-            this.cbxPriority.Name = "cbxPriority";
-            this.cbxPriority.Size = new System.Drawing.Size(222, 24);
-            this.cbxPriority.TabIndex = 18;
+            this.groupBox7.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox7.Controls.Add(this.label18);
+            this.groupBox7.Controls.Add(this.radioinfo);
+            this.groupBox7.Controls.Add(this.radiocom);
+            this.groupBox7.Controls.Add(this.chbAutoResolveImage);
+            this.groupBox7.Location = new System.Drawing.Point(34, 460);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(469, 159);
+            this.groupBox7.TabIndex = 20;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Настройки приложения";
             // 
-            // label17
+            // label18
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(538, 568);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(129, 17);
-            this.label17.TabIndex = 17;
-            this.label17.Text = "Приоритет заявки";
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(8, 73);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(189, 17);
+            this.label18.TabIndex = 3;
+            this.label18.Text = "Сервер для распознования";
+            // 
+            // radioinfo
+            // 
+            this.radioinfo.AutoSize = true;
+            this.radioinfo.Location = new System.Drawing.Point(14, 126);
+            this.radioinfo.Name = "radioinfo";
+            this.radioinfo.Size = new System.Drawing.Size(152, 21);
+            this.radioinfo.TabIndex = 2;
+            this.radioinfo.TabStop = true;
+            this.radioinfo.Text = "api.de-captcher.info";
+            this.radioinfo.UseVisualStyleBackColor = true;
+            this.radioinfo.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
+            // 
+            // radiocom
+            // 
+            this.radiocom.AutoSize = true;
+            this.radiocom.Location = new System.Drawing.Point(14, 98);
+            this.radiocom.Name = "radiocom";
+            this.radiocom.Size = new System.Drawing.Size(155, 21);
+            this.radiocom.TabIndex = 1;
+            this.radiocom.TabStop = true;
+            this.radiocom.Text = "api.de-captcher.com";
+            this.radiocom.UseVisualStyleBackColor = true;
+            this.radiocom.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
+            // 
+            // chbAutoResolveImage
+            // 
+            this.chbAutoResolveImage.AutoSize = true;
+            this.chbAutoResolveImage.Location = new System.Drawing.Point(13, 37);
+            this.chbAutoResolveImage.Name = "chbAutoResolveImage";
+            this.chbAutoResolveImage.Size = new System.Drawing.Size(288, 21);
+            this.chbAutoResolveImage.TabIndex = 0;
+            this.chbAutoResolveImage.Text = "Распознавать картинки автоматически";
+            this.chbAutoResolveImage.UseVisualStyleBackColor = true;
+            this.chbAutoResolveImage.CheckedChanged += new System.EventHandler(this.chbAutoResolveImage_CheckedChanged);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.label16);
+            this.groupBox6.Controls.Add(this.cbxPriority);
+            this.groupBox6.Controls.Add(this.btnaddTask);
+            this.groupBox6.Controls.Add(this.label17);
+            this.groupBox6.Controls.Add(this.dtRedLine);
+            this.groupBox6.Location = new System.Drawing.Point(530, 460);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(526, 159);
+            this.groupBox6.TabIndex = 19;
+            this.groupBox6.TabStop = false;
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(538, 537);
+            this.label16.Location = new System.Drawing.Point(6, 22);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(237, 17);
             this.label16.TabIndex = 16;
             this.label16.Text = "Крайняя дата подачи документов ";
             // 
+            // cbxPriority
+            // 
+            this.cbxPriority.FormattingEnabled = true;
+            this.cbxPriority.Location = new System.Drawing.Point(283, 53);
+            this.cbxPriority.Name = "cbxPriority";
+            this.cbxPriority.Size = new System.Drawing.Size(222, 24);
+            this.cbxPriority.TabIndex = 18;
+            // 
+            // btnaddTask
+            // 
+            this.btnaddTask.BackColor = System.Drawing.Color.YellowGreen;
+            this.btnaddTask.Location = new System.Drawing.Point(149, 97);
+            this.btnaddTask.Name = "btnaddTask";
+            this.btnaddTask.Size = new System.Drawing.Size(244, 40);
+            this.btnaddTask.TabIndex = 2;
+            this.btnaddTask.Text = "Добавить задание";
+            this.btnaddTask.UseVisualStyleBackColor = false;
+            this.btnaddTask.Click += new System.EventHandler(this.btnaddTask_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 53);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(129, 17);
+            this.label17.TabIndex = 17;
+            this.label17.Text = "Приоритет заявки";
+            // 
             // dtRedLine
             // 
             this.dtRedLine.CustomFormat = "dd/MM/yyyy";
             this.dtRedLine.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtRedLine.Location = new System.Drawing.Point(815, 532);
+            this.dtRedLine.Location = new System.Drawing.Point(283, 17);
             this.dtRedLine.Name = "dtRedLine";
             this.dtRedLine.Size = new System.Drawing.Size(222, 23);
             this.dtRedLine.TabIndex = 15;
@@ -198,7 +291,7 @@ namespace PolandVisaAuto
             this.groupBox5.Controls.Add(this.cbxStatus);
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Location = new System.Drawing.Point(530, 195);
+            this.groupBox5.Location = new System.Drawing.Point(530, 178);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(526, 276);
             this.groupBox5.TabIndex = 5;
@@ -335,27 +428,27 @@ namespace PolandVisaAuto
             this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Controls.Add(this.txtPass);
             this.groupBox4.Controls.Add(this.txtEmail);
-            this.groupBox4.Location = new System.Drawing.Point(34, 356);
+            this.groupBox4.Location = new System.Drawing.Point(34, 298);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(469, 115);
+            this.groupBox4.Size = new System.Drawing.Size(469, 156);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Призначити дату подачі документів 4";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(125, 30);
+            this.button1.Location = new System.Drawing.Point(124, 50);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(73, 70);
             this.button1.TabIndex = 4;
             this.button1.Text = "Сделать бяку\r\n";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.btnCreateEmail_Click);
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(10, 73);
+            this.label15.Location = new System.Drawing.Point(10, 96);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(57, 17);
             this.label15.TabIndex = 3;
@@ -364,7 +457,7 @@ namespace PolandVisaAuto
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(7, 36);
+            this.label14.Location = new System.Drawing.Point(7, 53);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(93, 17);
             this.label14.TabIndex = 2;
@@ -373,7 +466,7 @@ namespace PolandVisaAuto
             // txtPass
             // 
             this.emailErrorProvider.SetIconPadding(this.txtPass, 2);
-            this.txtPass.Location = new System.Drawing.Point(217, 75);
+            this.txtPass.Location = new System.Drawing.Point(217, 98);
             this.txtPass.Name = "txtPass";
             this.txtPass.Size = new System.Drawing.Size(200, 23);
             this.txtPass.TabIndex = 1;
@@ -382,7 +475,7 @@ namespace PolandVisaAuto
             // txtEmail
             // 
             this.emailErrorProvider.SetIconPadding(this.txtEmail, 2);
-            this.txtEmail.Location = new System.Drawing.Point(217, 30);
+            this.txtEmail.Location = new System.Drawing.Point(217, 47);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(200, 23);
             this.txtEmail.TabIndex = 0;
@@ -392,9 +485,9 @@ namespace PolandVisaAuto
             // 
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.txtBillNum);
-            this.groupBox3.Location = new System.Drawing.Point(34, 195);
+            this.groupBox3.Location = new System.Drawing.Point(34, 178);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(469, 115);
+            this.groupBox3.Size = new System.Drawing.Size(469, 97);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Призначити дату подачі документів 3";
@@ -414,16 +507,6 @@ namespace PolandVisaAuto
             this.txtBillNum.Name = "txtBillNum";
             this.txtBillNum.Size = new System.Drawing.Size(200, 23);
             this.txtBillNum.TabIndex = 0;
-            // 
-            // btnaddTask
-            // 
-            this.btnaddTask.Location = new System.Drawing.Point(140, 532);
-            this.btnaddTask.Name = "btnaddTask";
-            this.btnaddTask.Size = new System.Drawing.Size(244, 58);
-            this.btnaddTask.TabIndex = 2;
-            this.btnaddTask.Text = "Добавить задание";
-            this.btnaddTask.UseVisualStyleBackColor = true;
-            this.btnaddTask.Click += new System.EventHandler(this.btnaddTask_Click);
             // 
             // groupBox2
             // 
@@ -549,10 +632,11 @@ namespace PolandVisaAuto
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Controls.Add(this.dataGridView2);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1086, 578);
+            this.tabPage2.Size = new System.Drawing.Size(1086, 633);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Статус заданий";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -580,10 +664,10 @@ namespace PolandVisaAuto
             this.dobDataGridViewTextBoxColumn,
             this.arrivalDtDataGridViewTextBoxColumn,
             this.nationalityDataGridViewTextBoxColumn});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1080, 572);
+            this.dataGridView1.Size = new System.Drawing.Size(1080, 369);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
@@ -696,6 +780,47 @@ namespace PolandVisaAuto
             this.nationalityDataGridViewTextBoxColumn.HeaderText = "Национальность";
             this.nationalityDataGridViewTextBoxColumn.Name = "nationalityDataGridViewTextBoxColumn";
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewButtonColumn1,
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3});
+            this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridView2.Location = new System.Drawing.Point(3, 378);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(1080, 252);
+            this.dataGridView2.TabIndex = 1;
+            this.dataGridView2.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellClick);
+            // 
+            // dataGridViewButtonColumn1
+            // 
+            this.dataGridViewButtonColumn1.HeaderText = "";
+            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
+            this.dataGridViewButtonColumn1.Text = "Удалить";
+            this.dataGridViewButtonColumn1.UseColumnTextForButtonValue = true;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "City";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Город";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "LastName";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Фамилия";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Name";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Имя";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            // 
             // emailErrorProvider
             // 
             this.emailErrorProvider.BlinkRate = 500;
@@ -716,10 +841,13 @@ namespace PolandVisaAuto
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PVAutoFill";
             this.Text = "Poland Visa Auto  ";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.PvAutoLoad);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -734,6 +862,7 @@ namespace PolandVisaAuto
             this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emailErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PasserrorProvider)).EndInit();
             this.ResumeLayout(false);
@@ -779,6 +908,7 @@ namespace PolandVisaAuto
         private TextBox txtBillNum;
         private ComboBox cbxNation;
         private DataGridView dataGridView1;
+        private DataGridView dataGridView2;
         private DateTimePicker dtEndPass;
         private DateTimePicker dtArrivalDate;
         private DateTimePicker dtDob;
@@ -807,6 +937,16 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn priorityDataGridViewTextBoxColumn;
         private Button button1;
         private DataGridViewButtonColumn deleteColumn;
+        private GroupBox groupBox7;
+        private GroupBox groupBox6;
+        private RadioButton radioinfo;
+        private RadioButton radiocom;
+        private CheckBox chbAutoResolveImage;
+        private Label label18;
+        private DataGridViewButtonColumn dataGridViewButtonColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
 
     }
 }

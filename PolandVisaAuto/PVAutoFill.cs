@@ -28,6 +28,8 @@ namespace PolandVisaAuto
     {
         public const string DateFormat = "dd/MM/yyyy";
         private BindingList<VisaTask> _visaTasks;
+        private BindingList<VisaTask> _completedVisaTasks;
+
         private Engine _engine;
 //        SoundPlayer sp;
    
@@ -75,7 +77,7 @@ namespace PolandVisaAuto
 
             Logger.Info("Задание добавленно " + task.GetInfo());
             _visaTasks.Add(task);
-            VisaTask.Save(_visaTasks);
+            VisaTask.Save(_visaTasks, VisaEntityType.New);
             dataGridView1.Refresh();
             
             _engine.RefreshViewTabs();
@@ -83,12 +85,12 @@ namespace PolandVisaAuto
             txtPass.Text = txtName.Text = txtBillNum.Text = txtEmail.Text = txtLastName.Text = txtName.Text = string.Empty;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void PvAutoLoad(object sender, EventArgs e)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string version = fvi.FileVersion;
-            this.Text += version;
+            UpdateHeader();
+            chbAutoResolveImage.Checked = ImageResolver.Instance.AutoResolveImage;
+            radiocom.Checked = ImageResolver.Instance.Host == radiocom.Text;
+            radioinfo.Checked = ImageResolver.Instance.Host == radioinfo.Text;
 
             cbxCity.DataSource = Const.GetListFromDict(Const.SettingsCities);
             cbxNation.DataSource = Const.GetListFromDict(Const.FillNations());
@@ -101,16 +103,28 @@ namespace PolandVisaAuto
             cbxStatus.SelectedItem = "Mr.";
             cbxNation.SelectedItem = "UKRAINE";
 
-            _visaTasks = VisaTask.DeSerialize();
+            _visaTasks = VisaTask.DeSerialize(VisaEntityType.New);
             dataGridView1.DataSource = _visaTasks;
             dataGridView1.Refresh();
+
+            _completedVisaTasks = VisaTask.DeSerialize(VisaEntityType.Completed);
+            dataGridView2.DataSource = _completedVisaTasks;
+            dataGridView2.Refresh();
 
             foreach (TabPage tabPage in tabControl1.TabPages)
             {
                 Engine.TabColors.Add(tabPage, Color.White);
             }
-            _engine = new Engine(_visaTasks, tabControl1);
+            _engine = new Engine(_visaTasks, tabControl1, _completedVisaTasks);
             _engine.RefreshViewTabs();
+        }
+
+        private void UpdateHeader()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            this.Text += version+ "   De-Captcher Balance: "+ ImageResolver.Instance.GetBalance() + "$";
         }
 
         public void tabControl_DrawItem(object sender, DrawItemEventArgs e)
@@ -152,10 +166,21 @@ namespace PolandVisaAuto
             Logger.Warning("Удаляю задание "+ vt.GetInfo());
             _engine.DeleteTask(vt);
             dataGridView1.Rows.RemoveAt(e.RowIndex);
-            VisaTask.Save(_visaTasks);
+            VisaTask.Save(_visaTasks, VisaEntityType.New);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != dataGridView1.Columns["deleteColumn"].Index)
+                return;
+            VisaTask vt = dataGridView1.Rows[e.RowIndex].DataBoundItem as VisaTask;
+            //Logger.Warning("Удаляю задание " + vt.GetInfo());
+            //_engine.DeleteTask(vt);
+            //dataGridView1.Rows.RemoveAt(e.RowIndex);
+            //VisaTask.Save(_visaTasks);
+        }
+
+        private void btnCreateEmail_Click(object sender, EventArgs e)
         {
             txtEmail.Text = string.Format("{0}@gmeil.com", txtLastName.Text);
             txtPass.Text = txtLastName.Text;
@@ -164,5 +189,32 @@ namespace PolandVisaAuto
                 txtPass.Text = txtPass.Text + "1";
             }
         }
+
+        private void radio_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+
+            if(rb != null && rb.Checked)
+            {
+                ImageResolver.Instance.Host = rb.Text;
+                UpdateSetting(Const.HOST, ImageResolver.Instance.Host);
+            }
+        }
+
+        private void chbAutoResolveImage_CheckedChanged(object sender, EventArgs e)
+        {
+            ImageResolver.Instance.AutoResolveImage = chbAutoResolveImage.Checked;
+            UpdateSetting(Const.AUTORESOLVE, ImageResolver.Instance.AutoResolveImage.ToString());
+        }
+
+        private static void UpdateSetting(string key, string value)
+        {
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            configuration.AppSettings.Settings[key].Value = value;
+            configuration.Save();
+
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
     }
 }

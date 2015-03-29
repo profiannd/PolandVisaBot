@@ -11,6 +11,7 @@ namespace PolandVisaAuto
         string name;
         string passw;
         double balance;
+        uint load;
         int ret;
         uint p_pict_to;
         uint p_pict_type;
@@ -26,6 +27,7 @@ namespace PolandVisaAuto
             host = ConfigurationManager.AppSettings[Const.HOST];
             name = ConfigurationManager.AppSettings[Const.NAME];
             passw = ConfigurationManager.AppSettings[Const.PASSW];
+            AutoResolveImage = bool.Parse(ConfigurationManager.AppSettings[Const.AUTORESOLVE]);
         }
 
         public static ImageResolver Instance
@@ -43,17 +45,31 @@ namespace PolandVisaAuto
             balance = 0;
             ret = DecaptcherLib.Decaptcher.Balance(host, port, name, passw, out balance);
             if(ret == 0)
-                return balance.ToString();
+                return Math.Round(balance, 3).ToString();
             return ret.ToString();
         }
 
-        public string GetCuptureString(byte[] buffer)
+        public string RecognizePictureGetString(byte[] buffer)
         {
             answer_captcha = string.Empty;
             ret = DecaptcherLib.Decaptcher.RecognizePicture(host, port, name, passw, buffer, out p_pict_to, out p_pict_type, out answer_captcha, out major_id, out minor_id);
             if (ret == 0)
                 return answer_captcha;
             return null;
+        }
+
+        public void SystemDecaptcherLoad()
+        {
+            if(!AutoResolveImage)
+                return;
+            ret = DecaptcherLib.Decaptcher.SystemDecaptcherLoad(host, port, name, passw, out load);
+        }
+
+        public bool AutoResolveImage { get; set; }
+        public string Host 
+        {
+            get { return host; }
+            set { host = value; }
         }
     }
 }

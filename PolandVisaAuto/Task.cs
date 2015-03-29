@@ -11,6 +11,12 @@ using pvhelper;
 
 namespace PolandVisaAuto
 {
+    public enum VisaEntityType
+    {
+        New = 0,
+        Completed = 1
+    }
+
     public class VisaTask : INotifyPropertyChanged
     {
         public string City { get; set; }
@@ -83,27 +89,34 @@ namespace PolandVisaAuto
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public static void Save(BindingList<VisaTask> tasks)
+        public static void Save(BindingList<VisaTask> tasks, VisaEntityType type)
         {
-            using (FileStream fs = new FileStream(Environment.CurrentDirectory + "\\data.xml", FileMode.Create))
+            string filemane = getFileName(type);
+            using (FileStream fs = new FileStream(Environment.CurrentDirectory + filemane, FileMode.Create))
             {
                 XmlSerializer xs = new XmlSerializer(typeof(BindingList<VisaTask>));
                 xs.Serialize(fs, tasks);
             }
         }
 
-        public static BindingList<VisaTask> DeSerialize()
+        public static BindingList<VisaTask> DeSerialize(VisaEntityType type)
         {
+            string filemane = getFileName(type);
             BindingList<VisaTask> tasks = new BindingList<VisaTask>();
-            if (File.Exists(Environment.CurrentDirectory + "\\data.xml"))
+            if (File.Exists(Environment.CurrentDirectory + filemane))
             {
-                using (FileStream fs = new FileStream(Environment.CurrentDirectory + "\\data.xml", FileMode.Open))
+                using (FileStream fs = new FileStream(Environment.CurrentDirectory + filemane, FileMode.Open))
                 {
                     XmlSerializer xs = new XmlSerializer(typeof(BindingList<VisaTask>));
                     tasks = (BindingList<VisaTask>) xs.Deserialize(fs);
                 }
             }
             return tasks;
+        }
+
+        private static string getFileName(VisaEntityType type)
+        {
+            return type == VisaEntityType.New ? "\\data.xml" : "\\completedData.xml";
         }
 
         public string GetInfo()

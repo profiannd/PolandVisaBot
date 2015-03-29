@@ -9,6 +9,7 @@ namespace PolandVisaAuto
     public class Engine
     {
         private BindingList<VisaTask> _visaTasks;
+        private BindingList<VisaTask> _completedVisaTasks;
         private Dictionary<string, VisaTab> _cityTasks;
         private TabControl _tabControl;
         private Timer _timer;
@@ -17,10 +18,11 @@ namespace PolandVisaAuto
         private int _activePointer = 0;
         public static Dictionary<TabPage, Color> TabColors = new Dictionary<TabPage, Color>();
 
-        public Engine(BindingList<VisaTask> visaTasks, TabControl tabControl)
+        public Engine(BindingList<VisaTask> visaTasks, TabControl tabControl, BindingList<VisaTask> completedVisaTasks)
         {
             _tabControl = tabControl;
             _visaTasks = visaTasks;
+            _completedVisaTasks = completedVisaTasks;
             _cityTasks = new Dictionary<string, VisaTab>();
             _timer = new Timer();
             _timer.Interval = 1500;
@@ -185,6 +187,7 @@ namespace PolandVisaAuto
         void Value_TaskEvent(VisaTask task)
         {
             _visaTasks.Remove(task);
+            _completedVisaTasks.Add(task);
         }
     }
 }

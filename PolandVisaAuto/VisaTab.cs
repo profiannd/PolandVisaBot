@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Media;
@@ -13,7 +14,6 @@ using pvhelper;
 
 namespace PolandVisaAuto
 {
-
     public class VisaTab
     {
         private WebBrowser webBrowser;
@@ -41,6 +41,7 @@ namespace PolandVisaAuto
 
         private SoundPlayer sp;
         private bool _playSound = false;
+        int _countAttempt = 5;
 
         private void initSound()
         {
@@ -121,10 +122,11 @@ namespace PolandVisaAuto
                 {
                     case RotEvents.Start:
                         {
+                            _countAttempt = 5;
                             Tasks.Sort(vc);
                             _currentTask = Tasks[0];
-                            webBrowser.Navigate(Const.url);
                             _enum = RotEvents.Firsthl;
+                            webBrowser.Navigate(Const.url);
                             break;
                         }
                     case RotEvents.Firsthl:
@@ -138,8 +140,8 @@ namespace PolandVisaAuto
                         {
                             webBrowser.Document.GetElementById("ctl00_plhMain_cboVAC").SetAttribute("selectedIndex", _currentTask.CityCode);
                             webBrowser.Document.GetElementById("ctl00_plhMain_cboPurpose").SetAttribute("selectedIndex", _currentTask.PurposeCode);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                             _enum = RotEvents.SecondCombo;
+                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                             break;
                         }
                     case RotEvents.SecondCombo:
@@ -157,8 +159,8 @@ namespace PolandVisaAuto
                                     break;
                                 }
                             }
-                            this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").InvokeMember("onchange");
                             _enum = RotEvents.Submit;
+                            this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").InvokeMember("onchange");
                             break;
                         }
                     case RotEvents.Submit:
@@ -195,16 +197,16 @@ namespace PolandVisaAuto
                                     }
                                 }
                             }
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnCancel").InvokeMember("click");
                             _enum = RotEvents.FirstCombo;
+                            webBrowser.Document.GetElementById("ctl00_plhMain_btnCancel").InvokeMember("click");
                             break;
                         }
                     case RotEvents.FillReceipt:
                         {
                             Logger.Info(_currentTask.City+": Номер квитанции: " + _currentTask.Receipt);
                             webBrowser.Document.GetElementById("ctl00_plhMain_repAppReceiptDetails_ctl01_txtReceiptNumber").SetAttribute("value", _currentTask.Receipt);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                             _enum = RotEvents.FillEmail;
+                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                             break;
                         }
                     case RotEvents.FillEmail:
@@ -222,12 +224,13 @@ namespace PolandVisaAuto
                             Logger.Info(string.Format("{0}: Email: {1} Pass: {2}", _currentTask.City,_currentTask.Email, _currentTask.Password));
                             webBrowser.Document.GetElementById("ctl00_plhMain_txtEmailID").SetAttribute("value", _currentTask.Email);
                             webBrowser.Document.GetElementById("ctl00_plhMain_txtPassword").SetAttribute("value", _currentTask.Password);
+                            _enum = RotEvents.FirstCupture;
                             webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmitDetails").InvokeMember("click");
-                            _enum = RotEvents.GetData;
                             break;
                         }
-                    case RotEvents.GetData:
+                    case RotEvents.FirstCupture:
                         {
+                            ImageResolver.Instance.SystemDecaptcherLoad();
                             if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText))
                             {
                                 string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
@@ -257,42 +260,75 @@ namespace PolandVisaAuto
                                     break;
                                 }
                             }
-                            Logger.Info("Start parsing cupture");
-                            string value = ImageResolver.Instance.GetCuptureString(ImageToByte(getFirstImage()));
-                            Logger.Info("End parsing cupture");
-                            
-                            //ctl00$plhMain$MyCaptchaControl1
-                            HtmlElementCollection elems = webBrowser.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
-                            HtmlElement elem = null;
-                            if (elems != null && elems.Count > 0)
+
+                            decaptcherImage();
+                            //ctl00_plhMain_btnSubmit
+                            _enum = RotEvents.SecondCupture;
+                            if(ImageResolver.Instance.AutoResolveImage)
+                                webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+
+                            break;
+                        }
+                    case RotEvents.SecondCupture:
+                        {
+                            ImageResolver.Instance.SystemDecaptcherLoad();
+                            decaptcherImage();
+                            _enum = RotEvents.ThirdCupture;
+
+                            //date
+                            //class = OpenDateAllocated   <a>
+                            if (ImageResolver.Instance.AutoResolveImage)
+                                PressOnLinkOnCalendar();
+                            //===============================
+                            break;
+                        }
+                    case RotEvents.ThirdCupture:
+                        {
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
                             {
-                                elem = elems[0];
-                                elem.SetAttribute("value", value);
+                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                                Logger.Error("ошибкa: \r\n " + text);
+                                if (text.Contains("текст не відповідає символам на зображенні") && !ImageResolver.Instance.AutoResolveImage)
+                                {
+                                    if (_countAttempt-- != 0)
+                                    {
+                                        ImageResolver.Instance.SystemDecaptcherLoad();
+                                        decaptcherImage();
+                                        PressOnLinkOnCalendar();
+                                    }
+                                }
+                                break;
                             }
 
-                            //ctl00_plhMain_btnSubmit
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
-
+                            //text
+                            //name =ctl00$plhMain$MyCaptchaControl1
+                            decaptcherImage();
                             _enum = RotEvents.Stop;
+
+                            //table id = ctl00_plhMain_gvSlot
+                            // a class 
+                            if (ImageResolver.Instance.AutoResolveImage)
+                                PressOnLinkByClass("backlink");
+
                             break;
                         }
                     case RotEvents.Stop:
                         {
-                            //text 
-                            //name = ctl00$plhMain$MyCaptchaControl1
-
-
-                            //date
-                            //class = OpenDateAllocated   <a>
-
-
-                            //===============================
-
-
-                            //text
-                            //name =ctl00$plhMain$MyCaptchaControl1
-
-                            //table id = ctl00_plhMain_gvSlot
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+                            {
+                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                                Logger.Error("ошибкa: \r\n " + text);
+                                if (text.Contains("текст не відповідає символам на зображенні") && !ImageResolver.Instance.AutoResolveImage)
+                                {
+                                    if (_countAttempt-- != 0)
+                                    {
+                                        ImageResolver.Instance.SystemDecaptcherLoad();
+                                        decaptcherImage();
+                                        PressOnLinkByClass("backlink");
+                                    }
+                                }
+                                break;
+                            }
 
                             TurnAlarmOn(false);
                             renewTask.Visible = true;
@@ -311,6 +347,55 @@ namespace PolandVisaAuto
                 _enum = RotEvents.Start;
             }
         }
+        
+        private void PressOnLinkOnCalendar()
+        {
+            var links = webBrowser.Document.GetElementsByTagName("a");
+            foreach (HtmlElement link in links)
+            {
+                //if (link.GetAttribute("classname") == "OpenDateAllocated")
+                //{
+                //    link.InvokeMember("click");
+                //    break; 
+                //}
+                if (!link.GetAttribute("Title").Contains("Go to the"))
+                {
+                    link.InvokeMember("click");
+                    break;
+                }
+            }
+        }
+
+        private void PressOnLinkByClass(string className)
+        {
+            var links = webBrowser.Document.GetElementsByTagName("a");
+            foreach (HtmlElement link in links)
+            {
+                if (link.GetAttribute("classname") == className)
+                {
+                    link.InvokeMember("click");
+                    break;
+                }
+            }
+        }
+
+        private void decaptcherImage()
+        {
+            if(!ImageResolver.Instance.AutoResolveImage)
+                return;
+            Logger.Info("Start parsing cupture");
+            string value = ImageResolver.Instance.RecognizePictureGetString(ImageToByte(getFirstImage()));
+            Logger.Info("End parsing cupture");
+
+            //ctl00$plhMain$MyCaptchaControl1
+            HtmlElementCollection elems = webBrowser.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
+            HtmlElement elem = null;
+            if (elems != null && elems.Count > 0)
+            {
+                elem = elems[0];
+                elem.SetAttribute("value", value);
+            }
+        }
 
         [ComImport, InterfaceType((short)1), Guid("3050F669-98B5-11CF-BB82-00AA00BDCE0B")]
         private interface IHTMLElementRenderFixed
@@ -321,6 +406,8 @@ namespace PolandVisaAuto
 
         public Bitmap getFirstImage()
         {
+            Logger.Info("Start get Image");
+
             IHTMLDocument2 doc = (IHTMLDocument2)webBrowser.Document.DomDocument;
             foreach (IHTMLImgElement img in doc.images)
             {
@@ -330,6 +417,7 @@ namespace PolandVisaAuto
                 IntPtr hdc = g.GetHdc();
                 render.DrawToDC(hdc);
                 g.ReleaseHdc(hdc);
+                Logger.Info("Stop get Image");
                 return bmp;
                 //bmp.Save(@"C:\nameProp.bmp");
 
@@ -360,17 +448,46 @@ namespace PolandVisaAuto
             return bmp;
         }
 
-        public static byte[] ImageToByte(Image img)
+        private byte[] ImageToByte(Image img)
         {
+            Logger.Info("Start ImageToByte");
+
             byte[] byteArray = new byte[0];
+
+            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+            // Create an Encoder object based on the GUID
+            // for the Quality parameter category.
+            Encoder myEncoder = Encoder.Quality;
+            // Create an EncoderParameters object.
+            // An EncoderParameters object has an array of EncoderParameter
+            // objects. In this case, there is only one
+            // EncoderParameter object in the array.
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder,50L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
             using (MemoryStream stream = new MemoryStream())
             {
-                img.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                img.Save(stream, jgpEncoder, myEncoderParameters);//ImageFormat.Jpeg);
                 stream.Close();
 
                 byteArray = stream.ToArray();
             }
+            Logger.Info("Stop ImageToByte");
             return byteArray;
+        }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
 
         public void CheckOnDeleteTask(VisaTask visaTask)
