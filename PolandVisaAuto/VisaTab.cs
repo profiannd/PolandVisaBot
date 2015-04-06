@@ -42,6 +42,7 @@ namespace PolandVisaAuto
         private SoundPlayer sp;
         private bool _playSound = false;
         int _countAttempt = 5;
+        private bool _blockAlert;
 
         private void initSound()
         {
@@ -60,6 +61,7 @@ namespace PolandVisaAuto
             richText = (RichTextBox)_tabPage.Controls.Find("richText", true)[0];
             webBrowser = (WebBrowser)_tabPage.Controls.Find("webBrowser" + task.City, true)[0];
             webBrowser.ScriptErrorsSuppressed = true;
+            webBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(webBrowser_ProgressChanged);
             webBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_DocumentCompleted);
             
             renewTask = (Button) _tabPage.Controls.Find("renewTask", true)[0];
@@ -69,7 +71,7 @@ namespace PolandVisaAuto
             deleteTask.Click += new System.EventHandler(this.deleteTask_click);
 
         }
-
+      
         private void deleteTask_click(object sender, EventArgs e)
         {
             if (VisaEvent != null)
@@ -101,11 +103,23 @@ namespace PolandVisaAuto
             _allowStep = true;
         }
 
+        private void webBrowser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
+        {
+            if (_blockAlert && webBrowser.ReadyState == WebBrowserReadyState.Complete)
+            {
+                HtmlElement head = webBrowser.Document.GetElementsByTagName("head")[0];
+                HtmlElement scriptEl = webBrowser.Document.CreateElement("script");
+                IHTMLScriptElement element = (IHTMLScriptElement)scriptEl.DomElement;
+                string alertBlocker = "window.alert = function () { }";
+                element.text = alertBlocker;
+                head.AppendChild(scriptEl);
+            }
+        }
+
         void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             _allowStep = true;
         }
-
 
         public void DoStep()
         {
@@ -304,7 +318,7 @@ namespace PolandVisaAuto
                             //name =ctl00$plhMain$MyCaptchaControl1
                             decaptcherImage();
                             _enum = RotEvents.Stop;
-
+                            _blockAlert = true;
                             //table id = ctl00_plhMain_gvSlot
                             // a class 
                             if (ImageResolver.Instance.AutoResolveImage)
@@ -329,10 +343,31 @@ namespace PolandVisaAuto
                                 }
                                 break;
                             }
-
+                            _blockAlert = false;
+                            if (!ImageResolver.Instance.AutoResolveImage)
+                            {
+                                renewTask.Visible = true;
+                                deleteTask.Visible = true;
+                            }
+                            else
+                            {
+                                if (webBrowser.Document.GetElementById("ApplicantDetalils") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ApplicantDetalils").InnerText))
+                                {
+                                    Logger.Info("Заявка успешно зарегистрирована. ");
+                                    string registrationInfo = webBrowser.Document.GetElementById("ApplicantDetalils").InnerText;
+                                    Logger.Info(registrationInfo);
+                                    _currentTask.RegistrationInfo = registrationInfo;
+                                    deleteTask_click(null, null);
+                                }
+                                else
+                                {
+                                    Logger.Info("Регистрация заявки не состоялась на этапе выбора времени.");
+                                    renewTask_click(null, null);
+                                }
+                            }
+                            
                             TurnAlarmOn(false);
-                            renewTask.Visible = true;
-                            deleteTask.Visible = true;
+                            
                             break;
                         }
                 }
@@ -340,6 +375,7 @@ namespace PolandVisaAuto
             catch (Exception ex)
             {
                 Logger.Error(ex);
+                _blockAlert = false;
                 TurnAlarmOn(false);
                 if (VisaEvent != null)
                     VisaEvent(this, false);

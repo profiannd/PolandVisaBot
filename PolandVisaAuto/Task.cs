@@ -62,6 +62,8 @@ namespace PolandVisaAuto
             }
         }
 
+        public string RegistrationInfo { get; set; }
+
         public static bool IsValidEmailAddress(string email)
         {
             try
