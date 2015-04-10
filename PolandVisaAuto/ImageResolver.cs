@@ -28,6 +28,7 @@ namespace PolandVisaAuto
             name = ConfigurationManager.AppSettings[Const.NAME];
             passw = ConfigurationManager.AppSettings[Const.PASSW];
             AutoResolveImage = bool.Parse(ConfigurationManager.AppSettings[Const.AUTORESOLVE]);
+            UseProxy = bool.Parse(ConfigurationManager.AppSettings[Const.USEPROXY]);
         }
 
         public static ImageResolver Instance
@@ -66,6 +67,8 @@ namespace PolandVisaAuto
         }
 
         public bool AutoResolveImage { get; set; }
+        public bool UseProxy { get; set; }
+
         public string Host 
         {
             get { return host; }

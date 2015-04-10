@@ -3,13 +3,9 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
-using System.Media;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
-using System.Configuration;
 using pvhelper;
 
 namespace PolandVisaAuto
@@ -29,10 +25,8 @@ namespace PolandVisaAuto
         public const string DateFormat = "dd/MM/yyyy";
         private BindingList<VisaTask> _visaTasks;
         private BindingList<VisaTask> _completedVisaTasks;
-
+        private string _cityBefore = string.Empty;
         private Engine _engine;
-//        SoundPlayer sp;
-   
 
         public PVAutoFill()
         {
@@ -97,17 +91,28 @@ namespace PolandVisaAuto
             cbxStatus.DataSource = Const.GetListFromDict(Const.FillStatus());
             cbxPurpose.DataSource = Const.GetListFromDict(Const.FillPurpose());
             cbxCategory.DataSource = Const.GetListFromDict(Const.GetCategoryType());
-            
+            cityDataGridViewComboBoxColumn.DataSource = Const.GetListFromDict(Const.SettingsCities);
+
             cbxPriority.DataSource = Const.GetListPriority();
 
             cbxStatus.SelectedItem = "Mr.";
             cbxNation.SelectedItem = "UKRAINE";
 
             _visaTasks = VisaTask.DeSerialize(VisaEntityType.New);
+            dataGridView1.Columns["deleteColumn"].DisplayIndex = 0;
+            dataGridView1.Columns["City"].DisplayIndex = 1;
+            dataGridView1.Columns["LastName"].DisplayIndex = 2;
+            dataGridView1.Columns["Name"].DisplayIndex = 3;
+            dataGridView1.Columns["Status"].DisplayIndex = 4;
             dataGridView1.DataSource = _visaTasks;
             dataGridView1.Refresh();
 
             _completedVisaTasks = VisaTask.DeSerialize(VisaEntityType.Completed);
+            dataGridView2.Columns["deleteColumn2"].DisplayIndex = 0;
+            dataGridView2.Columns["restoreColumn"].DisplayIndex = 1;
+            dataGridView2.Columns["City"].DisplayIndex = 2;
+            dataGridView2.Columns["LastName"].DisplayIndex = 3;
+            dataGridView2.Columns["Name"].DisplayIndex = 4;
             dataGridView2.DataSource = _completedVisaTasks;
             dataGridView2.Refresh();
 
@@ -117,6 +122,12 @@ namespace PolandVisaAuto
             }
             _engine = new Engine(_visaTasks, tabControl1, _completedVisaTasks);
             _engine.RefreshViewTabs();
+            _engine.ETaskEvent += _engine_ETaskEvent;
+        }
+
+        void _engine_ETaskEvent(VisaTask task)
+        {
+            RemoveTask(task);
         }
 
         private void UpdateHeader()
@@ -166,28 +177,89 @@ namespace PolandVisaAuto
             Logger.Warning("Удаляю задание "+ vt.GetInfo());
             _engine.DeleteTask(vt);
             dataGridView1.Rows.RemoveAt(e.RowIndex);
+            RemoveTask(vt);
+        }
+
+        private void RemoveTask(VisaTask vt)
+        {
+            _visaTasks.Remove(vt);
             VisaTask.Save(_visaTasks, VisaEntityType.New);
+            _completedVisaTasks.Add(vt);
+            VisaTask.Save(_completedVisaTasks, VisaEntityType.Completed);
+        }
+
+        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (dataGridView1.CurrentCell == null)
+                return;
+            if (e.ColumnIndex == dataGridView1.Columns["cityDataGridViewComboBoxColumn"].Index)
+            {
+                _cityBefore = dataGridView1.CurrentCell.Value.ToString();
+            }
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView1.CurrentCell == null)
+                return;
+            if (e.ColumnIndex == dataGridView1.Columns["cityDataGridViewComboBoxColumn"].Index)
+            {
+                if (!string.IsNullOrEmpty(_cityBefore))
+                {
+                    var currentCity = dataGridView1.CurrentCell.Value.ToString();
+                    Logger.Info(string.Format("Город изменен с {0} на {1}", _cityBefore, currentCity));
+                    TabPage tp1 = null;
+                    TabPage tp2 = null;
+                    foreach (TabPage tab in tabControl1.TabPages)
+                    {
+                        if (_cityBefore.Equals(tab.Name))
+                        {
+                            tp1 = tab;
+                        }
+                        else if (currentCity.Equals(tab.Name))
+                        {
+                            tp2 = tab;
+                        }
+                    }
+
+                    if (tp1 != null)
+                        tabControl1.TabPages.Remove(tp1);
+                    if (tp2 != null)
+                        tabControl1.TabPages.Remove(tp2);
+                    _cityBefore = string.Empty;
+                    _engine.RefreshViewTabs();
+                    VisaTask.Save(_visaTasks, VisaEntityType.New);
+                }
+            }
         }
 
         private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex != dataGridView1.Columns["deleteColumn"].Index)
+            if (e.RowIndex < 0)
                 return;
-            VisaTask vt = dataGridView1.Rows[e.RowIndex].DataBoundItem as VisaTask;
-            //Logger.Warning("Удаляю задание " + vt.GetInfo());
-            //_engine.DeleteTask(vt);
-            //dataGridView1.Rows.RemoveAt(e.RowIndex);
-            //VisaTask.Save(_visaTasks);
+            if (e.ColumnIndex == dataGridView2.Columns["deleteColumn2"].Index)
+            {
+                VisaTask vt = dataGridView2.Rows[e.RowIndex].DataBoundItem as VisaTask;
+                Logger.Warning("Удаляю завершенное/удаленное задание " + vt.GetInfo());
+                dataGridView2.Rows.RemoveAt(e.RowIndex);
+                VisaTask.Save(_completedVisaTasks, VisaEntityType.Completed);
+            }
+            else if (e.ColumnIndex == dataGridView2.Columns["restoreColumn"].Index)
+            {
+                VisaTask vt = dataGridView2.Rows[e.RowIndex].DataBoundItem as VisaTask;
+                Logger.Warning("Восстанавливаю завершенное/удаленное задание " + vt.GetInfo());
+                dataGridView2.Rows.RemoveAt(e.RowIndex);
+                VisaTask.Save(_completedVisaTasks, VisaEntityType.Completed);
+                _visaTasks.Add(vt);
+                VisaTask.Save(_visaTasks, VisaEntityType.New);
+                _engine.RefreshViewTabs();
+            }
         }
 
         private void btnCreateEmail_Click(object sender, EventArgs e)
         {
-            txtEmail.Text = string.Format("{0}@gmeil.com", txtLastName.Text);
-            txtPass.Text = txtLastName.Text;
-            while (txtPass.Text.Length<8)
-            {
-                txtPass.Text = txtPass.Text + "1";
-            }
+            txtEmail.Text = string.Format("{0}@gmail.com", txtLastName.Text);
+            txtPass.Text = Guid.NewGuid().ToString().Replace("-","").Remove(8);
         }
 
         private void radio_CheckedChanged(object sender, EventArgs e)
@@ -216,5 +288,10 @@ namespace PolandVisaAuto
             ConfigurationManager.RefreshSection("appSettings");
         }
 
+        private void chbProxy_CheckedChanged(object sender, EventArgs e)
+        {
+            ImageResolver.Instance.UseProxy = chbProxy.Checked;
+            UpdateSetting(Const.USEPROXY, ImageResolver.Instance.UseProxy.ToString());
+        }
     }
 }

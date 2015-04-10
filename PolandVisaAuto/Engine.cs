@@ -19,6 +19,9 @@ namespace PolandVisaAuto
         private int _activePointer = 0;
         public static Dictionary<TabPage, Color> TabColors = new Dictionary<TabPage, Color>();
 
+        public delegate void ETaskDelegate(VisaTask task);
+        public event ETaskDelegate ETaskEvent;
+
         public Engine(BindingList<VisaTask> visaTasks, TabControl tabControl, BindingList<VisaTask> completedVisaTasks)
         {
             _tabControl = tabControl;
@@ -92,6 +95,8 @@ namespace PolandVisaAuto
 
         private void SetProxy(string proxy)
         {
+            if(!ImageResolver.Instance.UseProxy)
+                return;
             Logger.Info("SetProxy " + proxy);
             const string key = "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
 
@@ -113,6 +118,7 @@ namespace PolandVisaAuto
                     SetProxy("109.106.132.74:3128");
                     Logger.Info("Создаю новый таб " + vt.City);
                     TabPage tabPage = new TabPage(vt.City);
+                    tabPage.Name = vt.City;
                     WebBrowser webBrowser1 = new WebBrowser();
                     webBrowser1.Size = new Size(837, 400);
                     webBrowser1.Dock = DockStyle.Top;
@@ -201,8 +207,8 @@ namespace PolandVisaAuto
 
         void Value_TaskEvent(VisaTask task)
         {
-            _visaTasks.Remove(task);
-            _completedVisaTasks.Add(task);
+            if (ETaskEvent != null)
+                ETaskEvent(task);
         }
     }
 }

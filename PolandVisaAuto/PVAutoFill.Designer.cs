@@ -35,6 +35,7 @@ namespace PolandVisaAuto
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.chbProxy = new System.Windows.Forms.CheckBox();
             this.label18 = new System.Windows.Forms.Label();
             this.radioinfo = new System.Windows.Forms.RadioButton();
             this.radiocom = new System.Windows.Forms.RadioButton();
@@ -84,7 +85,8 @@ namespace PolandVisaAuto
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.deleteColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.cityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.restoreColumn = new DataGridViewButtonColumn();
+            this.cityDataGridViewComboBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.lastNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.redLineDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -102,10 +104,10 @@ namespace PolandVisaAuto
             this.arrivalDtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nationalityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.deleteButton2 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cityColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastNameColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.emailErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.PasserrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.tabControl1.SuspendLayout();
@@ -160,6 +162,7 @@ namespace PolandVisaAuto
             // groupBox7
             // 
             this.groupBox7.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox7.Controls.Add(this.chbProxy);
             this.groupBox7.Controls.Add(this.label18);
             this.groupBox7.Controls.Add(this.radioinfo);
             this.groupBox7.Controls.Add(this.radiocom);
@@ -171,10 +174,21 @@ namespace PolandVisaAuto
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Настройки приложения";
             // 
+            // chbProxy
+            // 
+            this.chbProxy.AutoSize = true;
+            this.chbProxy.Location = new System.Drawing.Point(10, 132);
+            this.chbProxy.Name = "chbProxy";
+            this.chbProxy.Size = new System.Drawing.Size(288, 21);
+            this.chbProxy.TabIndex = 4;
+            this.chbProxy.Text = "Распознавать картинки автоматически";
+            this.chbProxy.UseVisualStyleBackColor = true;
+            this.chbProxy.CheckedChanged += new System.EventHandler(this.chbProxy_CheckedChanged);
+            // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(8, 73);
+            this.label18.Location = new System.Drawing.Point(8, 52);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(189, 17);
             this.label18.TabIndex = 3;
@@ -183,7 +197,7 @@ namespace PolandVisaAuto
             // radioinfo
             // 
             this.radioinfo.AutoSize = true;
-            this.radioinfo.Location = new System.Drawing.Point(14, 126);
+            this.radioinfo.Location = new System.Drawing.Point(14, 105);
             this.radioinfo.Name = "radioinfo";
             this.radioinfo.Size = new System.Drawing.Size(152, 21);
             this.radioinfo.TabIndex = 2;
@@ -195,7 +209,7 @@ namespace PolandVisaAuto
             // radiocom
             // 
             this.radiocom.AutoSize = true;
-            this.radiocom.Location = new System.Drawing.Point(14, 98);
+            this.radiocom.Location = new System.Drawing.Point(14, 77);
             this.radiocom.Name = "radiocom";
             this.radiocom.Size = new System.Drawing.Size(155, 21);
             this.radiocom.TabIndex = 1;
@@ -207,7 +221,7 @@ namespace PolandVisaAuto
             // chbAutoResolveImage
             // 
             this.chbAutoResolveImage.AutoSize = true;
-            this.chbAutoResolveImage.Location = new System.Drawing.Point(13, 37);
+            this.chbAutoResolveImage.Location = new System.Drawing.Point(10, 22);
             this.chbAutoResolveImage.Name = "chbAutoResolveImage";
             this.chbAutoResolveImage.Size = new System.Drawing.Size(288, 21);
             this.chbAutoResolveImage.TabIndex = 0;
@@ -647,7 +661,7 @@ namespace PolandVisaAuto
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.deleteColumn,
-            this.cityDataGridViewTextBoxColumn,
+            this.cityDataGridViewComboBoxColumn,
             this.lastNameDataGridViewTextBoxColumn,
             this.nameDataGridViewTextBoxColumn,
             this.redLineDataGridViewTextBoxColumn,
@@ -669,7 +683,9 @@ namespace PolandVisaAuto
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1080, 369);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             // 
             // deleteColumn
             // 
@@ -677,12 +693,19 @@ namespace PolandVisaAuto
             this.deleteColumn.Name = "deleteColumn";
             this.deleteColumn.Text = "Удалить";
             this.deleteColumn.UseColumnTextForButtonValue = true;
+            //
+            //restoreColumn
+            //
+            this.restoreColumn.HeaderText = "";
+            this.restoreColumn.Name = "restoreColumn";
+            this.restoreColumn.Text = "Восстановить";
+            this.restoreColumn.UseColumnTextForButtonValue = true;
             // 
-            // cityDataGridViewTextBoxColumn
+            // cityDataGridViewComboBoxColumn
             // 
-            this.cityDataGridViewTextBoxColumn.DataPropertyName = "City";
-            this.cityDataGridViewTextBoxColumn.HeaderText = "Город";
-            this.cityDataGridViewTextBoxColumn.Name = "cityDataGridViewTextBoxColumn";
+            this.cityDataGridViewComboBoxColumn.DataPropertyName = "City";
+            this.cityDataGridViewComboBoxColumn.HeaderText = "Город";
+            this.cityDataGridViewComboBoxColumn.Name = "cityDataGridViewComboBoxColumn";
             // 
             // lastNameDataGridViewTextBoxColumn
             // 
@@ -785,10 +808,11 @@ namespace PolandVisaAuto
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewButtonColumn1,
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3});
+            this.deleteButton2,
+            this.restoreColumn,
+            this.cityColumn2,
+            this.LastNameColumn2,
+            this.NameColumn2});
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridView2.Location = new System.Drawing.Point(3, 378);
             this.dataGridView2.Name = "dataGridView2";
@@ -796,30 +820,30 @@ namespace PolandVisaAuto
             this.dataGridView2.TabIndex = 1;
             this.dataGridView2.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellClick);
             // 
-            // dataGridViewButtonColumn1
+            // deleteButton2
             // 
-            this.dataGridViewButtonColumn1.HeaderText = "";
-            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
-            this.dataGridViewButtonColumn1.Text = "Удалить";
-            this.dataGridViewButtonColumn1.UseColumnTextForButtonValue = true;
+            this.deleteButton2.HeaderText = "";
+            this.deleteButton2.Name = "deleteColumn2";
+            this.deleteButton2.Text = "Удалить";
+            this.deleteButton2.UseColumnTextForButtonValue = true;
             // 
-            // dataGridViewTextBoxColumn1
+            // cityColumn2
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "City";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Город";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.cityColumn2.DataPropertyName = "City";
+            this.cityColumn2.HeaderText = "Город";
+            this.cityColumn2.Name = "dataGridViewTextBoxColumn1";
             // 
-            // dataGridViewTextBoxColumn2
+            // LastNameColumn2
             // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "LastName";
-            this.dataGridViewTextBoxColumn2.HeaderText = "Фамилия";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.LastNameColumn2.DataPropertyName = "LastName";
+            this.LastNameColumn2.HeaderText = "Фамилия";
+            this.LastNameColumn2.Name = "dataGridViewTextBoxColumn2";
             // 
-            // dataGridViewTextBoxColumn3
+            // NameColumn2
             // 
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "Name";
-            this.dataGridViewTextBoxColumn3.HeaderText = "Имя";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.NameColumn2.DataPropertyName = "Name";
+            this.NameColumn2.HeaderText = "Имя";
+            this.NameColumn2.Name = "dataGridViewTextBoxColumn3";
             // 
             // emailErrorProvider
             // 
@@ -918,7 +942,7 @@ namespace PolandVisaAuto
         private Label label17;
         private Label label16;
         private DateTimePicker dtRedLine;
-        private DataGridViewTextBoxColumn cityDataGridViewTextBoxColumn;
+        private DataGridViewComboBoxColumn cityDataGridViewComboBoxColumn;
         private DataGridViewTextBoxColumn lastNameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn purposeDataGridViewTextBoxColumn;
@@ -937,16 +961,18 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn priorityDataGridViewTextBoxColumn;
         private Button button1;
         private DataGridViewButtonColumn deleteColumn;
+        private DataGridViewButtonColumn restoreColumn;
         private GroupBox groupBox7;
         private GroupBox groupBox6;
         private RadioButton radioinfo;
         private RadioButton radiocom;
         private CheckBox chbAutoResolveImage;
         private Label label18;
-        private DataGridViewButtonColumn dataGridViewButtonColumn1;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewButtonColumn deleteButton2;
+        private DataGridViewTextBoxColumn cityColumn2;
+        private DataGridViewTextBoxColumn LastNameColumn2;
+        private DataGridViewTextBoxColumn NameColumn2;
+        private CheckBox chbProxy;
 
     }
 }

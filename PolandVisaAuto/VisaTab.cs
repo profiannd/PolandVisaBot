@@ -125,6 +125,12 @@ namespace PolandVisaAuto
         {
             if (_playSound)
                 playSound();
+            
+            if (webBrowser.DocumentTitle == "Service Unavailable")
+            {
+                _allowStep = true;
+                _enum = RotEvents.Start;
+            }
 
             if(!_allowStep)
                 return;
@@ -146,7 +152,6 @@ namespace PolandVisaAuto
                     case RotEvents.Firsthl:
                         {
                             pressOnLink(webBrowser, "Призначити дату подачі документів");
-                            //webBrowser.Document.GetElementsByTagName("a")[0].InvokeMember("click");
                             _enum = RotEvents.FirstCombo;
                             break;
                         }
