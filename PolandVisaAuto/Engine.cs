@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace PolandVisaAuto
 {
@@ -89,6 +90,19 @@ namespace PolandVisaAuto
             }
         }
 
+        private void SetProxy(string proxy)
+        {
+            Logger.Info("SetProxy " + proxy);
+            const string key = "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
+
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(key, true);
+            if (regKey != null)
+            {
+                regKey.SetValue("ProxyServer", proxy);
+                regKey.SetValue("ProxyEnable", 1);
+            }
+        }
+
         public void RefreshViewTabs()
         {
             _timer.Stop();
@@ -96,6 +110,7 @@ namespace PolandVisaAuto
             {
                 if (!_cityTasks.ContainsKey(vt.City))
                 {
+                    SetProxy("109.106.132.74:3128");
                     Logger.Info("Создаю новый таб " + vt.City);
                     TabPage tabPage = new TabPage(vt.City);
                     WebBrowser webBrowser1 = new WebBrowser();
