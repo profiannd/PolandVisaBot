@@ -37,7 +37,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -78,9 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine.cs" />
+    <Compile Include="Host.cs" />
     <Compile Include="ImageResolver.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Proxy.cs" />
     <Compile Include="PVAutoFill.cs">
       <SubType>Form</SubType>
     </Compile>

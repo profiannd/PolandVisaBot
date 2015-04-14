@@ -85,6 +85,7 @@ namespace PolandVisaAuto
             chbAutoResolveImage.Checked = ImageResolver.Instance.AutoResolveImage;
             radiocom.Checked = ImageResolver.Instance.Host == radiocom.Text;
             radioinfo.Checked = ImageResolver.Instance.Host == radioinfo.Text;
+            chbProxy.Checked = ImageResolver.Instance.UseProxy;
 
             cbxCity.DataSource = Const.GetListFromDict(Const.SettingsCities);
             cbxNation.DataSource = Const.GetListFromDict(Const.FillNations());
@@ -123,7 +124,9 @@ namespace PolandVisaAuto
             {
                 Engine.TabColors.Add(tabPage, Color.White);
             }
-            _engine = new Engine(_visaTasks, tabControl1, _completedVisaTasks);
+            _engine = new Engine(_visaTasks, tabControl1);//, _completedVisaTasks);
+            //!! 
+            _engine.SetProxy();
             _engine.RefreshViewTabs();
             _engine.ETaskEvent += _engine_ETaskEvent;
         }

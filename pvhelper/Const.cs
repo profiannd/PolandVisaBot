@@ -48,6 +48,7 @@ namespace pvhelper
         public const string PORT = "port";
         public const string AUTORESOLVE = "autoResolve";
         public const string USEPROXY = "useProxy";
+        public const string PROXYSERVERS = "proxyServers";
 
         public static Dictionary<string, string> SettingsCities = FillConfigCities();
         private static Dictionary<string, string> transliter = new Dictionary<string, string>();

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Net;
 using pvhelper;
 
 namespace PolandVisaAuto
@@ -29,6 +31,7 @@ namespace PolandVisaAuto
             passw = ConfigurationManager.AppSettings[Const.PASSW];
             AutoResolveImage = bool.Parse(ConfigurationManager.AppSettings[Const.AUTORESOLVE]);
             UseProxy = bool.Parse(ConfigurationManager.AppSettings[Const.USEPROXY]);
+            ParseProxies(ConfigurationManager.AppSettings[Const.PROXYSERVERS]);
         }
 
         public static ImageResolver Instance
@@ -74,5 +77,29 @@ namespace PolandVisaAuto
             get { return host; }
             set { host = value; }
         }
+
+        private void ParseProxies(string str)
+        {
+            WebProxies = new List<WebProxy>();
+            var list = str.Split(';');
+            foreach (string s in list)
+            {
+                var prox = s.Split(':');
+                if (prox.Length == 2)
+                {
+                    try
+                    {
+                        WebProxy proxy = new WebProxy(prox[0], int.Parse(prox[1]));
+                        WebProxies.Add(proxy);
+                    }
+                    catch{}
+                }
+            }
+            if (WebProxies.Count > 0)
+                CurrentWebProxy = WebProxies[0];
+        }
+
+        public List<WebProxy> WebProxies { get; set; }
+        public WebProxy CurrentWebProxy { get; set; }
     }
 }

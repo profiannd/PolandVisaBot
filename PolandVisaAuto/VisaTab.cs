@@ -125,8 +125,10 @@ namespace PolandVisaAuto
         {
             if (_playSound)
                 playSound();
-            
-            if (webBrowser.DocumentTitle == "Service Unavailable")
+
+            if (webBrowser.DocumentTitle == "Service Unavailable" 
+                || webBrowser.DocumentTitle == "Navigation Canceled"
+                || webBrowser.DocumentTitle == "The proxy server isn't responding")
             {
                 _allowStep = true;
                 _enum = RotEvents.Start;
@@ -196,7 +198,7 @@ namespace PolandVisaAuto
                             richText.Text = "Свободна дата: " + showStopper;
                             Logger.Info(_currentTask.City + ": "+ richText.Text);
 
-                            _tabPage.Text = _currentTask.City + "-" + (showStopper.Contains("No date(s) available") ? "No date(s)" : showStopper);
+                            _tabPage.Text = _currentTask.City + "~" + (showStopper.Contains("No date(s) available") ? "No date(s)" : showStopper);
                             if (!showStopper.Contains("No date(s) available"))
                             {
                                 var apointmentDate = ProcessDate(showStopper);

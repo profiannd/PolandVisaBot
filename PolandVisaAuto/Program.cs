@@ -50,7 +50,7 @@ namespace PolandVisaAuto
 
         private static void rerunApp()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(10000);
             Process.Start("PolandVisaAuto.exe");
             Application.Exit();
         }
