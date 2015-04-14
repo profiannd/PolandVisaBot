@@ -103,10 +103,11 @@ namespace PolandVisaAuto
 
             dataGridView1.DataSource = _visaTasks;
             dataGridView1.Columns["deleteColumn"].DisplayIndex = 0;
-            dataGridView1.Columns["City"].DisplayIndex = 1;
-            dataGridView1.Columns["LastName"].DisplayIndex = 2;
-            dataGridView1.Columns["Name"].DisplayIndex = 3;
-            dataGridView1.Columns["Status"].DisplayIndex = 4;
+            dataGridView1.Columns["duplColumn"].DisplayIndex = 1;
+            dataGridView1.Columns["City"].DisplayIndex = 2;
+            dataGridView1.Columns["LastName"].DisplayIndex = 3;
+            dataGridView1.Columns["Name"].DisplayIndex = 4;
+            dataGridView1.Columns["Status"].DisplayIndex = 5;
             dataGridView1.Refresh();
 
             _completedVisaTasks = VisaTask.DeSerialize(VisaEntityType.Completed);
@@ -177,13 +178,32 @@ namespace PolandVisaAuto
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex != dataGridView1.Columns["deleteColumn"].Index)
+            if (e.RowIndex < 0)
                 return;
-            VisaTask vt = dataGridView1.Rows[e.RowIndex].DataBoundItem as VisaTask;
-            Logger.Warning("Удаляю задание "+ vt.GetInfo());
-            _engine.DeleteTask(vt);
-            dataGridView1.Rows.RemoveAt(e.RowIndex);
-            RemoveTask(vt);
+            if (e.ColumnIndex == dataGridView1.Columns["deleteColumn"].Index)
+            {
+                VisaTask vt = dataGridView1.Rows[e.RowIndex].DataBoundItem as VisaTask;
+                Logger.Warning("Удаляю задание " + vt.GetInfo());
+                _engine.DeleteTask(vt);
+                dataGridView1.Rows.RemoveAt(e.RowIndex);
+                RemoveTask(vt);
+            }
+            if (e.ColumnIndex == dataGridView1.Columns["duplColumn"].Index)
+            {
+                var currItem = (VisaTask)dataGridView1.CurrentRow.DataBoundItem;
+                DuplForm form = new DuplForm();
+                form.FillCombo(Const.GetListFromDict(Const.SettingsCities));
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    VisaTask vt = currItem.Clone();
+                    vt.City = form.GetSelectedCity();
+                    vt.CityCode = Const.CityCodeByCity(vt.City);
+                    _visaTasks.Add(vt);
+                    VisaTask.Save(_visaTasks, VisaEntityType.New);
+                    _engine.RefreshViewTabs();
+                }
+                form.Dispose();
+            }
         }
 
         private void RemoveTask(VisaTask vt)

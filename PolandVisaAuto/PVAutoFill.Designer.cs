@@ -84,6 +84,7 @@ namespace PolandVisaAuto
             this.cbxCity = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.duplColumn = new DataGridViewButtonColumn();
             this.deleteColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.restoreColumn = new DataGridViewButtonColumn();
             this.cityDataGridViewComboBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -141,6 +142,7 @@ namespace PolandVisaAuto
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1094, 662);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.ShowToolTips = true;
             this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl_DrawItem);
             // 
             // tabPage1
@@ -662,6 +664,7 @@ namespace PolandVisaAuto
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.deleteColumn,
+            this.duplColumn,
             this.cityDataGridViewComboBoxColumn,
             this.lastNameDataGridViewTextBoxColumn,
             this.nameDataGridViewTextBoxColumn,
@@ -694,6 +697,13 @@ namespace PolandVisaAuto
             this.deleteColumn.Name = "deleteColumn";
             this.deleteColumn.Text = "Удалить";
             this.deleteColumn.UseColumnTextForButtonValue = true;
+            //
+            //duplColumn
+            //
+            this.duplColumn.HeaderText = "";
+            this.duplColumn.Name = "duplColumn";
+            this.duplColumn.Text = "Дублировать";
+            this.duplColumn.UseColumnTextForButtonValue = true;
             //
             //restoreColumn
             //
@@ -968,6 +978,7 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn redLineDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn priorityDataGridViewTextBoxColumn;
         private Button button1;
+        private DataGridViewButtonColumn duplColumn;
         private DataGridViewButtonColumn deleteColumn;
         private DataGridViewButtonColumn restoreColumn;
         private GroupBox groupBox7;

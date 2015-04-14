@@ -147,6 +147,7 @@ namespace PolandVisaAuto
                             _countAttempt = 5;
                             Tasks.Sort(vc);
                             _currentTask = Tasks[0];
+                            _tabPage.ToolTipText = _currentTask.GetInfo();
                             _enum = RotEvents.Firsthl;
                             webBrowser.Navigate(Const.url);
                             break;
@@ -217,7 +218,10 @@ namespace PolandVisaAuto
                                     foreach (VisaTask visaTask in Tasks)
                                     {
                                         if (apointmentDate < visaTask.RedLineDt)
+                                        {
                                             _currentTask = visaTask;
+                                            _tabPage.ToolTipText = _currentTask.GetInfo();
+                                        }
                                     }
                                 }
                             }

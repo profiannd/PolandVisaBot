@@ -124,7 +124,7 @@ namespace PolandVisaAuto
         public string GetInfo()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("");
+            sb.AppendLine(Name + " " + LastName);
             sb.AppendLine(string.Format("Крайняя дата подачи заявки: {0}, приоритет {1}",RedLine, PriorityStr));
             sb.AppendLine("");
             sb.AppendLine("Город: " + City);
@@ -135,6 +135,34 @@ namespace PolandVisaAuto
             sb.AppendLine("Email: " + Email);
             sb.AppendLine("Пароль: " + Password);
             return sb.ToString();
+        }
+
+        public VisaTask Clone()
+        {
+            VisaTask vt = new VisaTask();
+            vt.ArrivalDt = ArrivalDt;
+            vt.Category = Category;
+            vt.CategoryCode = CategoryCode;
+            vt.City = City;
+            vt.CityCode = CityCode;
+            vt.CountAdult = CountAdult;
+            vt.CountChild = CountChild;
+            vt.Dob = Dob;
+            vt.Email = Email;
+            vt.LastName = LastName;
+            vt.Name = Name;
+            vt.Nationality = Nationality;
+            vt.PassportEndDate = vt.PassportEndDate;
+            vt.Password = Password;
+            vt.Priority = Priority;
+            vt.Purpose = Purpose;
+            vt.PurposeCode = PurposeCode;
+            vt.Receipt = Receipt;
+            vt.RedLine = RedLine;
+            vt.RegistrationInfo = RegistrationInfo;
+            vt.Status = Status;
+            vt.StatusCode = StatusCode;
+            return vt;
         }
     }
 
