@@ -99,21 +99,24 @@ namespace PolandVisaAuto
             cbxNation.SelectedItem = "UKRAINE";
 
             _visaTasks = VisaTask.DeSerialize(VisaEntityType.New);
+
+            dataGridView1.DataSource = _visaTasks;
             dataGridView1.Columns["deleteColumn"].DisplayIndex = 0;
             dataGridView1.Columns["City"].DisplayIndex = 1;
             dataGridView1.Columns["LastName"].DisplayIndex = 2;
             dataGridView1.Columns["Name"].DisplayIndex = 3;
             dataGridView1.Columns["Status"].DisplayIndex = 4;
-            dataGridView1.DataSource = _visaTasks;
             dataGridView1.Refresh();
 
             _completedVisaTasks = VisaTask.DeSerialize(VisaEntityType.Completed);
+            dataGridView2.DataSource = _completedVisaTasks;
             dataGridView2.Columns["deleteColumn2"].DisplayIndex = 0;
             dataGridView2.Columns["restoreColumn"].DisplayIndex = 1;
-            dataGridView2.Columns["City"].DisplayIndex = 2;
-            dataGridView2.Columns["LastName"].DisplayIndex = 3;
-            dataGridView2.Columns["Name"].DisplayIndex = 4;
-            dataGridView2.DataSource = _completedVisaTasks;
+            dataGridView2.Columns["City2"].DisplayIndex = 2;
+            dataGridView2.Columns["LastName2"].DisplayIndex = 3;
+            dataGridView2.Columns["Name2"].DisplayIndex = 4;
+            dataGridView2.Columns["RegistrationInfo"].DisplayIndex = 5;
+            dataGridView2.Columns["Purpose"].DisplayIndex = 8;
             dataGridView2.Refresh();
 
             foreach (TabPage tabPage in tabControl1.TabPages)
@@ -192,44 +195,51 @@ namespace PolandVisaAuto
         {
             if (dataGridView1.CurrentCell == null)
                 return;
-            if (e.ColumnIndex == dataGridView1.Columns["cityDataGridViewComboBoxColumn"].Index)
+            if (e.ColumnIndex == dataGridView1.Columns["City"].Index)
             {
                 _cityBefore = dataGridView1.CurrentCell.Value.ToString();
             }
         }
-
+       
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (dataGridView1.CurrentCell == null)
                 return;
-            if (e.ColumnIndex == dataGridView1.Columns["cityDataGridViewComboBoxColumn"].Index)
+            if (e.ColumnIndex == dataGridView1.Columns["City"].Index)
             {
-                if (!string.IsNullOrEmpty(_cityBefore))
-                {
-                    var currentCity = dataGridView1.CurrentCell.Value.ToString();
-                    Logger.Info(string.Format("Город изменен с {0} на {1}", _cityBefore, currentCity));
-                    TabPage tp1 = null;
-                    TabPage tp2 = null;
-                    foreach (TabPage tab in tabControl1.TabPages)
-                    {
-                        if (_cityBefore.Equals(tab.Name))
-                        {
-                            tp1 = tab;
-                        }
-                        else if (currentCity.Equals(tab.Name))
-                        {
-                            tp2 = tab;
-                        }
-                    }
+                var currItem = (VisaTask)dataGridView1.CurrentRow.DataBoundItem;
+                
+                var currentCity = dataGridView1.CurrentCell.Value.ToString();
+                currItem.CityCode = Const.CityCodeByCity(currentCity);
 
-                    if (tp1 != null)
-                        tabControl1.TabPages.Remove(tp1);
-                    if (tp2 != null)
-                        tabControl1.TabPages.Remove(tp2);
-                    _cityBefore = string.Empty;
-                    _engine.RefreshViewTabs();
-                    VisaTask.Save(_visaTasks, VisaEntityType.New);
+                Logger.Info(string.Format("Город изменен с {0} на {1}", _cityBefore, currentCity));
+                TabPage tp1 = null;
+                TabPage tp2 = null;
+                foreach (TabPage tab in tabControl1.TabPages)
+                {
+                    if (_cityBefore.Equals(tab.Name))
+                    {
+                        tp1 = tab;
+                    }
+                    else if (currentCity.Equals(tab.Name))
+                    {
+                        tp2 = tab;
+                    }
                 }
+
+                if (tp1 != null)
+                {
+                    tabControl1.TabPages.Remove(tp1);
+                    _engine.DeleteCityKey(_cityBefore);
+                }
+                if (tp2 != null)
+                {
+                    tabControl1.TabPages.Remove(tp2);
+                    _engine.DeleteCityKey(currentCity);
+                }
+                _cityBefore = string.Empty;
+                _engine.RefreshViewTabs();
+                VisaTask.Save(_visaTasks, VisaEntityType.New);
             }
         }
 

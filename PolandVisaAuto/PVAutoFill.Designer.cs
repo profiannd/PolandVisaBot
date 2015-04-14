@@ -108,6 +108,7 @@ namespace PolandVisaAuto
             this.cityColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LastNameColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ResultColumn = new DataGridViewTextBoxColumn();
             this.emailErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.PasserrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.tabControl1.SuspendLayout();
@@ -181,7 +182,7 @@ namespace PolandVisaAuto
             this.chbProxy.Name = "chbProxy";
             this.chbProxy.Size = new System.Drawing.Size(288, 21);
             this.chbProxy.TabIndex = 4;
-            this.chbProxy.Text = "Распознавать картинки автоматически";
+            this.chbProxy.Text = "Использовать прокси";
             this.chbProxy.UseVisualStyleBackColor = true;
             this.chbProxy.CheckedChanged += new System.EventHandler(this.chbProxy_CheckedChanged);
             // 
@@ -705,19 +706,19 @@ namespace PolandVisaAuto
             // 
             this.cityDataGridViewComboBoxColumn.DataPropertyName = "City";
             this.cityDataGridViewComboBoxColumn.HeaderText = "Город";
-            this.cityDataGridViewComboBoxColumn.Name = "cityDataGridViewComboBoxColumn";
+            this.cityDataGridViewComboBoxColumn.Name = "City";
             // 
             // lastNameDataGridViewTextBoxColumn
             // 
             this.lastNameDataGridViewTextBoxColumn.DataPropertyName = "LastName";
             this.lastNameDataGridViewTextBoxColumn.HeaderText = "Фамилия";
-            this.lastNameDataGridViewTextBoxColumn.Name = "lastNameDataGridViewTextBoxColumn";
+            this.lastNameDataGridViewTextBoxColumn.Name = "LastName";
             // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
             this.nameDataGridViewTextBoxColumn.HeaderText = "Имя";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.Name = "Name";
             // 
             // redLineDataGridViewTextBoxColumn
             // 
@@ -783,7 +784,7 @@ namespace PolandVisaAuto
             // 
             this.statusDataGridViewTextBoxColumn.DataPropertyName = "Status";
             this.statusDataGridViewTextBoxColumn.HeaderText = "Статус";
-            this.statusDataGridViewTextBoxColumn.Name = "statusDataGridViewTextBoxColumn";
+            this.statusDataGridViewTextBoxColumn.Name = "Status";
             // 
             // dobDataGridViewTextBoxColumn
             // 
@@ -812,7 +813,8 @@ namespace PolandVisaAuto
             this.restoreColumn,
             this.cityColumn2,
             this.LastNameColumn2,
-            this.NameColumn2});
+            this.NameColumn2,
+            this.ResultColumn});
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridView2.Location = new System.Drawing.Point(3, 378);
             this.dataGridView2.Name = "dataGridView2";
@@ -831,19 +833,25 @@ namespace PolandVisaAuto
             // 
             this.cityColumn2.DataPropertyName = "City";
             this.cityColumn2.HeaderText = "Город";
-            this.cityColumn2.Name = "dataGridViewTextBoxColumn1";
+            this.cityColumn2.Name = "City2";
             // 
             // LastNameColumn2
             // 
             this.LastNameColumn2.DataPropertyName = "LastName";
             this.LastNameColumn2.HeaderText = "Фамилия";
-            this.LastNameColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.LastNameColumn2.Name = "LastName2";
             // 
             // NameColumn2
             // 
             this.NameColumn2.DataPropertyName = "Name";
             this.NameColumn2.HeaderText = "Имя";
-            this.NameColumn2.Name = "dataGridViewTextBoxColumn3";
+            this.NameColumn2.Name = "Name2";
+            //
+            //ResultColumn
+            //
+            this.ResultColumn.DataPropertyName = "RegistrationInfo";
+            this.ResultColumn.HeaderText = "Регистрация";
+            this.ResultColumn.Name = "RegistrationInfo";
             // 
             // emailErrorProvider
             // 
@@ -972,6 +980,7 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn cityColumn2;
         private DataGridViewTextBoxColumn LastNameColumn2;
         private DataGridViewTextBoxColumn NameColumn2;
+        private DataGridViewTextBoxColumn ResultColumn;
         private CheckBox chbProxy;
 
     }

@@ -81,15 +81,21 @@ namespace PolandVisaAuto
             return null;
         }
 
+        public void DeleteCityKey(string city)
+        {
+            if (_cityTasks.ContainsKey(city))
+            {
+                _cityTasks[city] = null;
+                _cityTasks.Remove(city);
+            }
+        }
+
         public void DeleteTask(VisaTask visaTask)
         {
-            foreach (VisaTask vt in _visaTasks)
+            if (_cityTasks.ContainsKey(visaTask.City))
             {
-                if (_cityTasks.ContainsKey(vt.City))
-                {
-                   VisaTab visaTab = _cityTasks[vt.City];
-                   visaTab.CheckOnDeleteTask(visaTask);
-                }
+                VisaTab visaTab = _cityTasks[visaTask.City];
+                visaTab.CheckOnDeleteTask(visaTask);
             }
         }
 
@@ -200,11 +206,13 @@ namespace PolandVisaAuto
 
         private void Value_TabEvent(TabPage tab)
         {
+            if (tab.Text.IndexOf("-") != -1 )
+                tab.Text = tab.Text.Remove(tab.Text.IndexOf("-"));
             Logger.Info("Удаляю таб " + tab.Text);
             _toRemove.Add(tab.Text);
             _tabControl.TabPages.Remove(tab);
         }
-
+        
         void Value_TaskEvent(VisaTask task)
         {
             if (ETaskEvent != null)

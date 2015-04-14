@@ -195,6 +195,8 @@ namespace PolandVisaAuto
                             }
                             richText.Text = "Свободна дата: " + showStopper;
                             Logger.Info(_currentTask.City + ": "+ richText.Text);
+
+                            _tabPage.Text = _currentTask.City + "-" + (showStopper.Contains("No date(s) available") ? "No date(s)" : showStopper);
                             if (!showStopper.Contains("No date(s) available"))
                             {
                                 var apointmentDate = ProcessDate(showStopper);
@@ -209,6 +211,7 @@ namespace PolandVisaAuto
                                 }
                                 else
                                 {
+                                    Tasks.Sort(vc);
                                     foreach (VisaTask visaTask in Tasks)
                                     {
                                         if (apointmentDate < visaTask.RedLineDt)
@@ -388,7 +391,7 @@ namespace PolandVisaAuto
                 _enum = RotEvents.Start;
             }
         }
-        
+
         private void PressOnLinkOnCalendar()
         {
             var links = webBrowser.Document.GetElementsByTagName("a");
