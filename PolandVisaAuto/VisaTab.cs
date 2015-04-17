@@ -27,6 +27,8 @@ namespace PolandVisaAuto
         public bool IsTabExists { get; set; }
         private TabPage _tabPage;
         private VisaComparer vc = new VisaComparer();
+        private static DateTime _lastProxyDateTime = DateTime.Now;
+
         public delegate void TaskDelegate(VisaTask task);
         public event TaskDelegate TaskEvent;
 
@@ -38,6 +40,9 @@ namespace PolandVisaAuto
 
         public delegate void TabDelegateEx(TabPage tab, bool alarm);
         public event TabDelegateEx TabEventEx;
+
+        public delegate void GetNextProxyDelegate();
+        public event GetNextProxyDelegate GetNextProxyEvent;
 
         private SoundPlayer sp;
         private bool _playSound = false;
@@ -71,9 +76,17 @@ namespace PolandVisaAuto
             deleteTask.Click += new System.EventHandler(this.deleteTask_click);
 
         }
-      
+
+        private static int _countSuccessRegistrations = 0;
         private void deleteTask_click(object sender, EventArgs e)
         {
+            _countSuccessRegistrations++;
+            if (_countSuccessRegistrations == 5)
+            {
+                _countSuccessRegistrations = 0;
+                if (GetNextProxyEvent != null)
+                    GetNextProxyEvent();
+            }
             if (VisaEvent != null)
                 VisaEvent(this, false);
 
@@ -128,10 +141,20 @@ namespace PolandVisaAuto
 
             if (webBrowser.DocumentTitle == "Service Unavailable" 
                 || webBrowser.DocumentTitle == "Navigation Canceled"
-                || webBrowser.DocumentTitle == "The proxy server isn't responding")
+                || webBrowser.DocumentTitle == "The proxy server isn't responding"
+                || webBrowser.DocumentTitle == "Internet Explorer cannot display the webpage")
             {
                 _allowStep = true;
                 _enum = RotEvents.Start;
+                if (ImageResolver.Instance.UseProxy)
+                {
+                    if ((DateTime.Now - _lastProxyDateTime).Seconds > 10)
+                    {
+                        _lastProxyDateTime = DateTime.Now;
+                        if (GetNextProxyEvent != null)
+                            GetNextProxyEvent();
+                    }
+                }
             }
 
             if(!_allowStep)
@@ -368,6 +391,13 @@ namespace PolandVisaAuto
                             _blockAlert = false;
                             if (!ImageResolver.Instance.AutoResolveImage)
                             {
+                                if (webBrowser.Document.GetElementById("ApplicantDetalils") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ApplicantDetalils").InnerText))
+                                {
+                                    Logger.Info("Заявка успешно зарегистрирована. ");
+                                    string registrationInfo = webBrowser.Document.GetElementById("ApplicantDetalils").InnerText;
+                                    Logger.Info(registrationInfo);
+                                    _currentTask.RegistrationInfo = registrationInfo;
+                                }
                                 renewTask.Visible = true;
                                 deleteTask.Visible = true;
                             }

@@ -66,6 +66,7 @@ namespace PolandVisaAuto
                     Status = cbxStatus.SelectedItem.ToString(),
                     StatusCode = Const.StatusCodeByStatus(cbxStatus.SelectedItem.ToString()),
                     RedLine = dtRedLine.Text,
+                    GreenLine = dtRedLine.Text,
                     Priority = cbxPriority.SelectedIndex
                 };
 
@@ -291,7 +292,7 @@ namespace PolandVisaAuto
 
         private void btnCreateEmail_Click(object sender, EventArgs e)
         {
-            txtEmail.Text = string.Format("{0}@gmail.com", txtLastName.Text);
+            txtEmail.Text = string.Format("{0}@gmeil.com", txtLastName.Text);
             txtPass.Text = Guid.NewGuid().ToString().Replace("-","").Remove(8);
         }
 

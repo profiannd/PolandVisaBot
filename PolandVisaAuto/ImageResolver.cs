@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
+using System.Text;
 using pvhelper;
 
 namespace PolandVisaAuto
@@ -76,6 +77,22 @@ namespace PolandVisaAuto
         {
             get { return host; }
             set { host = value; }
+        }
+
+        public void SaveCurrentProxyList()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (WebProxy webProxy in WebProxies)
+            {
+                sb.Append(webProxy.Address.Host);
+                sb.Append(":");
+                sb.Append(webProxy.Address.Port);
+                sb.Append(";");
+            }
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            configuration.AppSettings.Settings["proxyServers"].Value = sb.ToString();
+            configuration.Save();
+            ConfigurationManager.RefreshSection("appSettings");
         }
 
         private void ParseProxies(string str)

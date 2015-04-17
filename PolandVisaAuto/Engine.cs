@@ -175,8 +175,16 @@ namespace PolandVisaAuto
                 pair.Value.TabEventEx += Value_TabEventEx;
                 pair.Value.VisaEvent -= ValueVisaEvent;
                 pair.Value.VisaEvent += ValueVisaEvent;
+                pair.Value.GetNextProxyEvent -= Value_GetNextProxyEvent;
+                pair.Value.GetNextProxyEvent += Value_GetNextProxyEvent;
+
             }
             _timer.Start();
+        }
+
+        void Value_GetNextProxyEvent()
+        {
+            SelectNextProxy();
         }
 
         void ValueVisaEvent(VisaTab tab, bool add)
@@ -242,16 +250,23 @@ namespace PolandVisaAuto
             _oWorker.RunWorkerAsync();
         }
 
+        private bool _isProgress = false;
         private void SelectNextProxy()
         {
-            ImageResolver.Instance.WebProxies.Enqueue(ImageResolver.Instance.WebProxies.Dequeue());
-            foreach (WebProxy webProxy in ImageResolver.Instance.WebProxies)
+            if (_isProgress)
+                return;
+            _isProgress = true;
+            while (true)
             {
+                ImageResolver.Instance.WebProxies.Enqueue(ImageResolver.Instance.WebProxies.Dequeue());
+                WebProxy webProxy = ImageResolver.Instance.WebProxies.Peek();
                 if (PingHost(webProxy))
                 {
                     ImageResolver.Instance.CurrentWebProxy = webProxy;
                     Logger.Info("SetProxy " + ImageResolver.Instance.CurrentWebProxy.Address.Host + " " + ImageResolver.Instance.CurrentWebProxy.Address.Port);
                     Proxy.Set(ImageResolver.Instance.CurrentWebProxy);
+                    ImageResolver.Instance.SaveCurrentProxyList();
+                    _isProgress = false;
                     return;
                 }
             }

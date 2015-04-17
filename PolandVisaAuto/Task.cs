@@ -62,6 +62,17 @@ namespace PolandVisaAuto
             }
         }
 
+        public string GreenLine { get; set; }
+        [Browsable(false)]
+        [XmlIgnoreAttribute]
+        public DateTime GreenLineDt
+        {
+            get
+            {
+                return DateTime.ParseExact(GreenLine, Const.DateFormat, CultureInfo.InvariantCulture);
+            }
+        }
+
         public string RegistrationInfo { get; set; }
 
         public static bool IsValidEmailAddress(string email)
@@ -125,7 +136,7 @@ namespace PolandVisaAuto
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(Name + " " + LastName);
-            sb.AppendLine(string.Format("Крайняя дата подачи заявки: {0}, приоритет {1}",RedLine, PriorityStr));
+            sb.AppendLine(string.Format("Крайняя дата подачи заявки от {2} до {0}, приоритет {1}",RedLine, PriorityStr, GreenLine));
             sb.AppendLine("");
             sb.AppendLine("Город: " + City);
             sb.AppendLine("Мета візиту: " + Purpose);
@@ -152,13 +163,14 @@ namespace PolandVisaAuto
             vt.LastName = LastName;
             vt.Name = Name;
             vt.Nationality = Nationality;
-            vt.PassportEndDate = vt.PassportEndDate;
+            vt.PassportEndDate = PassportEndDate;
             vt.Password = Password;
             vt.Priority = Priority;
             vt.Purpose = Purpose;
             vt.PurposeCode = PurposeCode;
             vt.Receipt = Receipt;
             vt.RedLine = RedLine;
+            vt.GreenLine = GreenLine;
             vt.RegistrationInfo = RegistrationInfo;
             vt.Status = Status;
             vt.StatusCode = StatusCode;
