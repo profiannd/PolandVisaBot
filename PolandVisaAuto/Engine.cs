@@ -244,7 +244,7 @@ namespace PolandVisaAuto
 
         private void SelectNextProxy()
         {
-            ImageResolver.Instance.WebProxies.Remove(ImageResolver.Instance.CurrentWebProxy);
+            ImageResolver.Instance.WebProxies.Enqueue(ImageResolver.Instance.WebProxies.Dequeue());
             foreach (WebProxy webProxy in ImageResolver.Instance.WebProxies)
             {
                 if (PingHost(webProxy))

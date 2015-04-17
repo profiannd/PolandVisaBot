@@ -80,7 +80,7 @@ namespace PolandVisaAuto
 
         private void ParseProxies(string str)
         {
-            WebProxies = new List<WebProxy>();
+            WebProxies = new Queue<WebProxy>();
             var list = str.Split(';');
             foreach (string s in list)
             {
@@ -90,16 +90,16 @@ namespace PolandVisaAuto
                     try
                     {
                         WebProxy proxy = new WebProxy(prox[0], int.Parse(prox[1]));
-                        WebProxies.Add(proxy);
+                        WebProxies.Enqueue(proxy);
                     }
                     catch{}
                 }
             }
             if (WebProxies.Count > 0)
-                CurrentWebProxy = WebProxies[0];
+                CurrentWebProxy = WebProxies.Peek();
         }
 
-        public List<WebProxy> WebProxies { get; set; }
+        public Queue<WebProxy> WebProxies { get; set; }
         public WebProxy CurrentWebProxy { get; set; }
     }
 }

@@ -242,6 +242,14 @@ namespace PolandVisaAuto
                             if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
                             {
                                 string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+                                if (text.Contains(_currentTask.Receipt))
+                                {
+                                    Logger.Warning(string.Format("Заявка для {0} {1} уже зарегестрированна. Ответ сайта: {2}",_currentTask.LastName, _currentTask.Name, text));
+                                    if (string.IsNullOrEmpty(_currentTask.RegistrationInfo))
+                                        _currentTask.RegistrationInfo = "Please get info from site.";
+                                    deleteTask_click(null, null);
+                                    break;
+                                }
                                 Logger.Error("Надо исправить ошибку: \r\n " + text);
                                 richText.Text = "Надо исправить ошибку: \r\n " + text;
                                 renewTask.Visible = true;
