@@ -45,6 +45,7 @@ namespace PolandVisaAuto
             this.cbxPriority = new System.Windows.Forms.ComboBox();
             this.btnaddTask = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
+            this.dtGreenLine = new System.Windows.Forms.DateTimePicker();
             this.dtRedLine = new System.Windows.Forms.DateTimePicker();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dtArrivalDate = new System.Windows.Forms.DateTimePicker();
@@ -69,6 +70,7 @@ namespace PolandVisaAuto
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.txtBillNum = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbxCategory = new System.Windows.Forms.ComboBox();
@@ -91,6 +93,7 @@ namespace PolandVisaAuto
             this.lastNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.redLineDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.greenLineDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             this.priorityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.purposeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.countAdultDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -234,6 +237,8 @@ namespace PolandVisaAuto
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.label19);
+            this.groupBox6.Controls.Add(this.dtGreenLine);
             this.groupBox6.Controls.Add(this.label16);
             this.groupBox6.Controls.Add(this.cbxPriority);
             this.groupBox6.Controls.Add(this.btnaddTask);
@@ -265,7 +270,7 @@ namespace PolandVisaAuto
             // btnaddTask
             // 
             this.btnaddTask.BackColor = System.Drawing.Color.YellowGreen;
-            this.btnaddTask.Location = new System.Drawing.Point(149, 97);
+            this.btnaddTask.Location = new System.Drawing.Point(149, 115);
             this.btnaddTask.Name = "btnaddTask";
             this.btnaddTask.Size = new System.Drawing.Size(244, 40);
             this.btnaddTask.TabIndex = 2;
@@ -581,6 +586,16 @@ namespace PolandVisaAuto
             this.label5.TabIndex = 2;
             this.label5.Text = "Візова категорія";
             // 
+            // dtGreenLine
+            // 
+            this.dtGreenLine.CustomFormat = "dd/MM/yyyy";
+            this.dtGreenLine.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtGreenLine.Location = new System.Drawing.Point(283, 85);
+            this.dtGreenLine.Name = "dtGreenLine";
+            this.dtGreenLine.Size = new System.Drawing.Size(222, 23);
+            this.dtGreenLine.TabIndex = 19;
+            this.dtGreenLine.Value = new System.DateTime(2015, 3, 19, 0, 0, 0, 0);
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -630,6 +645,15 @@ namespace PolandVisaAuto
             this.label1.TabIndex = 2;
             this.label1.Text = "Пункт Прийому Візових Анкет";
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 89);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(253, 17);
+            this.label19.TabIndex = 20;
+            this.label19.Text = "Начальная дата подачи документов ";
+            // 
             // cbxPurpose
             // 
             this.cbxPurpose.FormattingEnabled = true;
@@ -668,6 +692,7 @@ namespace PolandVisaAuto
             this.cityDataGridViewComboBoxColumn,
             this.lastNameDataGridViewTextBoxColumn,
             this.nameDataGridViewTextBoxColumn,
+            this.greenLineDataGridViewTextBoxColumn,
             this.redLineDataGridViewTextBoxColumn,
             this.priorityDataGridViewTextBoxColumn,
             this.purposeDataGridViewTextBoxColumn,
@@ -735,6 +760,13 @@ namespace PolandVisaAuto
             this.redLineDataGridViewTextBoxColumn.DataPropertyName = "RedLine";
             this.redLineDataGridViewTextBoxColumn.HeaderText = "Крайняя дата";
             this.redLineDataGridViewTextBoxColumn.Name = "redLineDataGridViewTextBoxColumn";
+            // 
+            // greenLineDataGridViewTextBoxColumn
+            // 
+            this.greenLineDataGridViewTextBoxColumn.DataPropertyName = "GreenLine";
+            this.greenLineDataGridViewTextBoxColumn.HeaderText = "Начальная дата";
+            this.greenLineDataGridViewTextBoxColumn.Name = "greenLineDataGridViewTextBoxColumn";
+
             // 
             // priorityDataGridViewTextBoxColumn
             // 
@@ -878,6 +910,7 @@ namespace PolandVisaAuto
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1094, 662);
+            this.MinimumSize = new System.Drawing.Size(1094, 662);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -975,6 +1008,7 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn dobDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn arrivalDtDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nationalityDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn greenLineDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn redLineDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn priorityDataGridViewTextBoxColumn;
         private Button button1;
@@ -993,6 +1027,8 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn NameColumn2;
         private DataGridViewTextBoxColumn ResultColumn;
         private CheckBox chbProxy;
+        private Label label19;
+        private DateTimePicker dtGreenLine;
 
     }
 }

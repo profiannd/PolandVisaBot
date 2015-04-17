@@ -139,16 +139,20 @@ namespace PolandVisaAuto
             if (_playSound)
                 playSound();
 
-            if (webBrowser.DocumentTitle == "Service Unavailable" 
-                || webBrowser.DocumentTitle == "Navigation Canceled"
-                || webBrowser.DocumentTitle == "The proxy server isn't responding"
-                || webBrowser.DocumentTitle == "Internet Explorer cannot display the webpage")
+            if(!_allowStep)
+                return;
+            _allowStep = false;
+
+            if (webBrowser.DocumentTitle == "Service Unavailable"
+            || webBrowser.DocumentTitle == "Navigation Canceled"
+            || webBrowser.DocumentTitle == "The proxy server isn't responding"
+            || webBrowser.DocumentTitle == "Internet Explorer cannot display the webpage")
             {
                 _allowStep = true;
                 _enum = RotEvents.Start;
                 if (ImageResolver.Instance.UseProxy)
                 {
-                    if ((DateTime.Now - _lastProxyDateTime).Seconds > 10)
+                    if ((DateTime.Now - _lastProxyDateTime).Seconds > 15)
                     {
                         _lastProxyDateTime = DateTime.Now;
                         if (GetNextProxyEvent != null)
@@ -156,10 +160,6 @@ namespace PolandVisaAuto
                     }
                 }
             }
-
-            if(!_allowStep)
-                return;
-            _allowStep = false;
 
             try
             {
@@ -226,7 +226,7 @@ namespace PolandVisaAuto
                             if (!showStopper.Contains("No date(s) available"))
                             {
                                 var apointmentDate = ProcessDate(showStopper);
-                                if (apointmentDate < _currentTask.RedLineDt)
+                                if (apointmentDate > _currentTask.GreenLineDt && apointmentDate < _currentTask.RedLineDt)
                                 {
                                     webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                                     _enum = RotEvents.FillReceipt;
@@ -237,15 +237,25 @@ namespace PolandVisaAuto
                                 }
                                 else
                                 {
+                                    Logger.Info("Задание не укладывается в интервал разрешенных дат.");
+                                    Logger.Info(_currentTask.GetInfo());
+                                    _currentTask = null;
                                     Tasks.Sort(vc);
                                     foreach (VisaTask visaTask in Tasks)
                                     {
-                                        if (apointmentDate < visaTask.RedLineDt)
+                                        if (apointmentDate > visaTask.GreenLineDt && apointmentDate < visaTask.RedLineDt)
                                         {
                                             _currentTask = visaTask;
                                             _tabPage.ToolTipText = _currentTask.GetInfo();
                                         }
                                     }
+                                    if (_currentTask == null)
+                                    {
+                                        Logger.Warning("Нет заданий для даты " + showStopper);
+                                        throw new Exception("бегаем по кругу, ждем с моря погоды");
+                                    }
+                                    Logger.Info("Выбрали новое Задание");
+                                    Logger.Info(_currentTask.GetInfo());
                                 }
                             }
                             _enum = RotEvents.FirstCombo;

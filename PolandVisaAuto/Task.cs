@@ -127,6 +127,11 @@ namespace PolandVisaAuto
             return tasks;
         }
 
+        public string GetFullNameAsFileName()
+        {
+            return string.Format("{0}_{1}.txt", LastName, Name);
+        }
+
         private static string getFileName(VisaEntityType type)
         {
             return type == VisaEntityType.New ? "\\data.xml" : "\\completedData.xml";

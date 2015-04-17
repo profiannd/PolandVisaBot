@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -66,7 +67,7 @@ namespace PolandVisaAuto
                     Status = cbxStatus.SelectedItem.ToString(),
                     StatusCode = Const.StatusCodeByStatus(cbxStatus.SelectedItem.ToString()),
                     RedLine = dtRedLine.Text,
-                    GreenLine = dtRedLine.Text,
+                    GreenLine = dtGreenLine.Text,
                     Priority = cbxPriority.SelectedIndex
                 };
 
@@ -135,7 +136,33 @@ namespace PolandVisaAuto
 
         void _engine_ETaskEvent(VisaTask task)
         {
+            WriteReportFile(task);
             RemoveTask(task);
+        }
+
+        private void WriteReportFile(VisaTask task)
+        {
+            var repPath = Path.Combine(AssemblyDirectory, "Reports");
+            if (!Directory.Exists(repPath))
+                Directory.CreateDirectory(repPath);
+            File.WriteAllLines(Path.Combine(repPath, task.GetFullNameAsFileName()),
+                               new[]
+                                   {
+                                       task.LastName + " " + task.Name,
+                                       "Password: " + task.Email + " " + task.Password,
+                                       task.RegistrationInfo
+                                   });
+        }
+
+        private string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
         }
 
         private void UpdateHeader()
