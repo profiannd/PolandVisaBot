@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net.Mail;
@@ -19,6 +20,22 @@ namespace PolandVisaAuto
 
     public class VisaTask : INotifyPropertyChanged
     {
+        [Browsable(false)]
+        [XmlIgnoreAttribute]
+        public string CityV {
+            get
+            {
+                switch (CategoryCode)
+                {
+                    case "1"://National Visa
+                        return "(N)" + City;
+                    case "2"://Shengen
+                        return "(S)" + City;
+                }
+                return City;
+            }
+        }
+
         public string City { get; set; }
         [Browsable(false)]
         public string CityCode { get; set; }

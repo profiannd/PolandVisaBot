@@ -248,7 +248,7 @@ namespace PolandVisaAuto
                 return;
             if (e.ColumnIndex == dataGridView1.Columns["City"].Index)
             {
-                _cityBefore = dataGridView1.CurrentCell.Value.ToString();
+                _cityBefore = ((VisaTask)dataGridView1.CurrentRow.DataBoundItem).CityV;
             }
         }
        
@@ -259,20 +259,23 @@ namespace PolandVisaAuto
             if (e.ColumnIndex == dataGridView1.Columns["City"].Index)
             {
                 var currItem = (VisaTask)dataGridView1.CurrentRow.DataBoundItem;
-                
-                var currentCity = dataGridView1.CurrentCell.Value.ToString();
-                currItem.CityCode = Const.CityCodeByCity(currentCity);
+                currItem.CityCode = Const.CityCodeByCity(dataGridView1.CurrentCell.Value.ToString());
 
-                Logger.Info(string.Format("Город изменен с {0} на {1}", _cityBefore, currentCity));
+
+                Logger.Info(string.Format("Город изменен с {0} на {1}", _cityBefore, currItem.City));
                 TabPage tp1 = null;
                 TabPage tp2 = null;
                 foreach (TabPage tab in tabControl1.TabPages)
                 {
-                    if (_cityBefore.Equals(tab.Name))
+                    string tabtextClear = tab.Text;
+                    if (tab.Text.IndexOf("~") != -1)
+                        tabtextClear = tab.Text.Remove(tab.Text.IndexOf("~"));
+
+                    if (_cityBefore.Equals(tabtextClear))
                     {
                         tp1 = tab;
                     }
-                    else if (currentCity.Equals(tab.Name))
+                    else if (currItem.CityV.Equals(tabtextClear))
                     {
                         tp2 = tab;
                     }
@@ -286,7 +289,7 @@ namespace PolandVisaAuto
                 if (tp2 != null)
                 {
                     tabControl1.TabPages.Remove(tp2);
-                    _engine.DeleteCityKey(currentCity);
+                    _engine.DeleteCityKey(currItem.CityV);
                 }
                 _cityBefore = string.Empty;
                 _engine.RefreshViewTabs();

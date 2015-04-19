@@ -98,9 +98,9 @@ namespace PolandVisaAuto
 
         public void DeleteTask(VisaTask visaTask)
         {
-            if (_cityTasks.ContainsKey(visaTask.City))
+            if (_cityTasks.ContainsKey(visaTask.CityV))
             {
-                VisaTab visaTab = _cityTasks[visaTask.City];
+                VisaTab visaTab = _cityTasks[visaTask.CityV];
                 visaTab.CheckOnDeleteTask(visaTask);
             }
         }
@@ -111,10 +111,10 @@ namespace PolandVisaAuto
 //            SetProxy();
             foreach (VisaTask vt in _visaTasks)
             {
-                if (!_cityTasks.ContainsKey(vt.City))
+                if (!_cityTasks.ContainsKey(vt.CityV))
                 {
                     Logger.Info("Создаю новый таб " + vt.City);
-                    TabPage tabPage = new TabPage(vt.City);
+                    TabPage tabPage = new TabPage(vt.CityV);
                     tabPage.Name = vt.City;
                     WebBrowser webBrowser1 = new WebBrowser();
                     webBrowser1.Size = new Size(837, 400);
@@ -155,11 +155,11 @@ namespace PolandVisaAuto
                     _tabControl.TabPages.Add(tabPage);
 
                     VisaTab visaTab = new VisaTab(vt, tabPage);
-                    _cityTasks.Add(vt.City, visaTab);
+                    _cityTasks.Add(vt.CityV, visaTab);
                 }
                 else
                 {
-                    VisaTab tab = _cityTasks[vt.City];
+                    VisaTab tab = _cityTasks[vt.CityV];
                     if(!tab.Tasks.Contains(vt))
                         tab.Tasks.Add(vt);
                 }
