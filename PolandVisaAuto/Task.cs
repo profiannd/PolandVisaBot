@@ -86,6 +86,8 @@ namespace PolandVisaAuto
         {
             get
             {
+                if (GreenLine == null)
+                    return DateTime.MinValue;
                 return DateTime.ParseExact(GreenLine, Const.DateFormat, CultureInfo.InvariantCulture);
             }
         }
