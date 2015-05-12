@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -41,6 +42,7 @@ namespace pvhelper
 
         public const string url = "https://www.vfsvisaonline.com/poland-ukraine-appointment/(S(ytzs0pjoptifju555d1inlbs))/AppScheduling/AppWelcome.aspx?P=s2x6znRcBRv7WQQK7h4MTjZiPRbOsXKqJzddYBh3qCA%3d";
         public const string DateFormat = "dd/MM/yyyy";
+        public const string DateFormatForFile = "dd_MM_yyyy";
 
         public const string HOST = "host";
         public const string NAME = "name";
@@ -49,10 +51,13 @@ namespace pvhelper
         public const string AUTORESOLVE = "autoResolve";
         public const string USEPROXY = "useProxy";
         public const string PROXYSERVERS = "proxyServers";
+        public const string REGCOUNTS = "regCounts";
+        public static string DELETEDTASKS = "DeletedTasks";
+        public static string ALLOWREG = "AllowReg";
 
         public static Dictionary<string, string> SettingsCities = FillConfigCities();
         private static Dictionary<string, string> transliter = new Dictionary<string, string>();
-        
+
         private static void prepareTranslit()
         {
             transliter.Add("а", "a");
@@ -504,6 +509,17 @@ namespace pvhelper
             priors.Add("Средний");
             priors.Add("Высокий");
             return priors;
+        }
+
+        public static DataTable GetDataTablePriority()
+        {
+            DataTable data = new DataTable();
+            data.Columns.Add(new DataColumn("Value", typeof (int)));
+            data.Columns.Add(new DataColumn("Description", typeof (string)));
+            data.Rows.Add(0, "Низкий");
+            data.Rows.Add(1, "Средний");
+            data.Rows.Add(2, "Высокий");
+            return data;
         }
 
         public static List<string> GetListFromDict(Dictionary<string, string> dict)

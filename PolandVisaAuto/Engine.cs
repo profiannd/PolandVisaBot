@@ -22,7 +22,7 @@ namespace PolandVisaAuto
         private List<VisaTab> _activeTabs = new List<VisaTab>();
         private int _activePointer = 0;
         public static Dictionary<TabPage, Color> TabColors = new Dictionary<TabPage, Color>();
-        BackgroundWorker _oWorker = new BackgroundWorker();
+        //BackgroundWorker _oWorker = new BackgroundWorker();
 
         public delegate void ETaskDelegate(VisaTask task);
         public event ETaskDelegate ETaskEvent;
@@ -36,7 +36,7 @@ namespace PolandVisaAuto
             _timer = new Timer();
             _timer.Interval = 1500;
             _timer.Tick += _timer_Tick;
-            _oWorker.DoWork += new DoWorkEventHandler(_oWorker_DoWork);
+            //_oWorker.DoWork += new DoWorkEventHandler(_oWorker_DoWork);
         }
 
         private void SetTabHeader(TabPage page, Color color)
@@ -184,7 +184,8 @@ namespace PolandVisaAuto
 
         void Value_GetNextProxyEvent()
         {
-            SelectNextProxy();
+            ImageResolver.Instance.SelectNextProxy();
+            //SelectNextProxy();
         }
 
         void ValueVisaEvent(VisaTab tab, bool add)
@@ -226,15 +227,15 @@ namespace PolandVisaAuto
             if (!ImageResolver.Instance.UseProxy)
                 return;
 
-            while (!PingHost(ImageResolver.Instance.CurrentWebProxy))
-            {
-                SelectNextProxy();
-            }
+//            while (!PingHost(ImageResolver.Instance.CurrentWebProxy))
+//            {
+//                SelectNextProxy();
+//            }
 
-            Proxy.Set(ImageResolver.Instance.CurrentWebProxy);
-            Logger.Info("SetProxy " + ImageResolver.Instance.CurrentWebProxy.Address.Host + " " + ImageResolver.Instance.CurrentWebProxy.Address.Port);
+//            Proxy.Set(ImageResolver.Instance.CurrentWebProxy);
+//            Logger.Info("SetProxy " + ImageResolver.Instance.CurrentWebProxy.Address.Host + " " + ImageResolver.Instance.CurrentWebProxy.Address.Port);
 
-            ExecPingHost();
+//            ExecPingHost();
             //            const string key = "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
             //
             //            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(key, true);
@@ -245,63 +246,63 @@ namespace PolandVisaAuto
             //            }
         }
         
-        public void ExecPingHost()
-        {
-            _oWorker.RunWorkerAsync();
-        }
+//        public void ExecPingHost()
+//        {
+//            _oWorker.RunWorkerAsync();
+//        }
 
-        private bool _isProgress = false;
-        private void SelectNextProxy()
-        {
-            if (_isProgress)
-                return;
-            _isProgress = true;
-            while (true)
-            {
-                ImageResolver.Instance.WebProxies.Enqueue(ImageResolver.Instance.WebProxies.Dequeue());
-                WebProxy webProxy = ImageResolver.Instance.WebProxies.Peek();
-                if (PingHost(webProxy))
-                {
-                    ImageResolver.Instance.CurrentWebProxy = webProxy;
-                    Logger.Info("SetProxy " + ImageResolver.Instance.CurrentWebProxy.Address.Host + " " + ImageResolver.Instance.CurrentWebProxy.Address.Port);
-                    Proxy.Set(ImageResolver.Instance.CurrentWebProxy);
-                    ImageResolver.Instance.SaveCurrentProxyList();
-                    _isProgress = false;
-                    return;
-                }
-            }
-        }
+//        private bool _isProgress = false;
+//        private void SelectNextProxy()
+//        {
+//            if (_isProgress)
+//                return;
+//            _isProgress = true;
+////            while (true)
+////            {
+//                ImageResolver.Instance.WebProxies.Enqueue(ImageResolver.Instance.WebProxies.Dequeue());
+//                WebProxy webProxy = ImageResolver.Instance.WebProxies.Peek();
+////                if (PingHost(webProxy))
+////                {
+//                    ImageResolver.Instance.CurrentWebProxy = webProxy;
+//                    Logger.Info("SetProxy " + ImageResolver.Instance.CurrentWebProxy.Address.Host + " " + ImageResolver.Instance.CurrentWebProxy.Address.Port);
+////                    Proxy.Set(ImageResolver.Instance.CurrentWebProxy);
+//                    ImageResolver.Instance.SaveCurrentProxyList();
+//                    _isProgress = false;
+//                    return;
+////                }
+////            }
+//        }
 
-        private void _oWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                Thread.Sleep(10000);
-                if (!PingHost(ImageResolver.Instance.CurrentWebProxy))
-                    SelectNextProxy();
-            }
-        }
-
-        private bool PingHost(WebProxy proxy)
-        {
-            return PingHost(proxy.Address.Host);
-        }
-
-        private static bool PingHost(string nameOrAddress)
-        {
-            bool pingable = false;
-            Ping pinger = new Ping();
-            try
-            {
-                PingReply reply = pinger.Send(nameOrAddress, 1000);
-                pingable = reply.Status == IPStatus.Success;
-            }
-            catch (PingException)
-            {
-            }
-
-            return pingable;
-        }
+//        private void _oWorker_DoWork(object sender, DoWorkEventArgs e)
+//        {
+//            while (true)
+//            {
+//                Thread.Sleep(10000);
+//                if (!PingHost(ImageResolver.Instance.CurrentWebProxy))
+//                    SelectNextProxy();
+//            }
+//        }
+//
+//        private bool PingHost(WebProxy proxy)
+//        {
+//            return PingHost(proxy.Address.Host);
+//        }
+//
+//        private static bool PingHost(string nameOrAddress)
+//        {
+//            bool pingable = false;
+//            Ping pinger = new Ping();
+//            try
+//            {
+//                PingReply reply = pinger.Send(nameOrAddress, 1000);
+//                pingable = reply.Status == IPStatus.Success;
+//            }
+//            catch (PingException)
+//            {
+//            }
+//
+//            return pingable;
+//        }
         #endregion
 
     }

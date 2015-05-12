@@ -83,6 +83,8 @@ namespace PolandVisaAuto
 
         private void PvAutoLoad(object sender, EventArgs e)
         {
+            ImageResolver.Instance.ChangeUseProxy += Instance_ChangeUseProxy;
+
             UpdateHeader();
             chbAutoResolveImage.Checked = ImageResolver.Instance.AutoResolveImage;
             radiocom.Checked = ImageResolver.Instance.Host == radiocom.Text;
@@ -94,9 +96,10 @@ namespace PolandVisaAuto
             cbxStatus.DataSource = Const.GetListFromDict(Const.FillStatus());
             cbxPurpose.DataSource = Const.GetListFromDict(Const.FillPurpose());
             cbxCategory.DataSource = Const.GetListFromDict(Const.GetCategoryType());
-            cityDataGridViewComboBoxColumn.DataSource = Const.GetListFromDict(Const.SettingsCities);
-
             cbxPriority.DataSource = Const.GetListPriority();
+
+            cityDataGridViewComboBoxColumn.DataSource = Const.GetListFromDict(Const.SettingsCities);
+            priorityComboBoxColumn.DataSource = Const.GetDataTablePriority();
 
             cbxStatus.SelectedItem = "Mr.";
             cbxNation.SelectedItem = "UKRAINE";
@@ -129,9 +132,14 @@ namespace PolandVisaAuto
             }
             _engine = new Engine(_visaTasks, tabControl1);//, _completedVisaTasks);
             //!! 
-            _engine.SetProxy();
+           // _engine.SetProxy();
             _engine.RefreshViewTabs();
             _engine.ETaskEvent += _engine_ETaskEvent;
+        }
+
+        void Instance_ChangeUseProxy(bool useProxy)
+        {
+            chbProxy.Checked = useProxy;
         }
 
         void _engine_ETaskEvent(VisaTask task)
@@ -295,6 +303,11 @@ namespace PolandVisaAuto
                 _engine.RefreshViewTabs();
                 VisaTask.Save(_visaTasks, VisaEntityType.New);
             }
+            else if (e.ColumnIndex == dataGridView1.Columns["priorityComboBoxColumn"].Index)
+            {
+                VisaTask.Save(_visaTasks, VisaEntityType.New);
+            }
+
         }
 
         private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -307,6 +320,7 @@ namespace PolandVisaAuto
                 Logger.Warning("Удаляю завершенное/удаленное задание " + vt.GetInfo());
                 dataGridView2.Rows.RemoveAt(e.RowIndex);
                 VisaTask.Save(_completedVisaTasks, VisaEntityType.Completed);
+                vt.Save();
             }
             else if (e.ColumnIndex == dataGridView2.Columns["restoreColumn"].Index)
             {
@@ -334,6 +348,28 @@ namespace PolandVisaAuto
             {
                 ImageResolver.Instance.Host = rb.Text;
                 UpdateSetting(Const.HOST, ImageResolver.Instance.Host);
+            }
+        }
+
+        void restoreButton_Click(object sender, System.EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.InitialDirectory = Path.Combine(AssemblyDirectory, Const.DELETEDTASKS);
+            dlg.Multiselect = false;
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                try
+                {
+                    VisaTask vt = VisaTask.DeSerialize(dlg.FileName);
+                    _visaTasks.Add(vt);
+                    VisaTask.Save(_visaTasks, VisaEntityType.New);
+                    _engine.RefreshViewTabs();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex.ToString());
+                    MessageBox.Show(ex.ToString(), "Ошибка!");
+                }
             }
         }
 

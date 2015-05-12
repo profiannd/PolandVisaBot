@@ -39,6 +39,7 @@ namespace PolandVisaAuto
             this.label18 = new System.Windows.Forms.Label();
             this.radioinfo = new System.Windows.Forms.RadioButton();
             this.radiocom = new System.Windows.Forms.RadioButton();
+            this.restoreButton = new Button();
             this.chbAutoResolveImage = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -94,7 +95,7 @@ namespace PolandVisaAuto
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.redLineDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.greenLineDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            this.priorityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priorityComboBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.purposeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.countAdultDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.countChildDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -172,6 +173,7 @@ namespace PolandVisaAuto
             this.groupBox7.Controls.Add(this.label18);
             this.groupBox7.Controls.Add(this.radioinfo);
             this.groupBox7.Controls.Add(this.radiocom);
+            this.groupBox7.Controls.Add(this.restoreButton);
             this.groupBox7.Controls.Add(this.chbAutoResolveImage);
             this.groupBox7.Location = new System.Drawing.Point(34, 460);
             this.groupBox7.Name = "groupBox7";
@@ -223,6 +225,16 @@ namespace PolandVisaAuto
             this.radiocom.Text = "api.de-captcher.com";
             this.radiocom.UseVisualStyleBackColor = true;
             this.radiocom.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
+            //
+            //restoreButton
+            //
+            this.restoreButton.BackColor = System.Drawing.Color.YellowGreen;
+            this.restoreButton.Location = new System.Drawing.Point(280, 60);
+            this.restoreButton.Name = "restoreButton";
+            this.restoreButton.Size = new System.Drawing.Size(120, 75);
+            this.restoreButton.UseVisualStyleBackColor = false;
+            this.restoreButton.Text = "Восстановить удаленную задачу";
+            this.restoreButton.Click += restoreButton_Click;
             // 
             // chbAutoResolveImage
             // 
@@ -694,7 +706,7 @@ namespace PolandVisaAuto
             this.nameDataGridViewTextBoxColumn,
             this.greenLineDataGridViewTextBoxColumn,
             this.redLineDataGridViewTextBoxColumn,
-            this.priorityDataGridViewTextBoxColumn,
+            this.priorityComboBoxColumn,
             this.purposeDataGridViewTextBoxColumn,
             this.countAdultDataGridViewTextBoxColumn,
             this.countChildDataGridViewTextBoxColumn,
@@ -768,11 +780,13 @@ namespace PolandVisaAuto
             this.greenLineDataGridViewTextBoxColumn.Name = "greenLineDataGridViewTextBoxColumn";
 
             // 
-            // priorityDataGridViewTextBoxColumn
+            // priorityComboBoxColumn
             // 
-            this.priorityDataGridViewTextBoxColumn.DataPropertyName = "PriorityStr";
-            this.priorityDataGridViewTextBoxColumn.HeaderText = "Приоритет";
-            this.priorityDataGridViewTextBoxColumn.Name = "priorityDataGridViewTextBoxColumn";
+            this.priorityComboBoxColumn.DataPropertyName = "Priority";
+            this.priorityComboBoxColumn.HeaderText = "Приоритет";
+            this.priorityComboBoxColumn.Name = "priorityComboBoxColumn";
+            this.priorityComboBoxColumn.ValueMember = "Value";
+            this.priorityComboBoxColumn.DisplayMember = "Description"; 
             // 
             // purposeDataGridViewTextBoxColumn
             // 
@@ -1010,7 +1024,7 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn nationalityDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn greenLineDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn redLineDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn priorityDataGridViewTextBoxColumn;
+        private DataGridViewComboBoxColumn priorityComboBoxColumn;
         private Button button1;
         private DataGridViewButtonColumn duplColumn;
         private DataGridViewButtonColumn deleteColumn;
@@ -1019,6 +1033,7 @@ namespace PolandVisaAuto
         private GroupBox groupBox6;
         private RadioButton radioinfo;
         private RadioButton radiocom;
+        private Button restoreButton;
         private CheckBox chbAutoResolveImage;
         private Label label18;
         private DataGridViewButtonColumn deleteButton2;

@@ -64,9 +64,9 @@ namespace PolandVisaAuto
         public string Dob { get; set; }
         public string ArrivalDt { get; set; }
         public string Nationality { get; set; }
-        [Browsable(false)]
         public int Priority { get; set; }
         [XmlIgnoreAttribute]
+        [Browsable(false)]
         public string PriorityStr { get { return Const.GetListPriority()[Priority]; } }
 
         public string RedLine { get; set; }
@@ -131,6 +131,34 @@ namespace PolandVisaAuto
             }
         }
 
+        public void Save()
+        {
+            string filemane = createFileName();
+            string dir = Path.Combine(Environment.CurrentDirectory, Const.DELETEDTASKS);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            using (FileStream fs = new FileStream(Path.Combine(dir, filemane), FileMode.Create))
+            {
+                XmlSerializer xs = new XmlSerializer(typeof(VisaTask));
+                xs.Serialize(fs, this);
+            }
+        }
+
+        public static VisaTask DeSerialize(string filePath)
+        {
+            VisaTask task = null;
+            if (File.Exists(filePath))
+            {
+                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    XmlSerializer xs = new XmlSerializer(typeof(VisaTask));
+                    task = (VisaTask)xs.Deserialize(fs);
+                }
+            }
+            return task;
+        }
+
         public static BindingList<VisaTask> DeSerialize(VisaEntityType type)
         {
             string filemane = getFileName(type);
@@ -154,6 +182,11 @@ namespace PolandVisaAuto
         private static string getFileName(VisaEntityType type)
         {
             return type == VisaEntityType.New ? "\\data.xml" : "\\completedData.xml";
+        }
+        
+        private string createFileName()
+        {
+            return string.Format("{0}_{1}_{2}.xml", Name, LastName, DateTime.Now.ToString(Const.DateFormatForFile, CultureInfo.InvariantCulture));
         }
 
         public string GetInfo()

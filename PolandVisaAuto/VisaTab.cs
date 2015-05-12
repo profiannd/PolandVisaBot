@@ -14,8 +14,23 @@ using pvhelper;
 
 namespace PolandVisaAuto
 {
-    public class VisaTab
+    public class VisaTab : IOleClientSite, IServiceProvider, IAuthenticate
     {
+        #region Proxy def
+
+         [DllImport("wininet.dll", SetLastError = true)]
+        private static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int lpdwBufferLength);
+        private Guid IID_IAuthenticate = new Guid("79eac9d0-baf9-11ce-8c82-00aa004ba90b");
+        private const int INET_E_DEFAULT_ACTION = unchecked((int)0x800C0011);
+        private const int S_OK = unchecked((int)0x00000000);
+        private const int INTERNET_OPTION_PROXY = 38;
+        private const int INTERNET_OPEN_TYPE_DIRECT = 1;
+        private const int INTERNET_OPEN_TYPE_PROXY = 3;
+        private string _currentUsername;
+        private string _currentPassword;
+
+        #endregion
+
         private WebBrowser webBrowser;
         private RichTextBox richText;
         private Button deleteTask;
@@ -27,7 +42,7 @@ namespace PolandVisaAuto
         public bool IsTabExists { get; set; }
         private TabPage _tabPage;
         private VisaComparer vc = new VisaComparer();
-        private static DateTime _lastProxyDateTime = DateTime.Now;
+        //private static DateTime _lastProxyDateTime = DateTime.Now;
 
         public delegate void TaskDelegate(VisaTask task);
         public event TaskDelegate TaskEvent;
@@ -47,7 +62,7 @@ namespace PolandVisaAuto
         private SoundPlayer sp;
         private bool _playSound = false;
         int _countAttempt = 5;
-        private bool _blockAlert;
+        //private bool _blockAlert;
 
         private void initSound()
         {
@@ -66,26 +81,57 @@ namespace PolandVisaAuto
             richText = (RichTextBox)_tabPage.Controls.Find("richText", true)[0];
             webBrowser = (WebBrowser)_tabPage.Controls.Find("webBrowser" + task.City, true)[0];
             webBrowser.ScriptErrorsSuppressed = true;
-            webBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(webBrowser_ProgressChanged);
+           // webBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(webBrowser_ProgressChanged);
             webBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_DocumentCompleted);
-            
+
             renewTask = (Button) _tabPage.Controls.Find("renewTask", true)[0];
             renewTask.Click += new System.EventHandler(this.renewTask_click);
 
             deleteTask = (Button)_tabPage.Controls.Find("deleteTask", true)[0];
             deleteTask.Click += new System.EventHandler(this.deleteTask_click);
-
+            _changeProxyOnce = ImageResolver.Instance.UseProxy;
+            SetProxy();
         }
 
-        private static int _countSuccessRegistrations = 0;
+        public void SetProxy()
+        {
+            if (ImageResolver.Instance.UseProxy)
+            {
+
+                var proxy = ImageResolver.Instance.GetCorrectCurrentWebProxy;
+                if (proxy == null)
+                {
+                    SetProxyServer(null);
+                }
+                else
+                {
+                    object obj = webBrowser.ActiveXInstance;
+                    IOleObject oc = obj as IOleObject;
+                    oc.SetClientSite(this as IOleClientSite);
+
+                    _currentUsername = ImageResolver.Instance.ProxyUsers[proxy].UserName;
+                    _currentPassword = ImageResolver.Instance.ProxyUsers[proxy].Password;
+                    SetProxyServer(proxy.Address.ToString());
+
+                    webBrowser.Navigate("about:blank");
+                    Application.DoEvents();
+                }
+            }
+            else
+            {
+                SetProxyServer(null);
+            }
+        }
+
         private void deleteTask_click(object sender, EventArgs e)
         {
-            _countSuccessRegistrations++;
-            if (_countSuccessRegistrations == 5)
+            if (ImageResolver.Instance.ChekOnLimitRegistraions)
             {
-                _countSuccessRegistrations = 0;
                 if (GetNextProxyEvent != null)
+                {
                     GetNextProxyEvent();
+                    SetProxy();
+                }
             }
             if (VisaEvent != null)
                 VisaEvent(this, false);
@@ -116,24 +162,32 @@ namespace PolandVisaAuto
             _allowStep = true;
         }
 
-        private void webBrowser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
-        {
-            if (_blockAlert && webBrowser.ReadyState == WebBrowserReadyState.Complete)
-            {
-                HtmlElement head = webBrowser.Document.GetElementsByTagName("head")[0];
-                HtmlElement scriptEl = webBrowser.Document.CreateElement("script");
-                IHTMLScriptElement element = (IHTMLScriptElement)scriptEl.DomElement;
-                string alertBlocker = "window.alert = function () { }";
-                element.text = alertBlocker;
-                head.AppendChild(scriptEl);
-            }
-        }
+//        private void webBrowser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
+//        {
+//            if (_blockAlert && webBrowser.ReadyState == WebBrowserReadyState.Complete)
+//            {
+//                HtmlElement head = webBrowser.Document.GetElementsByTagName("head")[0];
+//                HtmlElement scriptEl = webBrowser.Document.CreateElement("script");
+//                IHTMLScriptElement element = (IHTMLScriptElement)scriptEl.DomElement;
+//                string alertBlocker = "window.alert = function () { }";
+//                element.text = alertBlocker;
+//                head.AppendChild(scriptEl);
+//            }
+//        }
 
         void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             _allowStep = true;
         }
 
+        private string GetProxyInfo()
+        {
+            return ImageResolver.Instance.UseProxy
+                ? "Прокси в работе!\r\nАдрес: " + ImageResolver.Instance.CurrentWebProxy.Address + "\r\n" + ImageResolver.Instance.CurrentWebProxyRegCount + "\r\n\r\n"
+                : "";
+        }
+
+        private bool _changeProxyOnce = false;
         public void DoStep()
         {
             if (_playSound)
@@ -143,26 +197,39 @@ namespace PolandVisaAuto
                 return;
             _allowStep = false;
 
+            if (_changeProxyOnce != ImageResolver.Instance.UseProxy)
+            {
+                _changeProxyOnce = ImageResolver.Instance.UseProxy;
+                SetProxy();
+            }
+
             if (webBrowser.DocumentTitle == "Service Unavailable"
             || webBrowser.DocumentTitle == "Navigation Canceled"
             || webBrowser.DocumentTitle == "The proxy server isn't responding"
-            || webBrowser.DocumentTitle == "Internet Explorer cannot display the webpage")
+            || webBrowser.DocumentTitle == "Internet Explorer cannot display the webpage"
+            || webBrowser.DocumentTitle == "This page can’t be displayed")
             {
                 _allowStep = true;
                 _enum = RotEvents.Start;
                 if (ImageResolver.Instance.UseProxy)
                 {
-                    if ((DateTime.Now - _lastProxyDateTime).Seconds > 15)
-                    {
-                        _lastProxyDateTime = DateTime.Now;
+                    //if ((DateTime.Now - _lastProxyDateTime).Seconds > 15)
+                    //{
+                    //    _lastProxyDateTime = DateTime.Now;
                         if (GetNextProxyEvent != null)
+                        {
                             GetNextProxyEvent();
-                    }
+                            SetProxy();
+                        }
+                    //}
                 }
             }
 
             try
             {
+                if(_tabPage != null && _currentTask != null)
+                    _tabPage.ToolTipText = GetProxyInfo() +_currentTask.GetInfo();
+
                 switch (_enum)
                 {
                     case RotEvents.Start:
@@ -170,7 +237,7 @@ namespace PolandVisaAuto
                             _countAttempt = 5;
                             Tasks.Sort(vc);
                             _currentTask = Tasks[0];
-                            _tabPage.ToolTipText = _currentTask.GetInfo();
+                            _tabPage.ToolTipText = GetProxyInfo() + _currentTask.GetInfo();
                             _enum = RotEvents.Firsthl;
                             webBrowser.Navigate(Const.url);
                             break;
@@ -246,7 +313,7 @@ namespace PolandVisaAuto
                                         if (apointmentDate > visaTask.GreenLineDt && apointmentDate < visaTask.RedLineDt)
                                         {
                                             _currentTask = visaTask;
-                                            _tabPage.ToolTipText = _currentTask.GetInfo();
+                                            _tabPage.ToolTipText = GetProxyInfo() + _currentTask.GetInfo();
                                         }
                                     }
                                     if (_currentTask == null)
@@ -373,7 +440,7 @@ namespace PolandVisaAuto
                             //name =ctl00$plhMain$MyCaptchaControl1
                             decaptcherImage();
                             _enum = RotEvents.Stop;
-                            _blockAlert = true;
+                            //_blockAlert = true;
                             //table id = ctl00_plhMain_gvSlot
                             // a class 
                             if (ImageResolver.Instance.AutoResolveImage)
@@ -398,7 +465,7 @@ namespace PolandVisaAuto
                                 }
                                 break;
                             }
-                            _blockAlert = false;
+                            //_blockAlert = false;
                             if (!ImageResolver.Instance.AutoResolveImage)
                             {
                                 if (webBrowser.Document.GetElementById("ApplicantDetalils") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ApplicantDetalils").InnerText))
@@ -437,7 +504,7 @@ namespace PolandVisaAuto
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                _blockAlert = false;
+                //_blockAlert = false;
                 TurnAlarmOn(false);
                 if (VisaEvent != null)
                     VisaEvent(this, false);
@@ -645,5 +712,176 @@ namespace PolandVisaAuto
                 }
             }
         }
+
+        #region Proxy
+
+        
+        private void SetProxyServer(string proxy)
+        {
+            //Create structure
+            INTERNET_PROXY_INFO proxyInfo = new INTERNET_PROXY_INFO();
+
+            if (proxy == null)
+            {
+                proxyInfo.dwAccessType = INTERNET_OPEN_TYPE_DIRECT;
+            }
+            else
+            {
+                proxyInfo.dwAccessType = INTERNET_OPEN_TYPE_PROXY;
+                proxyInfo.proxy = Marshal.StringToHGlobalAnsi(proxy);
+                proxyInfo.proxyBypass = Marshal.StringToHGlobalAnsi("local");
+            }
+
+            // Allocate memory
+            IntPtr proxyInfoPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(proxyInfo));
+
+            // Convert structure to IntPtr
+            Marshal.StructureToPtr(proxyInfo, proxyInfoPtr, true);
+            bool returnValue = InternetSetOption(IntPtr.Zero, INTERNET_OPTION_PROXY,
+                proxyInfoPtr, Marshal.SizeOf(proxyInfo));
+        }
+
+        #region IOleClientSite Members
+
+        public void SaveObject()
+        {
+            // TODO:  Add Form1.SaveObject implementation
+        }
+
+        public void GetMoniker(uint dwAssign, uint dwWhichMoniker, object ppmk)
+        {
+            // TODO:  Add Form1.GetMoniker implementation
+        }
+
+        public void GetContainer(object ppContainer)
+        {
+            ppContainer = this;
+        }
+
+        public void ShowObject()
+        {
+            // TODO:  Add Form1.ShowObject implementation
+        }
+
+        public void OnShowWindow(bool fShow)
+        {
+            // TODO:  Add Form1.OnShowWindow implementation
+        }
+
+        public void RequestNewObjectLayout()
+        {
+            // TODO:  Add Form1.RequestNewObjectLayout implementation
+        }
+
+        #endregion
+
+        #region IServiceProvider Members
+
+        public int QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
+        {
+            int nRet = guidService.CompareTo(IID_IAuthenticate);
+            if (nRet == 0)
+            {
+                nRet = riid.CompareTo(IID_IAuthenticate);
+                if (nRet == 0)
+                {
+                    ppvObject = Marshal.GetComInterfaceForObject(this, typeof(IAuthenticate));
+                    return S_OK;
+                }
+            }
+
+            ppvObject = new IntPtr();
+            return INET_E_DEFAULT_ACTION;
+        }
+
+        #endregion
+
+        #region IAuthenticate Members
+
+        public int Authenticate(ref IntPtr phwnd, ref IntPtr pszUsername, ref IntPtr pszPassword)
+        {
+            IntPtr sUser = Marshal.StringToCoTaskMemAuto(_currentUsername);
+            IntPtr sPassword = Marshal.StringToCoTaskMemAuto(_currentPassword);
+
+            pszUsername = sUser;
+            pszPassword = sPassword;
+            return S_OK;
+        }
+
+        #endregion
     }
+
+    public struct INTERNET_PROXY_INFO
+    {
+        public int dwAccessType;
+        public IntPtr proxy;
+        public IntPtr proxyBypass;
+    }
+
+    #region COM Interfaces
+
+    [ComImport, Guid("00000112-0000-0000-C000-000000000046"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IOleObject
+    {
+        void SetClientSite(IOleClientSite pClientSite);
+        void GetClientSite(IOleClientSite ppClientSite);
+        void SetHostNames(object szContainerApp, object szContainerObj);
+        void Close(uint dwSaveOption);
+        void SetMoniker(uint dwWhichMoniker, object pmk);
+        void GetMoniker(uint dwAssign, uint dwWhichMoniker, object ppmk);
+        void InitFromData(IDataObject pDataObject, bool
+            fCreation, uint dwReserved);
+        void GetClipboardData(uint dwReserved, IDataObject ppDataObject);
+        void DoVerb(uint iVerb, uint lpmsg, object pActiveSite,
+            uint lindex, uint hwndParent, uint lprcPosRect);
+        void EnumVerbs(object ppEnumOleVerb);
+        void Update();
+        void IsUpToDate();
+        void GetUserClassID(uint pClsid);
+        void GetUserType(uint dwFormOfType, uint pszUserType);
+        void SetExtent(uint dwDrawAspect, uint psizel);
+        void GetExtent(uint dwDrawAspect, uint psizel);
+        void Advise(object pAdvSink, uint pdwConnection);
+        void Unadvise(uint dwConnection);
+        void EnumAdvise(object ppenumAdvise);
+        void GetMiscStatus(uint dwAspect, uint pdwStatus);
+        void SetColorScheme(object pLogpal);
+    }
+
+    [ComImport, Guid("00000118-0000-0000-C000-000000000046"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IOleClientSite
+    {
+        void SaveObject();
+        void GetMoniker(uint dwAssign, uint dwWhichMoniker, object ppmk);
+        void GetContainer(object ppContainer);
+        void ShowObject();
+        void OnShowWindow(bool fShow);
+        void RequestNewObjectLayout();
+    }
+
+    [ComImport, GuidAttribute("6d5140c1-7436-11ce-8034-00aa006009fa"),
+    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown),
+    ComVisible(false)]
+    public interface IServiceProvider
+    {
+        [return: MarshalAs(UnmanagedType.I4)]
+        [PreserveSig]
+        int QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
+    }
+
+    [ComImport, GuidAttribute("79EAC9D0-BAF9-11CE-8C82-00AA004BA90B"),
+    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown),
+    ComVisible(false)]
+    public interface IAuthenticate
+    {
+        [return: MarshalAs(UnmanagedType.I4)]
+        [PreserveSig]
+        int Authenticate(ref IntPtr phwnd, ref IntPtr pszUsername, ref IntPtr pszPassword);
+    }
+
+    #endregion
+
+        #endregion
 }
