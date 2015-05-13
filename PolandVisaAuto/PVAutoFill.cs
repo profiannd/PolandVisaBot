@@ -3,11 +3,14 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using pvhelper;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace PolandVisaAuto
 {
@@ -393,5 +396,90 @@ namespace PolandVisaAuto
             ImageResolver.Instance.UseProxy = chbProxy.Checked;
             UpdateSetting(Const.USEPROXY, ImageResolver.Instance.UseProxy.ToString());
         }
+
+        #region Export To Excel
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var ci = Thread.CurrentThread.CurrentCulture;
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+                Excel.Application xlApp;
+                Excel.Workbook xlWorkBook;
+                Excel.Worksheet xlWorkSheet;
+                object misValue = System.Reflection.Missing.Value;
+
+                Int16 i, j;
+
+                xlApp = new Excel.ApplicationClass();
+                xlWorkBook = xlApp.Workbooks.Add(misValue);
+
+                xlWorkSheet = (Excel.Worksheet) xlWorkBook.Worksheets.get_Item(1);
+                xlWorkSheet.Name = "Основные задания";
+                for (i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        xlWorkSheet.Cells[i + 1, j + 1] = dataGridView1[j, i].Value == null
+                            ? ""
+                            : dataGridView1[j, i].Value.ToString();
+                    }
+                }
+
+                xlWorkSheet = (Excel.Worksheet) xlWorkBook.Worksheets.get_Item(2);
+                xlWorkSheet.Name = "Удаленные задания";
+                for (i = 0; i < dataGridView2.RowCount; i++)
+                {
+                    for (j = 0; j < dataGridView2.ColumnCount; j++)
+                    {
+                        xlWorkSheet.Cells[i + 1, j + 1] = dataGridView2[j, i].Value == null
+                            ? ""
+                            : dataGridView2[j, i].Value.ToString();
+                    }
+                }
+
+                string path = Path.Combine(AssemblyDirectory, "Export");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                var file = Path.Combine(path,string.Format("export_{0}.xls",DateTime.Now.ToString(Const.DateFormatForFile, CultureInfo.InvariantCulture)));
+                xlWorkBook.SaveAs(file,Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue,Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                xlWorkBook.Close(true, misValue, misValue);
+                xlApp.Quit();
+
+                releaseObject(xlWorkSheet);
+                releaseObject(xlWorkBook);
+                releaseObject(xlApp);
+
+                Thread.CurrentThread.CurrentCulture = ci;
+                MessageBox.Show("Файл \r\n" + file + "\r\n успешно экспортирован!");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                MessageBox.Show(ex.ToString(), "Ошибка!");
+            }
+        }
+
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occured while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+
+        #endregion
     }
 }

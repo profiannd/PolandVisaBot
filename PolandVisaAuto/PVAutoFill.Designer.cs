@@ -40,6 +40,7 @@ namespace PolandVisaAuto
             this.radioinfo = new System.Windows.Forms.RadioButton();
             this.radiocom = new System.Windows.Forms.RadioButton();
             this.restoreButton = new Button();
+            this.exportButton = new Button();
             this.chbAutoResolveImage = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -174,6 +175,7 @@ namespace PolandVisaAuto
             this.groupBox7.Controls.Add(this.radioinfo);
             this.groupBox7.Controls.Add(this.radiocom);
             this.groupBox7.Controls.Add(this.restoreButton);
+            this.groupBox7.Controls.Add(this.exportButton);
             this.groupBox7.Controls.Add(this.chbAutoResolveImage);
             this.groupBox7.Location = new System.Drawing.Point(34, 460);
             this.groupBox7.Name = "groupBox7";
@@ -229,12 +231,22 @@ namespace PolandVisaAuto
             //restoreButton
             //
             this.restoreButton.BackColor = System.Drawing.Color.YellowGreen;
-            this.restoreButton.Location = new System.Drawing.Point(280, 60);
+            this.restoreButton.Location = new System.Drawing.Point(320, 20);
             this.restoreButton.Name = "restoreButton";
             this.restoreButton.Size = new System.Drawing.Size(120, 75);
             this.restoreButton.UseVisualStyleBackColor = false;
             this.restoreButton.Text = "Восстановить удаленную задачу";
             this.restoreButton.Click += restoreButton_Click;
+            //
+            //exportButton
+            //
+            this.exportButton.BackColor = System.Drawing.Color.YellowGreen;
+            this.exportButton.Location = new System.Drawing.Point(320, 120);
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(120, 30);
+            this.exportButton.UseVisualStyleBackColor = false;
+            this.exportButton.Text = "Экспорт в Excel";
+            this.exportButton.Click += button2_Click;
             // 
             // chbAutoResolveImage
             // 
@@ -1034,6 +1046,7 @@ namespace PolandVisaAuto
         private RadioButton radioinfo;
         private RadioButton radiocom;
         private Button restoreButton;
+        private Button exportButton;
         private CheckBox chbAutoResolveImage;
         private Label label18;
         private DataGridViewButtonColumn deleteButton2;

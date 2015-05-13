@@ -125,12 +125,15 @@ namespace PolandVisaAuto
 
         private void deleteTask_click(object sender, EventArgs e)
         {
-            if (ImageResolver.Instance.ChekOnLimitRegistraions)
+            if (sender as RegCount == null)
             {
-                if (GetNextProxyEvent != null)
+                if (ImageResolver.Instance.ChekOnLimitRegistraions)
                 {
-                    GetNextProxyEvent();
-                    SetProxy();
+                    if (GetNextProxyEvent != null)
+                    {
+                        GetNextProxyEvent();
+                        SetProxy();
+                    }
                 }
             }
             if (VisaEvent != null)
@@ -347,7 +350,7 @@ namespace PolandVisaAuto
                                     Logger.Warning(string.Format("Заявка для {0} {1} уже зарегестрированна. Ответ сайта: {2}",_currentTask.LastName, _currentTask.Name, text));
                                     if (string.IsNullOrEmpty(_currentTask.RegistrationInfo))
                                         _currentTask.RegistrationInfo = "Please get info from site.";
-                                    deleteTask_click(null, null);
+                                    deleteTask_click(new RegCount(), null);
                                     break;
                                 }
                                 Logger.Error("Надо исправить ошибку: \r\n " + text);
