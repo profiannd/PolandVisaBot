@@ -319,7 +319,6 @@ namespace PolandVisaAuto
             this.dtRedLine.Name = "dtRedLine";
             this.dtRedLine.Size = new System.Drawing.Size(222, 23);
             this.dtRedLine.TabIndex = 15;
-            this.dtRedLine.Value = new System.DateTime(2015, 3, 19, 0, 0, 0, 0);
             // 
             // groupBox5
             // 
@@ -352,7 +351,6 @@ namespace PolandVisaAuto
             this.dtArrivalDate.Name = "dtArrivalDate";
             this.dtArrivalDate.Size = new System.Drawing.Size(222, 23);
             this.dtArrivalDate.TabIndex = 16;
-            this.dtArrivalDate.Value = new System.DateTime(2015, 3, 19, 0, 0, 0, 0);
             // 
             // dtDob
             // 
@@ -362,7 +360,6 @@ namespace PolandVisaAuto
             this.dtDob.Name = "dtDob";
             this.dtDob.Size = new System.Drawing.Size(222, 23);
             this.dtDob.TabIndex = 15;
-            this.dtDob.Value = new System.DateTime(2015, 3, 19, 0, 0, 0, 0);
             // 
             // dtEndPass
             // 
@@ -372,7 +369,6 @@ namespace PolandVisaAuto
             this.dtEndPass.Name = "dtEndPass";
             this.dtEndPass.Size = new System.Drawing.Size(222, 23);
             this.dtEndPass.TabIndex = 14;
-            this.dtEndPass.Value = new System.DateTime(2015, 3, 19, 0, 0, 0, 0);
             // 
             // cbxNation
             // 
@@ -618,7 +614,6 @@ namespace PolandVisaAuto
             this.dtGreenLine.Name = "dtGreenLine";
             this.dtGreenLine.Size = new System.Drawing.Size(222, 23);
             this.dtGreenLine.TabIndex = 19;
-            this.dtGreenLine.Value = new System.DateTime(2015, 3, 19, 0, 0, 0, 0);
             // 
             // label4
             // 
