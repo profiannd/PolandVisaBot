@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pvhelper", "..\pvhelper\pvh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecaptcherAPI", "..\api_csharp_32_bit\DecaptcherAPI.csproj", "{E8BA4D5B-5DD8-4F54-A423-56444956E224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-Konsulat", "..\E-Konsulat\E-Konsulat.csproj", "{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,14 +55,6 @@ Global
 		{E8BA4D5B-5DD8-4F54-A423-56444956E224}.Release|x64.Build.0 = Release|x64
 		{E8BA4D5B-5DD8-4F54-A423-56444956E224}.Release|x86.ActiveCfg = Release|x86
 		{E8BA4D5B-5DD8-4F54-A423-56444956E224}.Release|x86.Build.0 = Release|x86
-		{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}.Release|x64.ActiveCfg = Release|Any CPU
-		{FB6FE6F3-BC6C-4306-8221-E5F75E02E02A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
