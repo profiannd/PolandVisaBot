@@ -39,7 +39,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtBirthCountry = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtCitizenshipNow = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioSexF = new System.Windows.Forms.RadioButton();
@@ -53,6 +53,8 @@
             this.radioHolost = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dtDob = new System.Windows.Forms.DateTimePicker();
+            this.txtDobNationality = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -147,12 +149,12 @@
             this.label6.TabIndex = 10;
             this.label6.Text = "Страна рождения";
             // 
-            // textBox2
+            // txtCitizenshipNow
             // 
-            this.textBox2.Location = new System.Drawing.Point(16, 272);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(232, 20);
-            this.textBox2.TabIndex = 13;
+            this.txtCitizenshipNow.Location = new System.Drawing.Point(16, 272);
+            this.txtCitizenshipNow.Name = "txtCitizenshipNow";
+            this.txtCitizenshipNow.Size = new System.Drawing.Size(232, 20);
+            this.txtCitizenshipNow.TabIndex = 13;
             // 
             // label7
             // 
@@ -279,10 +281,12 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.txtDobNationality);
+            this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.dtDob);
             this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Controls.Add(this.groupBox1);
-            this.groupBox3.Controls.Add(this.textBox2);
+            this.groupBox3.Controls.Add(this.txtCitizenshipNow);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.txtBirthCountry);
             this.groupBox3.Controls.Add(this.label6);
@@ -297,7 +301,7 @@
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(464, 308);
+            this.groupBox3.Size = new System.Drawing.Size(464, 344);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             // 
@@ -310,13 +314,29 @@
             this.dtDob.Size = new System.Drawing.Size(232, 20);
             this.dtDob.TabIndex = 16;
             // 
+            // txtDobNationality
+            // 
+            this.txtDobNationality.Location = new System.Drawing.Point(16, 318);
+            this.txtDobNationality.Name = "txtDobNationality";
+            this.txtDobNationality.Size = new System.Drawing.Size(232, 20);
+            this.txtDobNationality.TabIndex = 18;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(13, 302);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(246, 13);
+            this.label8.TabIndex = 17;
+            this.label8.Text = "Гражданство при рождении (национальность)  ";
+            // 
             // PersonalData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox3);
             this.Name = "PersonalData";
-            this.Size = new System.Drawing.Size(470, 314);
+            this.Size = new System.Drawing.Size(470, 353);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -340,7 +360,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtBirthCountry;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtCitizenshipNow;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioSexF;
@@ -354,5 +374,7 @@
         private System.Windows.Forms.RadioButton radioHolost;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DateTimePicker dtDob;
+        private System.Windows.Forms.TextBox txtDobNationality;
+        private System.Windows.Forms.Label label8;
     }
 }
