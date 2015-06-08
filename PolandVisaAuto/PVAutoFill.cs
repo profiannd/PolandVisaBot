@@ -418,27 +418,29 @@ namespace PolandVisaAuto
 
                 xlWorkSheet = (Excel.Worksheet) xlWorkBook.Worksheets.get_Item(1);
                 xlWorkSheet.Name = "Основные задания";
-                for (i = 0; i < dataGridView1.RowCount; i++)
-                {
-                    for (j = 0; j < dataGridView1.ColumnCount; j++)
-                    {
-                        xlWorkSheet.Cells[i + 1, j + 1] = dataGridView1[j, i].Value == null
-                            ? ""
-                            : dataGridView1[j, i].Value.ToString();
-                    }
-                }
+                WriteCells(xlWorkSheet, dataGridView1);
+//                for (i = 0; i < dataGridView1.RowCount; i++)
+//                {
+//                    for (j = 0; j < dataGridView1.ColumnCount; j++)
+//                    {
+//                        xlWorkSheet.Cells[i + 1, j + 1] = dataGridView1[j, i].Value == null
+//                            ? ""
+//                            : dataGridView1[j, i].Value.ToString();
+//                    }
+//                }
 
                 xlWorkSheet = (Excel.Worksheet) xlWorkBook.Worksheets.get_Item(2);
                 xlWorkSheet.Name = "Удаленные задания";
-                for (i = 0; i < dataGridView2.RowCount; i++)
-                {
-                    for (j = 0; j < dataGridView2.ColumnCount; j++)
-                    {
-                        xlWorkSheet.Cells[i + 1, j + 1] = dataGridView2[j, i].Value == null
-                            ? ""
-                            : dataGridView2[j, i].Value.ToString();
-                    }
-                }
+                WriteCells(xlWorkSheet, dataGridView2);
+//                for (i = 0; i < dataGridView2.RowCount; i++)
+//                {
+//                    for (j = 0; j < dataGridView2.ColumnCount; j++)
+//                    {
+//                        xlWorkSheet.Cells[i + 1, j + 1] = dataGridView2[j, i].Value == null
+//                            ? ""
+//                            : dataGridView2[j, i].Value.ToString();
+//                    }
+//                }
 
                 string path = Path.Combine(AssemblyDirectory, "Export");
                 if (!Directory.Exists(path))
@@ -459,6 +461,40 @@ namespace PolandVisaAuto
             {
                 Logger.Error(ex);
                 MessageBox.Show(ex.ToString(), "Ошибка!");
+            }
+        }
+
+        private void WriteCells(Excel.Worksheet xlWorkSheet, DataGridView dataGridView)
+        {
+            Excel.Range cells = xlWorkSheet.Cells;
+            // set each cell's format to Text
+            cells.NumberFormat = "@";
+            Int16 i = 0;
+            xlWorkSheet.Cells[i + 1, 1] = "Город";
+            xlWorkSheet.Cells[i + 1, 2] = "Имя";
+            xlWorkSheet.Cells[i + 1, 3] = "Фамилия";
+            xlWorkSheet.Cells[i + 1, 4] = "Дата рожд";
+            xlWorkSheet.Cells[i + 1, 5] = "Паспорт";
+            xlWorkSheet.Cells[i + 1, 6] = "Дата окончания";
+            xlWorkSheet.Cells[i + 1, 7] = "Код";
+            xlWorkSheet.Cells[i + 1, 8] = "Начало регистрации";
+            xlWorkSheet.Cells[i + 1, 9] = "Конец регистрации";
+            xlWorkSheet.Cells[i + 1, 10] = "Mыло";
+            xlWorkSheet.Cells[i + 1, 11] = "Пароль";
+
+            for (i = 0; i < dataGridView.RowCount; i++)
+            {
+                xlWorkSheet.Cells[i + 2, 1] = dataGridView[2, i].Value == null ? "" : dataGridView[2, i].Value.ToString();
+                xlWorkSheet.Cells[i + 2, 2] = dataGridView[12, i].Value == null ? "" : dataGridView[12, i].Value.ToString();
+                xlWorkSheet.Cells[i + 2, 3] = dataGridView[13, i].Value == null ? "" : dataGridView[13, i].Value.ToString();
+                xlWorkSheet.Cells[i + 2, 4] = dataGridView[14, i].Value == null ? "" : dataGridView[14, i].Value.ToString();
+                //xlWorkSheet.Cells[i + 2, 5] = "";
+                xlWorkSheet.Cells[i + 2, 6] = dataGridView[10, i].Value == null ? "" : dataGridView[10, i].Value.ToString();
+                xlWorkSheet.Cells[i + 2, 7] = dataGridView[7, i].Value == null ? "" : dataGridView[7, i].Value.ToString();
+                xlWorkSheet.Cells[i + 2, 8] = dataGridView[19, i].Value == null ? "" : dataGridView[19, i].Value.ToString();
+                xlWorkSheet.Cells[i + 2, 9] = dataGridView[18, i].Value == null ? "" : dataGridView[18, i].Value.ToString();
+                xlWorkSheet.Cells[i + 2, 10] = dataGridView[8, i].Value == null ? "" : dataGridView[8, i].Value.ToString();
+                xlWorkSheet.Cells[i + 2, 11] = dataGridView[9, i].Value == null ? "" : dataGridView[9, i].Value.ToString();
             }
         }
 
