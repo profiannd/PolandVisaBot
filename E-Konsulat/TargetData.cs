@@ -9,5 +9,15 @@ namespace E_Konsulat
         {
             InitializeComponent();
         }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxFamily_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
