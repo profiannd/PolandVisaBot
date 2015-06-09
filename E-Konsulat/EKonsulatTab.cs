@@ -9,16 +9,17 @@ using System.Media;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using PolandVisaAuto;
 using mshtml;
 using pvhelper;
 
-namespace PolandVisaAuto
+namespace E_Konsulat
 {
-    public class VisaTab : IOleClientSite, IServiceProvider, IAuthenticate
+    public class EKonsulatTab : IOleClientSite, IServiceProvider, IAuthenticate
     {
         #region Proxy def
 
-         [DllImport("wininet.dll", SetLastError = true)]
+        [DllImport("wininet.dll", SetLastError = true)]
         private static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int lpdwBufferLength);
         private Guid IID_IAuthenticate = new Guid("79eac9d0-baf9-11ce-8c82-00aa004ba90b");
         private const int INET_E_DEFAULT_ACTION = unchecked((int)0x800C0011);
@@ -37,20 +38,20 @@ namespace PolandVisaAuto
         private Button renewTask;
         private bool _allowStep = true;
         private RotEvents _enum = RotEvents.Start;
-        private VisaTask _currentTask = null;
-        public List<VisaTask> Tasks = new List<VisaTask>();
+        private KonsulatTask _currentTask = null;
+        public List<KonsulatTask> Tasks = new List<KonsulatTask>();
         public bool IsTabExists { get; set; }
         private TabPage _tabPage;
-        private VisaComparer vc = new VisaComparer();
+        private KonsulatComparer vc = new KonsulatComparer();
         //private static DateTime _lastProxyDateTime = DateTime.Now;
 
-        public delegate void TaskDelegate(VisaTask task);
+        public delegate void TaskDelegate(KonsulatTask task);
         public event TaskDelegate TaskEvent;
 
         public delegate void TabDelegate(TabPage tab);
         public event TabDelegate TabEvent;
 
-        public delegate void TabDelegateMain(VisaTab visa, bool add);
+        public delegate void TabDelegateMain(EKonsulatTab visa, bool add);
         public event TabDelegateMain VisaEvent;
 
         public delegate void TabDelegateEx(TabPage tab, bool alarm);
@@ -71,8 +72,8 @@ namespace PolandVisaAuto
             sp = new SoundPlayer(assembly.GetManifestResourceStream("PolandVisaAuto.WindowsError.wav"));
         }
 
-        public VisaTab(){}
-        public VisaTab(VisaTask task, TabPage tabPage)
+        public EKonsulatTab(){}
+        public EKonsulatTab(KonsulatTask task, TabPage tabPage)
         {
             initSound();
             Tasks.Add(task);
@@ -242,266 +243,285 @@ namespace PolandVisaAuto
                             _currentTask = Tasks[0];
                             _tabPage.ToolTipText = GetProxyInfo() + _currentTask.GetInfo();
                             _enum = RotEvents.Firsthl;
-                            webBrowser.Navigate(Const.Url);
+                            webBrowser.Navigate(Const.UrlEkonsulat);
                             break;
                         }
                     case RotEvents.Firsthl:
                         {
-                            pressOnLink(webBrowser, "Призначити дату подачі документів");
+                            SelectFromCombo("ctl00$ddlWersjeJezykowe", "Русская");
+                            _allowStep = true;
+
+//                            for (int i = 0; i < this.webBrowser.Document.GetElementById("ctl00$ddlWersjeJezykowe").Children.Count; i++)
+//                            {
+//                                HtmlElement child = this.webBrowser.Document.GetElementById("ctl00$ddlWersjeJezykowe").Children[i];
+//                                if (child.InnerText == "Русская")
+//                                {
+//                                    this.webBrowser.Document.GetElementById("ctl00$ddlWersjeJezykowe").SetAttribute("selectedIndex", i.ToString());
+//                                    break;
+//                                }
+//                            }
+                            //webBrowser.Document.GetElementById("ctl00$ddlWersjeJezykowe").SetAttribute("selectedIndex", "17");
+//                            webBrowser.Document.GetElementById("ctl00$tresc$cbListaKrajow").SetAttribute("selectedIndex", "4");
+//                            webBrowser.Document.GetElementById("ctl00$tresc$cbListaPlacowek").SetAttribute("selectedIndex", "88");
                             _enum = RotEvents.FirstCombo;
                             break;
                         }
                     case RotEvents.FirstCombo:
                         {
-                            webBrowser.Document.GetElementById("ctl00_plhMain_cboVAC").SetAttribute("selectedIndex", _currentTask.CityCode);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_cboPurpose").SetAttribute("selectedIndex", _currentTask.PurposeCode);
+                            SelectFromCombo("ctl00$tresc$cbListaKrajow", "УКРАИНА");
+                            //_allowStep = true;
+
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_cboVAC").SetAttribute("selectedIndex", _currentTask.CityCode);
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_cboPurpose").SetAttribute("selectedIndex", _currentTask.PurposeCode);
                             _enum = RotEvents.SecondCombo;
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                             break;
                         }
                     case RotEvents.SecondCombo:
                         {
-                            webBrowser.Document.GetElementById("ctl00_plhMain_tbxNumOfApplicants").SetAttribute("value", _currentTask.CountAdult.ToString());
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren") != null)
-                                webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren").SetAttribute("value", _currentTask.CountChild.ToString());
-
-                            for (int i = 0; i < this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").Children.Count; i++)
-                            {
-                                HtmlElement child = this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").Children[i];
-                                if (child.InnerText == _currentTask.Category)
-                                {
-                                    this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").SetAttribute("selectedIndex", i.ToString());
-                                    break;
-                                }
-                            }
+                            SelectFromCombo("ctl00$tresc$cbListaPlacowek", "Винница");
+                            _allowStep = true;
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_tbxNumOfApplicants").SetAttribute("value", _currentTask.CountAdult.ToString());
+//                            if (webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren") != null)
+//                                webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren").SetAttribute("value", _currentTask.CountChild.ToString());
+//
+//                            for (int i = 0; i < this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").Children.Count; i++)
+//                            {
+//                                HtmlElement child = this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").Children[i];
+//                                if (child.InnerText == _currentTask.Category)
+//                                {
+//                                    this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").SetAttribute("selectedIndex", i.ToString());
+//                                    break;
+//                                }
+//                            }
                             _enum = RotEvents.Submit;
-                            this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").InvokeMember("onchange");
+//                            this.webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").InvokeMember("onchange");
                             break;
                         }
                     case RotEvents.Submit:
                         {
-                            string showStopper = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                            if (showStopper.Contains("Number of Persons should not be"))
-                            {
-                                Logger.Warning("Сбой в работе сайта. Ошибка: " + showStopper);
-                                _currentTask = null;
-                                _enum = RotEvents.Start;
-                                _allowStep = true;
-                                break;
-                            }
-                            richText.Text = "Свободна дата: " + showStopper;
-                            Logger.Info(_currentTask.City + ": "+ richText.Text);
-
-                            _tabPage.Text = _currentTask.CityV + "~" + (showStopper.Contains("No date(s) available") ? "No date(s)" : showStopper);
-                            if (!showStopper.Contains("No date(s) available"))
-                            {
-                                var apointmentDate = ProcessDate(showStopper);
-                                if (apointmentDate > _currentTask.GreenLineDt && apointmentDate < _currentTask.RedLineDt)
-                                {
-                                    webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
-                                    _enum = RotEvents.FillReceipt;
-                                    TurnAlarmOn(true);
-                                    if (VisaEvent != null)
-                                        VisaEvent(this, true);
-                                    break;
-                                }
-                                else
-                                {
-                                    Logger.Info("Задание не укладывается в интервал разрешенных дат.");
-                                    Logger.Info(_currentTask.GetInfo());
-                                    _currentTask = null;
-                                    Tasks.Sort(vc);
-                                    foreach (VisaTask visaTask in Tasks)
-                                    {
-                                        if (apointmentDate > visaTask.GreenLineDt && apointmentDate < visaTask.RedLineDt)
-                                        {
-                                            _currentTask = visaTask;
-                                            _tabPage.ToolTipText = GetProxyInfo() + _currentTask.GetInfo();
-                                        }
-                                    }
-                                    if (_currentTask == null)
-                                    {
-                                        Logger.Warning("Нет заданий для даты " + showStopper);
-                                        throw new Exception("бегаем по кругу, ждем с моря погоды");
-                                    }
-                                    Logger.Info("Выбрали новое Задание");
-                                    Logger.Info(_currentTask.GetInfo());
-                                }
-                            }
-                            _enum = RotEvents.FirstCombo;
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnCancel").InvokeMember("click");
+//                            string showStopper = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+//                            if (showStopper.Contains("Number of Persons should not be"))
+//                            {
+//                                Logger.Warning("Сбой в работе сайта. Ошибка: " + showStopper);
+//                                _currentTask = null;
+//                                _enum = RotEvents.Start;
+//                                _allowStep = true;
+//                                break;
+//                            }
+//                            richText.Text = "Свободна дата: " + showStopper;
+//                            Logger.Info(_currentTask.City + ": "+ richText.Text);
+//
+//                            _tabPage.Text = _currentTask.CityV + "~" + (showStopper.Contains("No date(s) available") ? "No date(s)" : showStopper);
+//                            if (!showStopper.Contains("No date(s) available"))
+//                            {
+//                                var apointmentDate = ProcessDate(showStopper);
+//                                if (apointmentDate > _currentTask.GreenLineDt && apointmentDate < _currentTask.RedLineDt)
+//                                {
+//                                    webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+//                                    _enum = RotEvents.FillReceipt;
+//                                    TurnAlarmOn(true);
+//                                    if (VisaEvent != null)
+//                                        VisaEvent(this, true);
+//                                    break;
+//                                }
+//                                else
+//                                {
+//                                    Logger.Info("Задание не укладывается в интервал разрешенных дат.");
+//                                    Logger.Info(_currentTask.GetInfo());
+//                                    _currentTask = null;
+//                                    Tasks.Sort(vc);
+//                                    foreach (VisaTask visaTask in Tasks)
+//                                    {
+//                                        if (apointmentDate > visaTask.GreenLineDt && apointmentDate < visaTask.RedLineDt)
+//                                        {
+//                                            _currentTask = visaTask;
+//                                            _tabPage.ToolTipText = GetProxyInfo() + _currentTask.GetInfo();
+//                                        }
+//                                    }
+//                                    if (_currentTask == null)
+//                                    {
+//                                        Logger.Warning("Нет заданий для даты " + showStopper);
+//                                        throw new Exception("бегаем по кругу, ждем с моря погоды");
+//                                    }
+//                                    Logger.Info("Выбрали новое Задание");
+//                                    Logger.Info(_currentTask.GetInfo());
+//                                }
+//                            }
+//                            _enum = RotEvents.FirstCombo;
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_btnCancel").InvokeMember("click");
                             break;
                         }
-                    case RotEvents.FillReceipt:
-                        {
-                            Logger.Info(_currentTask.City+": Номер квитанции: " + _currentTask.Receipt);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppReceiptDetails_ctl01_txtReceiptNumber").SetAttribute("value", _currentTask.Receipt);
-                            _enum = RotEvents.FillEmail;
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
-                            break;
-                        }
-                    case RotEvents.FillEmail:
-                        {
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
-                            {
-                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                                if (text.Contains(_currentTask.Receipt))
-                                {
-                                    Logger.Warning(string.Format("Заявка для {0} {1} уже зарегестрированна. Ответ сайта: {2}",_currentTask.LastName, _currentTask.Name, text));
-                                    if (string.IsNullOrEmpty(_currentTask.RegistrationInfo))
-                                        _currentTask.RegistrationInfo = "Please get info from site.";
-                                    deleteTask_click(new RegCount(), null);
-                                    break;
-                                }
-                                Logger.Error("Надо исправить ошибку: \r\n " + text);
-                                richText.Text = "Надо исправить ошибку: \r\n " + text;
-                                renewTask.Visible = true;
-                                deleteTask.Visible = true;
-                                _enum = RotEvents.FillReceipt;
-                                break;
-                            }
-                            Logger.Info(string.Format("{0}: Email: {1} Pass: {2}", _currentTask.City,_currentTask.Email, _currentTask.Password));
-                            webBrowser.Document.GetElementById("ctl00_plhMain_txtEmailID").SetAttribute("value", _currentTask.Email);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_txtPassword").SetAttribute("value", _currentTask.Password);
-                            _enum = RotEvents.FirstCupture;
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmitDetails").InvokeMember("click");
-                            break;
-                        }
-                    case RotEvents.FirstCupture:
-                        {
-                            ImageResolver.Instance.SystemDecaptcherLoad();
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText))
-                            {
-                                string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
-                                Logger.Error("Надо исправить ошибку: \r\n " + error);
-                                richText.Text ="Надо исправить ошибку: \r\n " + error;
-                                renewTask.Visible = true;
-                                deleteTask.Visible = true;
-                                _enum = RotEvents.FillEmail;
-                                break;
-                            }
-
-                            Logger.Warning("Дружищще, отправляй меня быстрее "+ _currentTask.GetInfo());
-                            richText.AppendText(_currentTask.GetInfo());
-                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxPPTEXPDT").SetAttribute("value", _currentTask.PassportEndDate);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboTitle").SetAttribute("selectedIndex", _currentTask.StatusCode);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxFName").SetAttribute("value", _currentTask.Name);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxLName").SetAttribute("value", _currentTask.LastName);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxDOB").SetAttribute("value", _currentTask.Dob);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxReturn").SetAttribute("value", _currentTask.ArrivalDt);
-
-                            for (int i = 0; i < this.webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboNationality").Children.Count; i++)
-                            {
-                                HtmlElement child = this.webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboNationality").Children[i];
-                                if (child.InnerText == _currentTask.Nationality)
-                                {
-                                    this.webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboNationality").SetAttribute("selectedIndex", i.ToString());
-                                    break;
-                                }
-                            }
-
-                            decaptcherImage();
-                            //ctl00_plhMain_btnSubmit
-                            _enum = RotEvents.SecondCupture;
-                            if(ImageResolver.Instance.AutoResolveImage)
-                                webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
-
-                            break;
-                        }
-                    case RotEvents.SecondCupture:
-                        {
-                            ImageResolver.Instance.SystemDecaptcherLoad();
-                            decaptcherImage();
-                            _enum = RotEvents.ThirdCupture;
-
-                            //date
-                            //class = OpenDateAllocated   <a>
-                            if (ImageResolver.Instance.AutoResolveImage)
-                                PressOnLinkOnCalendar();
-                            //===============================
-                            break;
-                        }
-                    case RotEvents.ThirdCupture:
-                        {
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
-                            {
-                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                                Logger.Error("ошибкa: \r\n " + text);
-                                if (text.Contains("текст не відповідає символам на зображенні") && !ImageResolver.Instance.AutoResolveImage)
-                                {
-                                    if (_countAttempt-- != 0)
-                                    {
-                                        ImageResolver.Instance.SystemDecaptcherLoad();
-                                        decaptcherImage();
-                                        PressOnLinkOnCalendar();
-                                    }
-                                }
-                                break;
-                            }
-
-                            //text
-                            //name =ctl00$plhMain$MyCaptchaControl1
-                            decaptcherImage();
-                            _enum = RotEvents.Stop;
-                            //_blockAlert = true;
-                            //table id = ctl00_plhMain_gvSlot
-                            // a class 
-                            if (ImageResolver.Instance.AutoResolveImage)
-                                PressOnLinkByClass("backlink");
-
-                            break;
-                        }
-                    case RotEvents.Stop:
-                        {
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
-                            {
-                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
-                                Logger.Error("ошибкa: \r\n " + text);
-                                if (text.Contains("текст не відповідає символам на зображенні") && !ImageResolver.Instance.AutoResolveImage)
-                                {
-                                    if (_countAttempt-- != 0)
-                                    {
-                                        ImageResolver.Instance.SystemDecaptcherLoad();
-                                        decaptcherImage();
-                                        PressOnLinkByClass("backlink");
-                                    }
-                                }
-                                break;
-                            }
-                            //_blockAlert = false;
-                            if (!ImageResolver.Instance.AutoResolveImage)
-                            {
-                                if (webBrowser.Document.GetElementById("ApplicantDetalils") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ApplicantDetalils").InnerText))
-                                {
-                                    Logger.Info("Заявка успешно зарегистрирована. ");
-                                    string registrationInfo = webBrowser.Document.GetElementById("ApplicantDetalils").InnerText;
-                                    Logger.Info(registrationInfo);
-                                    _currentTask.RegistrationInfo = registrationInfo;
-                                }
-                                renewTask.Visible = true;
-                                deleteTask.Visible = true;
-                            }
-                            else
-                            {
-                                if (webBrowser.Document.GetElementById("ApplicantDetalils") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ApplicantDetalils").InnerText))
-                                {
-                                    Logger.Info("Заявка успешно зарегистрирована. ");
-                                    string registrationInfo = webBrowser.Document.GetElementById("ApplicantDetalils").InnerText;
-                                    Logger.Info(registrationInfo);
-                                    _currentTask.RegistrationInfo = registrationInfo;
-                                    deleteTask_click(null, null);
-                                }
-                                else
-                                {
-                                    Logger.Info("Регистрация заявки не состоялась на этапе выбора времени.");
-                                    renewTask_click(null, null);
-                                }
-                            }
-                            
-                            TurnAlarmOn(false);
-                            
-                            break;
-                        }
+//                    case RotEvents.FillReceipt:
+//                        {
+//                            Logger.Info(_currentTask.City+": Номер квитанции: " + _currentTask.Receipt);
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppReceiptDetails_ctl01_txtReceiptNumber").SetAttribute("value", _currentTask.Receipt);
+//                            _enum = RotEvents.FillEmail;
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+//                            break;
+//                        }
+//                    case RotEvents.FillEmail:
+//                        {
+//                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+//                            {
+//                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+//                                if (text.Contains(_currentTask.Receipt))
+//                                {
+//                                    Logger.Warning(string.Format("Заявка для {0} {1} уже зарегестрированна. Ответ сайта: {2}",_currentTask.LastName, _currentTask.Name, text));
+//                                    if (string.IsNullOrEmpty(_currentTask.RegistrationInfo))
+//                                        _currentTask.RegistrationInfo = "Please get info from site.";
+//                                    deleteTask_click(new RegCount(), null);
+//                                    break;
+//                                }
+//                                Logger.Error("Надо исправить ошибку: \r\n " + text);
+//                                richText.Text = "Надо исправить ошибку: \r\n " + text;
+//                                renewTask.Visible = true;
+//                                deleteTask.Visible = true;
+//                                _enum = RotEvents.FillReceipt;
+//                                break;
+//                            }
+//                            Logger.Info(string.Format("{0}: Email: {1} Pass: {2}", _currentTask.City,_currentTask.Email, _currentTask.Password));
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_txtEmailID").SetAttribute("value", _currentTask.Email);
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_txtPassword").SetAttribute("value", _currentTask.Password);
+//                            _enum = RotEvents.FirstCupture;
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmitDetails").InvokeMember("click");
+//                            break;
+//                        }
+//                    case RotEvents.FirstCupture:
+//                        {
+//                            ImageResolver.Instance.SystemDecaptcherLoad();
+//                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText))
+//                            {
+//                                string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
+//                                Logger.Error("Надо исправить ошибку: \r\n " + error);
+//                                richText.Text ="Надо исправить ошибку: \r\n " + error;
+//                                renewTask.Visible = true;
+//                                deleteTask.Visible = true;
+//                                _enum = RotEvents.FillEmail;
+//                                break;
+//                            }
+//
+//                            Logger.Warning("Дружищще, отправляй меня быстрее "+ _currentTask.GetInfo());
+//                            richText.AppendText(_currentTask.GetInfo());
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxPPTEXPDT").SetAttribute("value", _currentTask.PassportEndDate);
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboTitle").SetAttribute("selectedIndex", _currentTask.StatusCode);
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxFName").SetAttribute("value", _currentTask.Name);
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxLName").SetAttribute("value", _currentTask.LastName);
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxDOB").SetAttribute("value", _currentTask.Dob);
+//                            webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_tbxReturn").SetAttribute("value", _currentTask.ArrivalDt);
+//
+//                            for (int i = 0; i < this.webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboNationality").Children.Count; i++)
+//                            {
+//                                HtmlElement child = this.webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboNationality").Children[i];
+//                                if (child.InnerText == _currentTask.Nationality)
+//                                {
+//                                    this.webBrowser.Document.GetElementById("ctl00_plhMain_repAppVisaDetails_ctl01_cboNationality").SetAttribute("selectedIndex", i.ToString());
+//                                    break;
+//                                }
+//                            }
+//
+//                            decaptcherImage();
+//                            //ctl00_plhMain_btnSubmit
+//                            _enum = RotEvents.SecondCupture;
+//                            if(ImageResolver.Instance.AutoResolveImage)
+//                                webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+//
+//                            break;
+//                        }
+//                    case RotEvents.SecondCupture:
+//                        {
+//                            ImageResolver.Instance.SystemDecaptcherLoad();
+//                            decaptcherImage();
+//                            _enum = RotEvents.ThirdCupture;
+//
+//                            //date
+//                            //class = OpenDateAllocated   <a>
+//                            if (ImageResolver.Instance.AutoResolveImage)
+//                                PressOnLinkOnCalendar();
+//                            //===============================
+//                            break;
+//                        }
+//                    case RotEvents.ThirdCupture:
+//                        {
+//                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+//                            {
+//                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+//                                Logger.Error("ошибкa: \r\n " + text);
+//                                if (text.Contains("текст не відповідає символам на зображенні") && !ImageResolver.Instance.AutoResolveImage)
+//                                {
+//                                    if (_countAttempt-- != 0)
+//                                    {
+//                                        ImageResolver.Instance.SystemDecaptcherLoad();
+//                                        decaptcherImage();
+//                                        PressOnLinkOnCalendar();
+//                                    }
+//                                }
+//                                break;
+//                            }
+//
+//                            //text
+//                            //name =ctl00$plhMain$MyCaptchaControl1
+//                            decaptcherImage();
+//                            _enum = RotEvents.Stop;
+//                            //_blockAlert = true;
+//                            //table id = ctl00_plhMain_gvSlot
+//                            // a class 
+//                            if (ImageResolver.Instance.AutoResolveImage)
+//                                PressOnLinkByClass("backlink");
+//
+//                            break;
+//                        }
+//                    case RotEvents.Stop:
+//                        {
+//                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+//                            {
+//                                string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
+//                                Logger.Error("ошибкa: \r\n " + text);
+//                                if (text.Contains("текст не відповідає символам на зображенні") && !ImageResolver.Instance.AutoResolveImage)
+//                                {
+//                                    if (_countAttempt-- != 0)
+//                                    {
+//                                        ImageResolver.Instance.SystemDecaptcherLoad();
+//                                        decaptcherImage();
+//                                        PressOnLinkByClass("backlink");
+//                                    }
+//                                }
+//                                break;
+//                            }
+//                            //_blockAlert = false;
+//                            if (!ImageResolver.Instance.AutoResolveImage)
+//                            {
+//                                if (webBrowser.Document.GetElementById("ApplicantDetalils") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ApplicantDetalils").InnerText))
+//                                {
+//                                    Logger.Info("Заявка успешно зарегистрирована. ");
+//                                    string registrationInfo = webBrowser.Document.GetElementById("ApplicantDetalils").InnerText;
+//                                    Logger.Info(registrationInfo);
+//                                    _currentTask.RegistrationInfo = registrationInfo;
+//                                }
+//                                renewTask.Visible = true;
+//                                deleteTask.Visible = true;
+//                            }
+//                            else
+//                            {
+//                                if (webBrowser.Document.GetElementById("ApplicantDetalils") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ApplicantDetalils").InnerText))
+//                                {
+//                                    Logger.Info("Заявка успешно зарегистрирована. ");
+//                                    string registrationInfo = webBrowser.Document.GetElementById("ApplicantDetalils").InnerText;
+//                                    Logger.Info(registrationInfo);
+//                                    _currentTask.RegistrationInfo = registrationInfo;
+//                                    deleteTask_click(null, null);
+//                                }
+//                                else
+//                                {
+//                                    Logger.Info("Регистрация заявки не состоялась на этапе выбора времени.");
+//                                    renewTask_click(null, null);
+//                                }
+//                            }
+//                            
+//                            TurnAlarmOn(false);
+//                            
+//                            break;
+//                        }
                 }
             }
             catch (Exception ex)
@@ -513,6 +533,19 @@ namespace PolandVisaAuto
                     VisaEvent(this, false);
                 _allowStep = true;
                 _enum = RotEvents.Start;
+            }
+        }
+
+        private void SelectFromCombo(string id, string value)
+        {
+            for (int i = 0; i < this.webBrowser.Document.GetElementById(id).Children.Count; i++)
+            {
+                HtmlElement child = this.webBrowser.Document.GetElementById(id).Children[i];
+                if (child.InnerText == value)
+                {
+                    this.webBrowser.Document.GetElementById(id).SetAttribute("selectedIndex", i.ToString());
+                    break;
+                }
             }
         }
 
@@ -658,7 +691,7 @@ namespace PolandVisaAuto
             return null;
         }
 
-        public void CheckOnDeleteTask(VisaTask visaTask)
+        public void CheckOnDeleteTask(KonsulatTask visaTask)
         {
             Tasks.Remove(visaTask);
             if (Tasks.Count == 0 && TabEvent != null)
@@ -864,8 +897,8 @@ namespace PolandVisaAuto
         void RequestNewObjectLayout();
     }
 
-    [ComImport, GuidAttribute("6d5140c1-7436-11ce-8034-00aa006009fa"),
-    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown),
+    [ComImport, Guid("6d5140c1-7436-11ce-8034-00aa006009fa"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     ComVisible(false)]
     public interface IServiceProvider
     {
@@ -874,8 +907,8 @@ namespace PolandVisaAuto
         int QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
     }
 
-    [ComImport, GuidAttribute("79EAC9D0-BAF9-11CE-8C82-00AA004BA90B"),
-    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown),
+    [ComImport, Guid("79EAC9D0-BAF9-11CE-8C82-00AA004BA90B"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     ComVisible(false)]
     public interface IAuthenticate
     {

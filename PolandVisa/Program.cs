@@ -23,7 +23,7 @@ namespace PolandVisaMonitor
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
             try
             {
-                Application.Run(new Form1());
+                Application.Run(new PolandVisa());
             }
             catch (Exception ex)
             {

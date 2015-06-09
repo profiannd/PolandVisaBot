@@ -14,7 +14,7 @@ using pvhelper;
 
 namespace PolandVisaMonitor
 {
-    public partial class Form1 : Form
+    public partial class PolandVisa : Form
     {
         private const string VISA = "Національна Віза";
         private const string RUX = "Місцевий Прикордонний Рух";
@@ -37,7 +37,7 @@ namespace PolandVisaMonitor
         BindingList<CityDataSet> settingsCitiesList = new BindingList<CityDataSet>();
         List<CityDataSet> _listToMonitor = new List<CityDataSet>();
 
-        public Form1()
+        public PolandVisa()
         {
             InitializeComponent();
             settingsCities = Const.FillConfigCities();
@@ -253,7 +253,7 @@ namespace PolandVisaMonitor
         private void startMonitor()
         {
             webBrowser1.ScriptErrorsSuppressed = true;
-            webBrowser1.Navigate(Const.url);
+            webBrowser1.Navigate(Const.Url);
             rtbMess.Clear();
             _enum = RotEvents.Firsthl;
             intTimer.Stop();

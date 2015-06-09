@@ -98,7 +98,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegCount.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="VisaTab.cs" />
     <EmbeddedResource Include="DuplForm.resx">

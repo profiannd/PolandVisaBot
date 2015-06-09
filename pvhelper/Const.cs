@@ -40,7 +40,8 @@ namespace pvhelper
             //prepareTranslit();
         }
 
-        public const string url = "https://www.vfsvisaonline.com/poland-ukraine-appointment/(S(ytzs0pjoptifju555d1inlbs))/AppScheduling/AppWelcome.aspx?P=s2x6znRcBRv7WQQK7h4MTjZiPRbOsXKqJzddYBh3qCA%3d";
+        public const string UrlEkonsulat = "https://secure.e-konsulat.gov.pl/default.aspx";
+        public const string Url = "https://www.vfsvisaonline.com/poland-ukraine-appointment/(S(ytzs0pjoptifju555d1inlbs))/AppScheduling/AppWelcome.aspx?P=s2x6znRcBRv7WQQK7h4MTjZiPRbOsXKqJzddYBh3qCA%3d";
         public const string DateFormat = "dd/MM/yyyy";
         public const string DateFormatForFile = "dd_MM_yyyy";
 

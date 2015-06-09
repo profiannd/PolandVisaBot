@@ -2,7 +2,7 @@
 
 namespace PolandVisaMonitor
 {
-    partial class Form1
+    partial class PolandVisa
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@ namespace PolandVisaMonitor
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PolandVisa));
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
@@ -394,7 +394,7 @@ namespace PolandVisaMonitor
             this.timerNotify.Interval = 1000;
             this.timerNotify.Tick += new System.EventHandler(this.timerNotify_Tick);
             // 
-            // Form1
+            // PolandVisa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -403,7 +403,7 @@ namespace PolandVisaMonitor
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "PolandVisa";
             this.Text = "Poland Visa Monitor  ";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel2.ResumeLayout(false);

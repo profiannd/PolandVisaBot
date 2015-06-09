@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>E_Konsulat</RootNamespace>
     <AssemblyName>E-Konsulat</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,7 +33,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DecaptcherLib, Version=1.0.4194.40366, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\PolandVisaAuto\lib\DecaptcherLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\TFS\CRM\Src\packages\IDS\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,7 +87,10 @@
     <Compile Include="E-Konsulat.Designer.cs">
       <DependentUpon>E-Konsulat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Engine.cs" />
+    <Compile Include="ImageResolver.cs" />
     <Compile Include="KonsulatTask.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="PassportData.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -89,6 +105,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TargetData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TargetData.Designer.cs">
+      <DependentUpon>TargetData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EKonsulatTab.cs" />
     <EmbeddedResource Include="ChildData.resx">
       <DependentUpon>ChildData.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,7 +141,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TargetData.resx">
+      <DependentUpon>TargetData.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -130,7 +157,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\pvhelper\pvhelper.csproj">
+      <Project>{d77ff53b-1d53-45f2-83cc-9b4903b80286}</Project>
+      <Name>pvhelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
