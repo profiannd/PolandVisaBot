@@ -14,7 +14,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -35,21 +35,16 @@
   <ItemGroup>
     <Reference Include="DecaptcherLib, Version=1.0.4194.40366, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\PolandVisaAuto\lib\DecaptcherLib.dll</HintPath>
+      <HintPath>..\PolandVisaAuto\bin\Debug\PVM1.0.1.1\DecaptcherLib.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\TFS\CRM\Src\packages\IDS\log4net.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\PolandVisaAuto\bin\Debug\PVM1.0.1.1\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -88,7 +83,25 @@
       <DependentUpon>E-Konsulat.cs</DependentUpon>
     </Compile>
     <Compile Include="Engine.cs" />
+    <Compile Include="FingerprintsData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FingerprintsData.Designer.cs">
+      <DependentUpon>FingerprintsData.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageResolver.cs" />
+    <Compile Include="InformationData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="InformationData.Designer.cs">
+      <DependentUpon>InformationData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InfreceivingData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="InfreceivingData.Designer.cs">
+      <DependentUpon>InfreceivingData.cs</DependentUpon>
+    </Compile>
     <Compile Include="KonsulatTask.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="PassportData.cs">
@@ -103,8 +116,20 @@
     <Compile Include="PersonalData.Designer.cs">
       <DependentUpon>PersonalData.cs</DependentUpon>
     </Compile>
+    <Compile Include="PersonsCostsData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PersonsCostsData.Designer.cs">
+      <DependentUpon>PersonsCostsData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchengenvisasData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SchengenvisasData.Designer.cs">
+      <DependentUpon>SchengenvisasData.cs</DependentUpon>
+    </Compile>
     <Compile Include="TargetData.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -112,6 +137,12 @@
       <DependentUpon>TargetData.cs</DependentUpon>
     </Compile>
     <Compile Include="EKonsulatTab.cs" />
+    <Compile Include="TheseEUCitizenData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TheseEUCitizenData.Designer.cs">
+      <DependentUpon>TheseEUCitizenData.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ChildData.resx">
       <DependentUpon>ChildData.cs</DependentUpon>
     </EmbeddedResource>
@@ -127,11 +158,23 @@
     <EmbeddedResource Include="E-Konsulat.resx">
       <DependentUpon>E-Konsulat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FingerprintsData.resx">
+      <DependentUpon>FingerprintsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InformationData.resx">
+      <DependentUpon>InformationData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfreceivingData.resx">
+      <DependentUpon>InfreceivingData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PassportData.resx">
       <DependentUpon>PassportData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PersonalData.resx">
       <DependentUpon>PersonalData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PersonsCostsData.resx">
+      <DependentUpon>PersonsCostsData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -143,8 +186,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SchengenvisasData.resx">
+      <DependentUpon>SchengenvisasData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TargetData.resx">
       <DependentUpon>TargetData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TheseEUCitizenData.resx">
+      <DependentUpon>TheseEUCitizenData.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -44,7 +44,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioSexF = new System.Windows.Forms.RadioButton();
             this.radioSexM = new System.Windows.Forms.RadioButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gBFamilyState = new System.Windows.Forms.GroupBox();
             this.radioAnother = new System.Windows.Forms.RadioButton();
             this.radioVdovets = new System.Windows.Forms.RadioButton();
             this.radioRazvod = new System.Windows.Forms.RadioButton();
@@ -52,11 +52,11 @@
             this.radioMerried = new System.Windows.Forms.RadioButton();
             this.radioHolost = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dtDob = new System.Windows.Forms.DateTimePicker();
             this.txtDobNationality = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.dtDob = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.gBFamilyState.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -198,20 +198,20 @@
             this.radioSexM.Text = "Мужчина";
             this.radioSexM.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
+            // gBFamilyState
             // 
-            this.groupBox2.Controls.Add(this.radioAnother);
-            this.groupBox2.Controls.Add(this.radioVdovets);
-            this.groupBox2.Controls.Add(this.radioRazvod);
-            this.groupBox2.Controls.Add(this.radioNotLiveWith);
-            this.groupBox2.Controls.Add(this.radioMerried);
-            this.groupBox2.Controls.Add(this.radioHolost);
-            this.groupBox2.Location = new System.Drawing.Point(269, 129);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(181, 164);
-            this.groupBox2.TabIndex = 15;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Семейное положение  ";
+            this.gBFamilyState.Controls.Add(this.radioAnother);
+            this.gBFamilyState.Controls.Add(this.radioVdovets);
+            this.gBFamilyState.Controls.Add(this.radioRazvod);
+            this.gBFamilyState.Controls.Add(this.radioNotLiveWith);
+            this.gBFamilyState.Controls.Add(this.radioMerried);
+            this.gBFamilyState.Controls.Add(this.radioHolost);
+            this.gBFamilyState.Location = new System.Drawing.Point(269, 129);
+            this.gBFamilyState.Name = "gBFamilyState";
+            this.gBFamilyState.Size = new System.Drawing.Size(181, 164);
+            this.gBFamilyState.TabIndex = 15;
+            this.gBFamilyState.TabStop = false;
+            this.gBFamilyState.Text = "Семейное положение  ";
             // 
             // radioAnother
             // 
@@ -284,7 +284,7 @@
             this.groupBox3.Controls.Add(this.txtDobNationality);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.dtDob);
-            this.groupBox3.Controls.Add(this.groupBox2);
+            this.groupBox3.Controls.Add(this.gBFamilyState);
             this.groupBox3.Controls.Add(this.groupBox1);
             this.groupBox3.Controls.Add(this.txtCitizenshipNow);
             this.groupBox3.Controls.Add(this.label7);
@@ -305,15 +305,6 @@
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             // 
-            // dtDob
-            // 
-            this.dtDob.CustomFormat = "dd/MM/yyyy";
-            this.dtDob.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtDob.Location = new System.Drawing.Point(13, 148);
-            this.dtDob.Name = "dtDob";
-            this.dtDob.Size = new System.Drawing.Size(232, 20);
-            this.dtDob.TabIndex = 16;
-            // 
             // txtDobNationality
             // 
             this.txtDobNationality.Location = new System.Drawing.Point(16, 318);
@@ -330,6 +321,15 @@
             this.label8.TabIndex = 17;
             this.label8.Text = "Гражданство при рождении (национальность)  ";
             // 
+            // dtDob
+            // 
+            this.dtDob.CustomFormat = "dd/MM/yyyy";
+            this.dtDob.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtDob.Location = new System.Drawing.Point(13, 148);
+            this.dtDob.Name = "dtDob";
+            this.dtDob.Size = new System.Drawing.Size(232, 20);
+            this.dtDob.TabIndex = 16;
+            // 
             // PersonalData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -339,8 +339,8 @@
             this.Size = new System.Drawing.Size(470, 353);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.gBFamilyState.ResumeLayout(false);
+            this.gBFamilyState.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
@@ -365,7 +365,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioSexF;
         private System.Windows.Forms.RadioButton radioSexM;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gBFamilyState;
         private System.Windows.Forms.RadioButton radioAnother;
         private System.Windows.Forms.RadioButton radioVdovets;
         private System.Windows.Forms.RadioButton radioRazvod;

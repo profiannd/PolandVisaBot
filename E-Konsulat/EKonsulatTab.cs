@@ -269,7 +269,8 @@ namespace E_Konsulat
                     case RotEvents.FirstCombo:
                         {
                             SelectFromCombo("ctl00$tresc$cbListaKrajow", "УКРАИНА");
-                            //_allowStep = true;
+                            this.webBrowser.Document.GetElementById("ctl00$tresc$cbListaKrajow").InvokeMember("onchange");
+                            _allowStep = true;
 
 //                            webBrowser.Document.GetElementById("ctl00_plhMain_cboVAC").SetAttribute("selectedIndex", _currentTask.CityCode);
 //                            webBrowser.Document.GetElementById("ctl00_plhMain_cboPurpose").SetAttribute("selectedIndex", _currentTask.PurposeCode);
@@ -279,7 +280,13 @@ namespace E_Konsulat
                         }
                     case RotEvents.SecondCombo:
                         {
+                            if (this.webBrowser.Document.GetElementById("ctl00$tresc$cbListaPlacowek").Children.Count == 0)
+                            {
+                                _allowStep = true;
+                                return;
+                            }
                             SelectFromCombo("ctl00$tresc$cbListaPlacowek", "Винница");
+                            this.webBrowser.Document.GetElementById("ctl00$tresc$cbListaPlacowek").InvokeMember("onchange");
                             _allowStep = true;
 //                            webBrowser.Document.GetElementById("ctl00_plhMain_tbxNumOfApplicants").SetAttribute("value", _currentTask.CountAdult.ToString());
 //                            if (webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren") != null)

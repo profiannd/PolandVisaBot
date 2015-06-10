@@ -21,14 +21,7 @@ namespace E_Konsulat
         {
             InitializeComponent();
         }
-
-        private void btnAddTask_Click(object sender, EventArgs e)
-        {
-            _tasks.Add(new KonsulatTask());
-            KonsulatTask.Save(_tasks, KonsulatTaskEntityType.New);
-            _engine.RefreshViewTabs();
-        }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
             UpdateHeader();
@@ -81,6 +74,31 @@ namespace E_Konsulat
             KonsulatTask.Save(_tasks, KonsulatTaskEntityType.New);
             _completedTasks.Add(vt);
             KonsulatTask.Save(_completedTasks, KonsulatTaskEntityType.Completed);
+        }
+        private void btnAddTask_Click(object sender, EventArgs e)
+        {
+            _tasks.Add(fillKonsulatTask());
+            KonsulatTask.Save(_tasks, KonsulatTaskEntityType.New);
+            _engine.RefreshViewTabs();
+        }
+
+        private KonsulatTask fillKonsulatTask()
+        {
+            KonsulatTask task = new KonsulatTask();
+            task.LastName = personalData1.LastName;
+            task.FirstName = personalData1.FirstName;
+            task.PreviousLastName = personalData1.PreviousLastName;
+            task.Dob = personalData1.Dob;
+            task.DobCity = personalData1.DobCity;
+            task.DobCountry = personalData1.DobCountry;
+            task.Citizenship = personalData1.Citizenship;
+            task.Nationality = personalData1.Nationality;
+            task.SexMRadio = personalData1.SexMRadio;
+            task.FamilyStateRadio = personalData1.FamilyStateRadio;
+
+
+
+            return task;
         }
     }
 }

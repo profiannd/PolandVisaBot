@@ -35,7 +35,7 @@ namespace E_Konsulat
 //            _completedVisaTasks = completedVisaTasks;
             _cityTasks = new Dictionary<string, EKonsulatTab>();
             _timer = new Timer();
-            _timer.Interval = 1500;
+            _timer.Interval = 2000;
             _timer.Tick += _timer_Tick;
             //_oWorker.DoWork += new DoWorkEventHandler(_oWorker_DoWork);
         }

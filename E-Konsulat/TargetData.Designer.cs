@@ -65,7 +65,7 @@
             // 
             this.textBoxOther.Location = new System.Drawing.Point(6, 97);
             this.textBoxOther.Name = "textBoxOther";
-            this.textBoxOther.Size = new System.Drawing.Size(295, 20);
+            this.textBoxOther.Size = new System.Drawing.Size(464, 20);
             this.textBoxOther.TabIndex = 9;
             // 
             // checkBoxOfficial

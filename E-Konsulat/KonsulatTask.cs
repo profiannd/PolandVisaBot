@@ -14,22 +14,34 @@ namespace E_Konsulat
 
     public class KonsulatTask
     {
+        //PersonalData
         public string LastName { get; set; }
         public string PreviousLastName { get; set; }
         public string FirstName { get; set; }
+        public DateTime Dob { get; set; }
         public string DobCity { get; set; }
         public string DobCountry { get; set; }
         public string Citizenship { get; set; }
-        public string Sex { get; set; }
-        public string FamilyState { get; set; }
+        public string Nationality { get; set; }
+        public bool SexMRadio { get; set; }
+        public string FamilyStateRadio { get; set; }
 
-        public string PassportType { get; set; }
+        //PassportData
+        public string PassportTypeRadio { get; set; }
         public string PassportNumber { get; set; }
-        public string PassportFromDate { get; set; }
-        public string PassportToDate { get; set; }
+        public DateTime PassportFromDate { get; set; }
+        public DateTime PassportToDate { get; set; }
         public string PassportSource { get; set; }
         public string PassportEnotherInfo { get; set; }
 
+
+
+
+
+
+
+
+        #region Services
         public DateTime RedLineDt { get; set; }
         public int Priority { get; set; }
         public string City
@@ -89,6 +101,7 @@ namespace E_Konsulat
         {
             return "GetInfoGetInfoGetInfoGetInfo";
         }
+        #endregion
     }
 
     public class KonsulatComparer : IComparer<KonsulatTask>
