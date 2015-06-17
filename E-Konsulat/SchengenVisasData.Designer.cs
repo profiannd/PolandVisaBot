@@ -29,31 +29,31 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dateTimeto2 = new System.Windows.Forms.DateTimePicker();
+            this.dtTo2 = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
-            this.dateTimefrom2 = new System.Windows.Forms.DateTimePicker();
+            this.dtFrom2 = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
-            this.dateTimeto1 = new System.Windows.Forms.DateTimePicker();
+            this.dtTo1 = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
-            this.dateTimefrom1 = new System.Windows.Forms.DateTimePicker();
+            this.dtFrom1 = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
-            this.chcBoxNo = new System.Windows.Forms.CheckBox();
-            this.chcBoxYes = new System.Windows.Forms.CheckBox();
+            this.radioNo = new System.Windows.Forms.RadioButton();
+            this.radioYes = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dateTimeto2);
+            this.groupBox1.Controls.Add(this.radioYes);
+            this.groupBox1.Controls.Add(this.radioNo);
+            this.groupBox1.Controls.Add(this.dtTo2);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.dateTimefrom2);
+            this.groupBox1.Controls.Add(this.dtFrom2);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.dateTimeto1);
+            this.groupBox1.Controls.Add(this.dtTo1);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.dateTimefrom1);
+            this.groupBox1.Controls.Add(this.dtFrom1);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.chcBoxNo);
-            this.groupBox1.Controls.Add(this.chcBoxYes);
             this.groupBox1.Location = new System.Drawing.Point(3, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(480, 135);
@@ -61,12 +61,12 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Шенгенские визы, выданные за последние пять лет";
             // 
-            // dateTimeto2
+            // dtTo2
             // 
-            this.dateTimeto2.Location = new System.Drawing.Point(351, 100);
-            this.dateTimeto2.Name = "dateTimeto2";
-            this.dateTimeto2.Size = new System.Drawing.Size(122, 20);
-            this.dateTimeto2.TabIndex = 10;
+            this.dtTo2.Location = new System.Drawing.Point(351, 100);
+            this.dtTo2.Name = "dtTo2";
+            this.dtTo2.Size = new System.Drawing.Size(122, 20);
+            this.dtTo2.TabIndex = 10;
             // 
             // label2
             // 
@@ -77,12 +77,12 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "до (год-месяц-день):";
             // 
-            // dateTimefrom2
+            // dtFrom2
             // 
-            this.dateTimefrom2.Location = new System.Drawing.Point(107, 100);
-            this.dateTimefrom2.Name = "dateTimefrom2";
-            this.dateTimefrom2.Size = new System.Drawing.Size(122, 20);
-            this.dateTimefrom2.TabIndex = 8;
+            this.dtFrom2.Location = new System.Drawing.Point(107, 100);
+            this.dtFrom2.Name = "dtFrom2";
+            this.dtFrom2.Size = new System.Drawing.Size(122, 20);
+            this.dtFrom2.TabIndex = 8;
             // 
             // label4
             // 
@@ -93,12 +93,12 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "с (год-месяц-день):";
             // 
-            // dateTimeto1
+            // dtTo1
             // 
-            this.dateTimeto1.Location = new System.Drawing.Point(351, 74);
-            this.dateTimeto1.Name = "dateTimeto1";
-            this.dateTimeto1.Size = new System.Drawing.Size(122, 20);
-            this.dateTimeto1.TabIndex = 6;
+            this.dtTo1.Location = new System.Drawing.Point(351, 74);
+            this.dtTo1.Name = "dtTo1";
+            this.dtTo1.Size = new System.Drawing.Size(122, 20);
+            this.dtTo1.TabIndex = 6;
             // 
             // label3
             // 
@@ -109,12 +109,12 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "до (год-месяц-день):";
             // 
-            // dateTimefrom1
+            // dtFrom1
             // 
-            this.dateTimefrom1.Location = new System.Drawing.Point(107, 74);
-            this.dateTimefrom1.Name = "dateTimefrom1";
-            this.dateTimefrom1.Size = new System.Drawing.Size(122, 20);
-            this.dateTimefrom1.TabIndex = 4;
+            this.dtFrom1.Location = new System.Drawing.Point(107, 74);
+            this.dtFrom1.Name = "dtFrom1";
+            this.dtFrom1.Size = new System.Drawing.Size(122, 20);
+            this.dtFrom1.TabIndex = 4;
             // 
             // label1
             // 
@@ -125,26 +125,27 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "с (год-месяц-день):";
             // 
-            // chcBoxNo
+            // radioNo
             // 
-            this.chcBoxNo.AutoSize = true;
-            this.chcBoxNo.Location = new System.Drawing.Point(7, 44);
-            this.chcBoxNo.Name = "chcBoxNo";
-            this.chcBoxNo.Size = new System.Drawing.Size(210, 17);
-            this.chcBoxNo.TabIndex = 1;
-            this.chcBoxNo.Text = "Да. Срок действия (год-месяц-день)";
-            this.chcBoxNo.UseVisualStyleBackColor = true;
-            this.chcBoxNo.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.radioNo.AutoSize = true;
+            this.radioNo.Location = new System.Drawing.Point(9, 19);
+            this.radioNo.Name = "radioNo";
+            this.radioNo.Size = new System.Drawing.Size(44, 17);
+            this.radioNo.TabIndex = 11;
+            this.radioNo.TabStop = true;
+            this.radioNo.Text = "Нет";
+            this.radioNo.UseVisualStyleBackColor = true;
             // 
-            // chcBoxYes
+            // radioYes
             // 
-            this.chcBoxYes.AutoSize = true;
-            this.chcBoxYes.Location = new System.Drawing.Point(7, 20);
-            this.chcBoxYes.Name = "chcBoxYes";
-            this.chcBoxYes.Size = new System.Drawing.Size(45, 17);
-            this.chcBoxYes.TabIndex = 0;
-            this.chcBoxYes.Text = "Нет";
-            this.chcBoxYes.UseVisualStyleBackColor = true;
+            this.radioYes.AutoSize = true;
+            this.radioYes.Location = new System.Drawing.Point(9, 42);
+            this.radioYes.Name = "radioYes";
+            this.radioYes.Size = new System.Drawing.Size(209, 17);
+            this.radioYes.TabIndex = 12;
+            this.radioYes.TabStop = true;
+            this.radioYes.Text = "Да. Срок действия (год-месяц-день)";
+            this.radioYes.UseVisualStyleBackColor = true;
             // 
             // Schengen_visasData
             // 
@@ -163,15 +164,15 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DateTimePicker dateTimeto2;
+        private System.Windows.Forms.DateTimePicker dtTo2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DateTimePicker dateTimefrom2;
+        private System.Windows.Forms.DateTimePicker dtFrom2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DateTimePicker dateTimeto1;
+        private System.Windows.Forms.DateTimePicker dtTo1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dateTimefrom1;
+        private System.Windows.Forms.DateTimePicker dtFrom1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox chcBoxNo;
-        private System.Windows.Forms.CheckBox chcBoxYes;
+        private System.Windows.Forms.RadioButton radioYes;
+        private System.Windows.Forms.RadioButton radioNo;
     }
 }

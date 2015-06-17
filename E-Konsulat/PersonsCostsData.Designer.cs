@@ -29,26 +29,26 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButtonHim = new System.Windows.Forms.RadioButton();
-            this.radioButtonSponsors = new System.Windows.Forms.RadioButton();
-            this.checkBoxReferred = new System.Windows.Forms.CheckBox();
-            this.checkBoxOther = new System.Windows.Forms.CheckBox();
-            this.textBoxOther = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.checkBoxMoney = new System.Windows.Forms.CheckBox();
-            this.checkBoxChecks = new System.Windows.Forms.CheckBox();
-            this.checkBoxCard = new System.Windows.Forms.CheckBox();
-            this.checkBoxLocation = new System.Windows.Forms.CheckBox();
-            this.checkBoxTransport = new System.Windows.Forms.CheckBox();
-            this.checkBoxAllCosts = new System.Windows.Forms.CheckBox();
-            this.checkBoxOtherCosts = new System.Windows.Forms.CheckBox();
-            this.chcBoxInsurance = new System.Windows.Forms.CheckBox();
-            this.textBoxOtherCosts = new System.Windows.Forms.TextBox();
-            this.dateTimePickerInsurance = new System.Windows.Forms.DateTimePicker();
+            this.dtInsurance = new System.Windows.Forms.DateTimePicker();
+            this.txtOtherCosts = new System.Windows.Forms.TextBox();
+            this.chkInsurance = new System.Windows.Forms.CheckBox();
+            this.chkOtherCosts = new System.Windows.Forms.CheckBox();
+            this.chkAllCosts = new System.Windows.Forms.CheckBox();
+            this.chkTransport = new System.Windows.Forms.CheckBox();
+            this.chkLocation = new System.Windows.Forms.CheckBox();
+            this.chkCard = new System.Windows.Forms.CheckBox();
+            this.chkChecks = new System.Windows.Forms.CheckBox();
+            this.chkMoney = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtOther = new System.Windows.Forms.TextBox();
+            this.chkOther = new System.Windows.Forms.CheckBox();
+            this.chkReferred = new System.Windows.Forms.CheckBox();
+            this.radioSponsors = new System.Windows.Forms.RadioButton();
+            this.radioHim = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -62,81 +62,18 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Данные лица, несущего расходы";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.textBoxOther);
-            this.groupBox2.Controls.Add(this.checkBoxOther);
-            this.groupBox2.Controls.Add(this.checkBoxReferred);
-            this.groupBox2.Controls.Add(this.radioButtonSponsors);
-            this.groupBox2.Controls.Add(this.radioButtonHim);
-            this.groupBox2.Location = new System.Drawing.Point(0, 19);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(470, 137);
-            this.groupBox2.TabIndex = 0;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Расходы заявителя на проезд и во время пребывания оплачивает";
-            // 
-            // radioButtonHim
-            // 
-            this.radioButtonHim.AutoSize = true;
-            this.radioButtonHim.Location = new System.Drawing.Point(7, 20);
-            this.radioButtonHim.Name = "radioButtonHim";
-            this.radioButtonHim.Size = new System.Drawing.Size(102, 17);
-            this.radioButtonHim.TabIndex = 0;
-            this.radioButtonHim.TabStop = true;
-            this.radioButtonHim.Text = "Сам заявитель";
-            this.radioButtonHim.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonSponsors
-            // 
-            this.radioButtonSponsors.AutoSize = true;
-            this.radioButtonSponsors.Location = new System.Drawing.Point(7, 44);
-            this.radioButtonSponsors.Name = "radioButtonSponsors";
-            this.radioButtonSponsors.Size = new System.Drawing.Size(370, 17);
-            this.radioButtonSponsors.TabIndex = 1;
-            this.radioButtonSponsors.TabStop = true;
-            this.radioButtonSponsors.Text = "Спонсор (приглашающее лицо, предприятие, организация), указать";
-            this.radioButtonSponsors.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxReferred
-            // 
-            this.checkBoxReferred.AutoSize = true;
-            this.checkBoxReferred.Location = new System.Drawing.Point(7, 68);
-            this.checkBoxReferred.Name = "checkBoxReferred";
-            this.checkBoxReferred.Size = new System.Drawing.Size(247, 17);
-            this.checkBoxReferred.TabIndex = 2;
-            this.checkBoxReferred.Text = "упомянутые в Данных принимающего лица";
-            this.checkBoxReferred.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxOther
-            // 
-            this.checkBoxOther.AutoSize = true;
-            this.checkBoxOther.Location = new System.Drawing.Point(7, 92);
-            this.checkBoxOther.Name = "checkBoxOther";
-            this.checkBoxOther.Size = new System.Drawing.Size(103, 17);
-            this.checkBoxOther.TabIndex = 3;
-            this.checkBoxOther.Text = "Иные (указать)";
-            this.checkBoxOther.UseVisualStyleBackColor = true;
-            // 
-            // textBoxOther
-            // 
-            this.textBoxOther.Location = new System.Drawing.Point(8, 115);
-            this.textBoxOther.Name = "textBoxOther";
-            this.textBoxOther.Size = new System.Drawing.Size(316, 20);
-            this.textBoxOther.TabIndex = 4;
-            // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.dateTimePickerInsurance);
-            this.groupBox3.Controls.Add(this.textBoxOtherCosts);
-            this.groupBox3.Controls.Add(this.chcBoxInsurance);
-            this.groupBox3.Controls.Add(this.checkBoxOtherCosts);
-            this.groupBox3.Controls.Add(this.checkBoxAllCosts);
-            this.groupBox3.Controls.Add(this.checkBoxTransport);
-            this.groupBox3.Controls.Add(this.checkBoxLocation);
-            this.groupBox3.Controls.Add(this.checkBoxCard);
-            this.groupBox3.Controls.Add(this.checkBoxChecks);
-            this.groupBox3.Controls.Add(this.checkBoxMoney);
+            this.groupBox3.Controls.Add(this.dtInsurance);
+            this.groupBox3.Controls.Add(this.txtOtherCosts);
+            this.groupBox3.Controls.Add(this.chkInsurance);
+            this.groupBox3.Controls.Add(this.chkOtherCosts);
+            this.groupBox3.Controls.Add(this.chkAllCosts);
+            this.groupBox3.Controls.Add(this.chkTransport);
+            this.groupBox3.Controls.Add(this.chkLocation);
+            this.groupBox3.Controls.Add(this.chkCard);
+            this.groupBox3.Controls.Add(this.chkChecks);
+            this.groupBox3.Controls.Add(this.chkMoney);
             this.groupBox3.Location = new System.Drawing.Point(0, 160);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(470, 246);
@@ -144,103 +81,166 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Средства на покрытие расходов на пребывание: ";
             // 
-            // checkBoxMoney
+            // dtInsurance
             // 
-            this.checkBoxMoney.AutoSize = true;
-            this.checkBoxMoney.Location = new System.Drawing.Point(6, 20);
-            this.checkBoxMoney.Name = "checkBoxMoney";
-            this.checkBoxMoney.Size = new System.Drawing.Size(115, 17);
-            this.checkBoxMoney.TabIndex = 0;
-            this.checkBoxMoney.Text = "Наличные деньги";
-            this.checkBoxMoney.UseVisualStyleBackColor = true;
+            this.dtInsurance.Location = new System.Drawing.Point(8, 185);
+            this.dtInsurance.Name = "dtInsurance";
+            this.dtInsurance.Size = new System.Drawing.Size(143, 20);
+            this.dtInsurance.TabIndex = 9;
             // 
-            // checkBoxChecks
+            // txtOtherCosts
             // 
-            this.checkBoxChecks.AutoSize = true;
-            this.checkBoxChecks.Location = new System.Drawing.Point(6, 43);
-            this.checkBoxChecks.Name = "checkBoxChecks";
-            this.checkBoxChecks.Size = new System.Drawing.Size(107, 17);
-            this.checkBoxChecks.TabIndex = 1;
-            this.checkBoxChecks.Text = "Дорожные чеки";
-            this.checkBoxChecks.UseVisualStyleBackColor = true;
-            this.checkBoxChecks.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            this.txtOtherCosts.Location = new System.Drawing.Point(6, 136);
+            this.txtOtherCosts.Name = "txtOtherCosts";
+            this.txtOtherCosts.Size = new System.Drawing.Size(319, 20);
+            this.txtOtherCosts.TabIndex = 8;
             // 
-            // checkBoxCard
+            // chkInsurance
             // 
-            this.checkBoxCard.AutoSize = true;
-            this.checkBoxCard.Location = new System.Drawing.Point(6, 66);
-            this.checkBoxCard.Name = "checkBoxCard";
-            this.checkBoxCard.Size = new System.Drawing.Size(129, 17);
-            this.checkBoxCard.TabIndex = 2;
-            this.checkBoxCard.Text = "Кредитная карточка";
-            this.checkBoxCard.UseVisualStyleBackColor = true;
-            this.checkBoxCard.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
-            // 
-            // checkBoxLocation
-            // 
-            this.checkBoxLocation.AutoSize = true;
-            this.checkBoxLocation.Location = new System.Drawing.Point(192, 20);
-            this.checkBoxLocation.Name = "checkBoxLocation";
-            this.checkBoxLocation.Size = new System.Drawing.Size(92, 17);
-            this.checkBoxLocation.TabIndex = 3;
-            this.checkBoxLocation.Text = "Размещение";
-            this.checkBoxLocation.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxTransport
-            // 
-            this.checkBoxTransport.AutoSize = true;
-            this.checkBoxTransport.Location = new System.Drawing.Point(192, 43);
-            this.checkBoxTransport.Name = "checkBoxTransport";
-            this.checkBoxTransport.Size = new System.Drawing.Size(148, 17);
-            this.checkBoxTransport.TabIndex = 4;
-            this.checkBoxTransport.Text = "Предоплачен транспорт";
-            this.checkBoxTransport.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxAllCosts
-            // 
-            this.checkBoxAllCosts.AutoSize = true;
-            this.checkBoxAllCosts.Location = new System.Drawing.Point(6, 89);
-            this.checkBoxAllCosts.Name = "checkBoxAllCosts";
-            this.checkBoxAllCosts.Size = new System.Drawing.Size(294, 17);
-            this.checkBoxAllCosts.TabIndex = 5;
-            this.checkBoxAllCosts.Text = "Обеспечиваются все расходы во время пребывания";
-            this.checkBoxAllCosts.UseVisualStyleBackColor = true;
-            this.checkBoxAllCosts.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
-            // 
-            // checkBoxOtherCosts
-            // 
-            this.checkBoxOtherCosts.AutoSize = true;
-            this.checkBoxOtherCosts.Location = new System.Drawing.Point(6, 113);
-            this.checkBoxOtherCosts.Name = "checkBoxOtherCosts";
-            this.checkBoxOtherCosts.Size = new System.Drawing.Size(103, 17);
-            this.checkBoxOtherCosts.TabIndex = 6;
-            this.checkBoxOtherCosts.Text = "Иные (указать)";
-            this.checkBoxOtherCosts.UseVisualStyleBackColor = true;
-            // 
-            // chcBoxInsurance
-            // 
-            this.chcBoxInsurance.AutoSize = true;
-            this.chcBoxInsurance.Location = new System.Drawing.Point(6, 162);
-            this.chcBoxInsurance.Name = "chcBoxInsurance";
-            this.chcBoxInsurance.Size = new System.Drawing.Size(473, 17);
-            this.chcBoxInsurance.TabIndex = 7;
-            this.chcBoxInsurance.Text = "Страхование поездки / медицинское страхование. Действительно до (год-месяц-день):" +
+            this.chkInsurance.AutoSize = true;
+            this.chkInsurance.Location = new System.Drawing.Point(6, 162);
+            this.chkInsurance.Name = "chkInsurance";
+            this.chkInsurance.Size = new System.Drawing.Size(473, 17);
+            this.chkInsurance.TabIndex = 7;
+            this.chkInsurance.Text = "Страхование поездки / медицинское страхование. Действительно до (год-месяц-день):" +
     "";
-            this.chcBoxInsurance.UseVisualStyleBackColor = true;
+            this.chkInsurance.UseVisualStyleBackColor = true;
             // 
-            // textBoxOtherCosts
+            // chkOtherCosts
             // 
-            this.textBoxOtherCosts.Location = new System.Drawing.Point(6, 136);
-            this.textBoxOtherCosts.Name = "textBoxOtherCosts";
-            this.textBoxOtherCosts.Size = new System.Drawing.Size(319, 20);
-            this.textBoxOtherCosts.TabIndex = 8;
+            this.chkOtherCosts.AutoSize = true;
+            this.chkOtherCosts.Location = new System.Drawing.Point(6, 113);
+            this.chkOtherCosts.Name = "chkOtherCosts";
+            this.chkOtherCosts.Size = new System.Drawing.Size(103, 17);
+            this.chkOtherCosts.TabIndex = 6;
+            this.chkOtherCosts.Text = "Иные (указать)";
+            this.chkOtherCosts.UseVisualStyleBackColor = true;
             // 
-            // dateTimePickerInsurance
+            // chkAllCosts
             // 
-            this.dateTimePickerInsurance.Location = new System.Drawing.Point(8, 185);
-            this.dateTimePickerInsurance.Name = "dateTimePickerInsurance";
-            this.dateTimePickerInsurance.Size = new System.Drawing.Size(143, 20);
-            this.dateTimePickerInsurance.TabIndex = 9;
+            this.chkAllCosts.AutoSize = true;
+            this.chkAllCosts.Location = new System.Drawing.Point(8, 90);
+            this.chkAllCosts.Name = "chkAllCosts";
+            this.chkAllCosts.Size = new System.Drawing.Size(294, 17);
+            this.chkAllCosts.TabIndex = 5;
+            this.chkAllCosts.Text = "Обеспечиваются все расходы во время пребывания";
+            this.chkAllCosts.UseVisualStyleBackColor = true;
+            this.chkAllCosts.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
+            // 
+            // chkTransport
+            // 
+            this.chkTransport.AutoSize = true;
+            this.chkTransport.Location = new System.Drawing.Point(192, 43);
+            this.chkTransport.Name = "chkTransport";
+            this.chkTransport.Size = new System.Drawing.Size(148, 17);
+            this.chkTransport.TabIndex = 4;
+            this.chkTransport.Text = "Предоплачен транспорт";
+            this.chkTransport.UseVisualStyleBackColor = true;
+            // 
+            // chkLocation
+            // 
+            this.chkLocation.AutoSize = true;
+            this.chkLocation.Location = new System.Drawing.Point(192, 20);
+            this.chkLocation.Name = "chkLocation";
+            this.chkLocation.Size = new System.Drawing.Size(92, 17);
+            this.chkLocation.TabIndex = 3;
+            this.chkLocation.Text = "Размещение";
+            this.chkLocation.UseVisualStyleBackColor = true;
+            // 
+            // chkCard
+            // 
+            this.chkCard.AutoSize = true;
+            this.chkCard.Location = new System.Drawing.Point(6, 66);
+            this.chkCard.Name = "chkCard";
+            this.chkCard.Size = new System.Drawing.Size(129, 17);
+            this.chkCard.TabIndex = 2;
+            this.chkCard.Text = "Кредитная карточка";
+            this.chkCard.UseVisualStyleBackColor = true;
+            this.chkCard.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            // 
+            // chkChecks
+            // 
+            this.chkChecks.AutoSize = true;
+            this.chkChecks.Location = new System.Drawing.Point(6, 43);
+            this.chkChecks.Name = "chkChecks";
+            this.chkChecks.Size = new System.Drawing.Size(107, 17);
+            this.chkChecks.TabIndex = 1;
+            this.chkChecks.Text = "Дорожные чеки";
+            this.chkChecks.UseVisualStyleBackColor = true;
+            this.chkChecks.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            // 
+            // chkMoney
+            // 
+            this.chkMoney.AutoSize = true;
+            this.chkMoney.Location = new System.Drawing.Point(6, 20);
+            this.chkMoney.Name = "chkMoney";
+            this.chkMoney.Size = new System.Drawing.Size(115, 17);
+            this.chkMoney.TabIndex = 0;
+            this.chkMoney.Text = "Наличные деньги";
+            this.chkMoney.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.txtOther);
+            this.groupBox2.Controls.Add(this.chkOther);
+            this.groupBox2.Controls.Add(this.chkReferred);
+            this.groupBox2.Controls.Add(this.radioSponsors);
+            this.groupBox2.Controls.Add(this.radioHim);
+            this.groupBox2.Location = new System.Drawing.Point(0, 19);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(470, 137);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Расходы заявителя на проезд и во время пребывания оплачивает";
+            // 
+            // txtOther
+            // 
+            this.txtOther.Location = new System.Drawing.Point(8, 115);
+            this.txtOther.Name = "txtOther";
+            this.txtOther.Size = new System.Drawing.Size(316, 20);
+            this.txtOther.TabIndex = 4;
+            // 
+            // chkOther
+            // 
+            this.chkOther.AutoSize = true;
+            this.chkOther.Location = new System.Drawing.Point(7, 92);
+            this.chkOther.Name = "chkOther";
+            this.chkOther.Size = new System.Drawing.Size(103, 17);
+            this.chkOther.TabIndex = 3;
+            this.chkOther.Text = "Иные (указать)";
+            this.chkOther.UseVisualStyleBackColor = true;
+            // 
+            // chkReferred
+            // 
+            this.chkReferred.AutoSize = true;
+            this.chkReferred.Location = new System.Drawing.Point(7, 68);
+            this.chkReferred.Name = "chkReferred";
+            this.chkReferred.Size = new System.Drawing.Size(120, 17);
+            this.chkReferred.TabIndex = 2;
+            this.chkReferred.Text = "упомянутые ранее";
+            this.chkReferred.UseVisualStyleBackColor = true;
+            // 
+            // radioSponsors
+            // 
+            this.radioSponsors.AutoSize = true;
+            this.radioSponsors.Location = new System.Drawing.Point(7, 44);
+            this.radioSponsors.Name = "radioSponsors";
+            this.radioSponsors.Size = new System.Drawing.Size(370, 17);
+            this.radioSponsors.TabIndex = 1;
+            this.radioSponsors.TabStop = true;
+            this.radioSponsors.Text = "Спонсор (приглашающее лицо, предприятие, организация), указать";
+            this.radioSponsors.UseVisualStyleBackColor = true;
+            // 
+            // radioHim
+            // 
+            this.radioHim.AutoSize = true;
+            this.radioHim.Location = new System.Drawing.Point(7, 20);
+            this.radioHim.Name = "radioHim";
+            this.radioHim.Size = new System.Drawing.Size(102, 17);
+            this.radioHim.TabIndex = 0;
+            this.radioHim.TabStop = true;
+            this.radioHim.Text = "Сам заявитель";
+            this.radioHim.UseVisualStyleBackColor = true;
             // 
             // PersonsCostsData
             // 
@@ -250,10 +250,10 @@
             this.Name = "PersonsCostsData";
             this.Size = new System.Drawing.Size(470, 406);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -262,21 +262,21 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.CheckBox chcBoxInsurance;
-        private System.Windows.Forms.CheckBox checkBoxOtherCosts;
-        private System.Windows.Forms.CheckBox checkBoxAllCosts;
-        private System.Windows.Forms.CheckBox checkBoxTransport;
-        private System.Windows.Forms.CheckBox checkBoxLocation;
-        private System.Windows.Forms.CheckBox checkBoxCard;
-        private System.Windows.Forms.CheckBox checkBoxChecks;
-        private System.Windows.Forms.CheckBox checkBoxMoney;
+        private System.Windows.Forms.CheckBox chkInsurance;
+        private System.Windows.Forms.CheckBox chkOtherCosts;
+        private System.Windows.Forms.CheckBox chkAllCosts;
+        private System.Windows.Forms.CheckBox chkTransport;
+        private System.Windows.Forms.CheckBox chkLocation;
+        private System.Windows.Forms.CheckBox chkCard;
+        private System.Windows.Forms.CheckBox chkChecks;
+        private System.Windows.Forms.CheckBox chkMoney;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textBoxOther;
-        private System.Windows.Forms.CheckBox checkBoxOther;
-        private System.Windows.Forms.CheckBox checkBoxReferred;
-        private System.Windows.Forms.RadioButton radioButtonSponsors;
-        private System.Windows.Forms.RadioButton radioButtonHim;
-        private System.Windows.Forms.DateTimePicker dateTimePickerInsurance;
-        private System.Windows.Forms.TextBox textBoxOtherCosts;
+        private System.Windows.Forms.TextBox txtOther;
+        private System.Windows.Forms.CheckBox chkOther;
+        private System.Windows.Forms.CheckBox chkReferred;
+        private System.Windows.Forms.RadioButton radioSponsors;
+        private System.Windows.Forms.RadioButton radioHim;
+        private System.Windows.Forms.DateTimePicker dtInsurance;
+        private System.Windows.Forms.TextBox txtOtherCosts;
     }
 }

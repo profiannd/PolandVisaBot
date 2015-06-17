@@ -29,20 +29,22 @@
         private void InitializeComponent()
         {
             this.groupBoxInfreceiving = new System.Windows.Forms.GroupBox();
-            this.textBoxMail = new System.Windows.Forms.TextBox();
-            this.textBoxApartmentNumber = new System.Windows.Forms.TextBox();
-            this.textBoxHouseNumber = new System.Windows.Forms.TextBox();
-            this.textBoxAddress = new System.Windows.Forms.TextBox();
-            this.textBoxNumberFax = new System.Windows.Forms.TextBox();
-            this.textBoxPrefixFax = new System.Windows.Forms.TextBox();
-            this.textBoxPhoneNumber = new System.Windows.Forms.TextBox();
-            this.textBoxPhonePrefix = new System.Windows.Forms.TextBox();
-            this.textBoxTitle = new System.Windows.Forms.TextBox();
-            this.textBoxPostcode = new System.Windows.Forms.TextBox();
-            this.textBoxPlace = new System.Windows.Forms.TextBox();
-            this.textBoxState = new System.Windows.Forms.TextBox();
-            this.textBoxSurname = new System.Windows.Forms.TextBox();
-            this.textBoxName = new System.Windows.Forms.TextBox();
+            this.radioMan = new System.Windows.Forms.RadioButton();
+            this.radioFirm = new System.Windows.Forms.RadioButton();
+            this.txtEmail = new System.Windows.Forms.TextBox();
+            this.txtApNumber = new System.Windows.Forms.TextBox();
+            this.txtHouseNumber = new System.Windows.Forms.TextBox();
+            this.txtAddress = new System.Windows.Forms.TextBox();
+            this.txtFax = new System.Windows.Forms.TextBox();
+            this.txtFaxPrefix = new System.Windows.Forms.TextBox();
+            this.txtTelNumber = new System.Windows.Forms.TextBox();
+            this.txtPrefix = new System.Windows.Forms.TextBox();
+            this.txtTitle = new System.Windows.Forms.TextBox();
+            this.txtPostcode = new System.Windows.Forms.TextBox();
+            this.txtCity = new System.Windows.Forms.TextBox();
+            this.txtState = new System.Windows.Forms.TextBox();
+            this.txtLastName = new System.Windows.Forms.TextBox();
+            this.txtName = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -61,29 +63,27 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.radioButtonFirm = new System.Windows.Forms.RadioButton();
-            this.radioButtonMan = new System.Windows.Forms.RadioButton();
             this.groupBoxInfreceiving.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxInfreceiving
             // 
-            this.groupBoxInfreceiving.Controls.Add(this.radioButtonMan);
-            this.groupBoxInfreceiving.Controls.Add(this.radioButtonFirm);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxMail);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxApartmentNumber);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxHouseNumber);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxAddress);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxNumberFax);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxPrefixFax);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxPhoneNumber);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxPhonePrefix);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxTitle);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxPostcode);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxPlace);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxState);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxSurname);
-            this.groupBoxInfreceiving.Controls.Add(this.textBoxName);
+            this.groupBoxInfreceiving.Controls.Add(this.radioMan);
+            this.groupBoxInfreceiving.Controls.Add(this.radioFirm);
+            this.groupBoxInfreceiving.Controls.Add(this.txtEmail);
+            this.groupBoxInfreceiving.Controls.Add(this.txtApNumber);
+            this.groupBoxInfreceiving.Controls.Add(this.txtHouseNumber);
+            this.groupBoxInfreceiving.Controls.Add(this.txtAddress);
+            this.groupBoxInfreceiving.Controls.Add(this.txtFax);
+            this.groupBoxInfreceiving.Controls.Add(this.txtFaxPrefix);
+            this.groupBoxInfreceiving.Controls.Add(this.txtTelNumber);
+            this.groupBoxInfreceiving.Controls.Add(this.txtPrefix);
+            this.groupBoxInfreceiving.Controls.Add(this.txtTitle);
+            this.groupBoxInfreceiving.Controls.Add(this.txtPostcode);
+            this.groupBoxInfreceiving.Controls.Add(this.txtCity);
+            this.groupBoxInfreceiving.Controls.Add(this.txtState);
+            this.groupBoxInfreceiving.Controls.Add(this.txtLastName);
+            this.groupBoxInfreceiving.Controls.Add(this.txtName);
             this.groupBoxInfreceiving.Controls.Add(this.label17);
             this.groupBoxInfreceiving.Controls.Add(this.label18);
             this.groupBoxInfreceiving.Controls.Add(this.label14);
@@ -110,103 +110,126 @@
             this.groupBoxInfreceiving.Text = "Данные принимающего лица";
             this.groupBoxInfreceiving.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // textBoxMail
+            // radioMan
             // 
-            this.textBoxMail.Location = new System.Drawing.Point(300, 293);
-            this.textBoxMail.Name = "textBoxMail";
-            this.textBoxMail.Size = new System.Drawing.Size(100, 20);
-            this.textBoxMail.TabIndex = 34;
+            this.radioMan.AutoSize = true;
+            this.radioMan.Location = new System.Drawing.Point(49, 89);
+            this.radioMan.Name = "radioMan";
+            this.radioMan.Size = new System.Drawing.Size(69, 17);
+            this.radioMan.TabIndex = 36;
+            this.radioMan.TabStop = true;
+            this.radioMan.Text = "Человек";
+            this.radioMan.UseVisualStyleBackColor = true;
+            this.radioMan.CheckedChanged += new System.EventHandler(this.radioButtonMan_CheckedChanged);
             // 
-            // textBoxApartmentNumber
+            // radioFirm
             // 
-            this.textBoxApartmentNumber.Location = new System.Drawing.Point(300, 267);
-            this.textBoxApartmentNumber.Name = "textBoxApartmentNumber";
-            this.textBoxApartmentNumber.Size = new System.Drawing.Size(100, 20);
-            this.textBoxApartmentNumber.TabIndex = 33;
+            this.radioFirm.AutoSize = true;
+            this.radioFirm.Location = new System.Drawing.Point(49, 66);
+            this.radioFirm.Name = "radioFirm";
+            this.radioFirm.Size = new System.Drawing.Size(62, 17);
+            this.radioFirm.TabIndex = 35;
+            this.radioFirm.TabStop = true;
+            this.radioFirm.Text = "Фирма";
+            this.radioFirm.UseVisualStyleBackColor = true;
             // 
-            // textBoxHouseNumber
+            // txtEmail
             // 
-            this.textBoxHouseNumber.Location = new System.Drawing.Point(300, 241);
-            this.textBoxHouseNumber.Name = "textBoxHouseNumber";
-            this.textBoxHouseNumber.Size = new System.Drawing.Size(100, 20);
-            this.textBoxHouseNumber.TabIndex = 32;
+            this.txtEmail.Location = new System.Drawing.Point(300, 293);
+            this.txtEmail.Name = "txtEmail";
+            this.txtEmail.Size = new System.Drawing.Size(100, 20);
+            this.txtEmail.TabIndex = 34;
             // 
-            // textBoxAddress
+            // txtApNumber
             // 
-            this.textBoxAddress.Location = new System.Drawing.Point(300, 215);
-            this.textBoxAddress.Name = "textBoxAddress";
-            this.textBoxAddress.Size = new System.Drawing.Size(100, 20);
-            this.textBoxAddress.TabIndex = 31;
+            this.txtApNumber.Location = new System.Drawing.Point(300, 267);
+            this.txtApNumber.Name = "txtApNumber";
+            this.txtApNumber.Size = new System.Drawing.Size(100, 20);
+            this.txtApNumber.TabIndex = 33;
             // 
-            // textBoxNumberFax
+            // txtHouseNumber
             // 
-            this.textBoxNumberFax.Location = new System.Drawing.Point(300, 189);
-            this.textBoxNumberFax.Name = "textBoxNumberFax";
-            this.textBoxNumberFax.Size = new System.Drawing.Size(100, 20);
-            this.textBoxNumberFax.TabIndex = 30;
+            this.txtHouseNumber.Location = new System.Drawing.Point(300, 241);
+            this.txtHouseNumber.Name = "txtHouseNumber";
+            this.txtHouseNumber.Size = new System.Drawing.Size(100, 20);
+            this.txtHouseNumber.TabIndex = 32;
             // 
-            // textBoxPrefixFax
+            // txtAddress
             // 
-            this.textBoxPrefixFax.Location = new System.Drawing.Point(300, 163);
-            this.textBoxPrefixFax.Name = "textBoxPrefixFax";
-            this.textBoxPrefixFax.Size = new System.Drawing.Size(100, 20);
-            this.textBoxPrefixFax.TabIndex = 29;
+            this.txtAddress.Location = new System.Drawing.Point(300, 215);
+            this.txtAddress.Name = "txtAddress";
+            this.txtAddress.Size = new System.Drawing.Size(100, 20);
+            this.txtAddress.TabIndex = 31;
             // 
-            // textBoxPhoneNumber
+            // txtFax
             // 
-            this.textBoxPhoneNumber.Location = new System.Drawing.Point(300, 138);
-            this.textBoxPhoneNumber.Name = "textBoxPhoneNumber";
-            this.textBoxPhoneNumber.Size = new System.Drawing.Size(100, 20);
-            this.textBoxPhoneNumber.TabIndex = 28;
+            this.txtFax.Location = new System.Drawing.Point(300, 189);
+            this.txtFax.Name = "txtFax";
+            this.txtFax.Size = new System.Drawing.Size(100, 20);
+            this.txtFax.TabIndex = 30;
             // 
-            // textBoxPhonePrefix
+            // txtFaxPrefix
             // 
-            this.textBoxPhonePrefix.Location = new System.Drawing.Point(109, 295);
-            this.textBoxPhonePrefix.Name = "textBoxPhonePrefix";
-            this.textBoxPhonePrefix.Size = new System.Drawing.Size(100, 20);
-            this.textBoxPhonePrefix.TabIndex = 27;
+            this.txtFaxPrefix.Location = new System.Drawing.Point(300, 163);
+            this.txtFaxPrefix.Name = "txtFaxPrefix";
+            this.txtFaxPrefix.Size = new System.Drawing.Size(100, 20);
+            this.txtFaxPrefix.TabIndex = 29;
             // 
-            // textBoxTitle
+            // txtTelNumber
             // 
-            this.textBoxTitle.Location = new System.Drawing.Point(110, 138);
-            this.textBoxTitle.Name = "textBoxTitle";
-            this.textBoxTitle.Size = new System.Drawing.Size(100, 20);
-            this.textBoxTitle.TabIndex = 26;
+            this.txtTelNumber.Location = new System.Drawing.Point(300, 138);
+            this.txtTelNumber.Name = "txtTelNumber";
+            this.txtTelNumber.Size = new System.Drawing.Size(100, 20);
+            this.txtTelNumber.TabIndex = 28;
             // 
-            // textBoxPostcode
+            // txtPrefix
             // 
-            this.textBoxPostcode.Location = new System.Drawing.Point(111, 268);
-            this.textBoxPostcode.Name = "textBoxPostcode";
-            this.textBoxPostcode.Size = new System.Drawing.Size(100, 20);
-            this.textBoxPostcode.TabIndex = 25;
+            this.txtPrefix.Location = new System.Drawing.Point(111, 296);
+            this.txtPrefix.Name = "txtPrefix";
+            this.txtPrefix.Size = new System.Drawing.Size(100, 20);
+            this.txtPrefix.TabIndex = 27;
             // 
-            // textBoxPlace
+            // txtTitle
             // 
-            this.textBoxPlace.Location = new System.Drawing.Point(111, 242);
-            this.textBoxPlace.Name = "textBoxPlace";
-            this.textBoxPlace.Size = new System.Drawing.Size(100, 20);
-            this.textBoxPlace.TabIndex = 24;
+            this.txtTitle.Location = new System.Drawing.Point(111, 138);
+            this.txtTitle.Name = "txtTitle";
+            this.txtTitle.Size = new System.Drawing.Size(100, 20);
+            this.txtTitle.TabIndex = 26;
             // 
-            // textBoxState
+            // txtPostcode
             // 
-            this.textBoxState.Location = new System.Drawing.Point(111, 216);
-            this.textBoxState.Name = "textBoxState";
-            this.textBoxState.Size = new System.Drawing.Size(100, 20);
-            this.textBoxState.TabIndex = 23;
+            this.txtPostcode.Location = new System.Drawing.Point(111, 268);
+            this.txtPostcode.Name = "txtPostcode";
+            this.txtPostcode.Size = new System.Drawing.Size(100, 20);
+            this.txtPostcode.TabIndex = 25;
             // 
-            // textBoxSurname
+            // txtCity
             // 
-            this.textBoxSurname.Location = new System.Drawing.Point(111, 190);
-            this.textBoxSurname.Name = "textBoxSurname";
-            this.textBoxSurname.Size = new System.Drawing.Size(100, 20);
-            this.textBoxSurname.TabIndex = 22;
+            this.txtCity.Location = new System.Drawing.Point(111, 242);
+            this.txtCity.Name = "txtCity";
+            this.txtCity.Size = new System.Drawing.Size(100, 20);
+            this.txtCity.TabIndex = 24;
             // 
-            // textBoxName
+            // txtState
             // 
-            this.textBoxName.Location = new System.Drawing.Point(111, 164);
-            this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(100, 20);
-            this.textBoxName.TabIndex = 21;
+            this.txtState.Location = new System.Drawing.Point(111, 216);
+            this.txtState.Name = "txtState";
+            this.txtState.Size = new System.Drawing.Size(100, 20);
+            this.txtState.TabIndex = 23;
+            // 
+            // txtLastName
+            // 
+            this.txtLastName.Location = new System.Drawing.Point(111, 190);
+            this.txtLastName.Name = "txtLastName";
+            this.txtLastName.Size = new System.Drawing.Size(100, 20);
+            this.txtLastName.TabIndex = 22;
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(111, 164);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(100, 20);
+            this.txtName.TabIndex = 21;
             // 
             // label17
             // 
@@ -371,29 +394,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Фамилия, имя лица (лиц), приглашающего (-щих) в Республике Польша. ";
             // 
-            // radioButtonFirm
-            // 
-            this.radioButtonFirm.AutoSize = true;
-            this.radioButtonFirm.Location = new System.Drawing.Point(49, 66);
-            this.radioButtonFirm.Name = "radioButtonFirm";
-            this.radioButtonFirm.Size = new System.Drawing.Size(62, 17);
-            this.radioButtonFirm.TabIndex = 35;
-            this.radioButtonFirm.TabStop = true;
-            this.radioButtonFirm.Text = "Фирма";
-            this.radioButtonFirm.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonMan
-            // 
-            this.radioButtonMan.AutoSize = true;
-            this.radioButtonMan.Location = new System.Drawing.Point(49, 89);
-            this.radioButtonMan.Name = "radioButtonMan";
-            this.radioButtonMan.Size = new System.Drawing.Size(69, 17);
-            this.radioButtonMan.TabIndex = 36;
-            this.radioButtonMan.TabStop = true;
-            this.radioButtonMan.Text = "Человек";
-            this.radioButtonMan.UseVisualStyleBackColor = true;
-            this.radioButtonMan.CheckedChanged += new System.EventHandler(this.radioButtonMan_CheckedChanged);
-            // 
             // InfreceivingData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -428,21 +428,21 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxName;
-        private System.Windows.Forms.TextBox textBoxMail;
-        private System.Windows.Forms.TextBox textBoxApartmentNumber;
-        private System.Windows.Forms.TextBox textBoxHouseNumber;
-        private System.Windows.Forms.TextBox textBoxAddress;
-        private System.Windows.Forms.TextBox textBoxNumberFax;
-        private System.Windows.Forms.TextBox textBoxPrefixFax;
-        private System.Windows.Forms.TextBox textBoxPhoneNumber;
-        private System.Windows.Forms.TextBox textBoxPhonePrefix;
-        private System.Windows.Forms.TextBox textBoxTitle;
-        private System.Windows.Forms.TextBox textBoxPostcode;
-        private System.Windows.Forms.TextBox textBoxPlace;
-        private System.Windows.Forms.TextBox textBoxState;
-        private System.Windows.Forms.TextBox textBoxSurname;
-        private System.Windows.Forms.RadioButton radioButtonMan;
-        private System.Windows.Forms.RadioButton radioButtonFirm;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.TextBox txtEmail;
+        private System.Windows.Forms.TextBox txtApNumber;
+        private System.Windows.Forms.TextBox txtHouseNumber;
+        private System.Windows.Forms.TextBox txtAddress;
+        private System.Windows.Forms.TextBox txtFax;
+        private System.Windows.Forms.TextBox txtFaxPrefix;
+        private System.Windows.Forms.TextBox txtTelNumber;
+        private System.Windows.Forms.TextBox txtPrefix;
+        private System.Windows.Forms.TextBox txtTitle;
+        private System.Windows.Forms.TextBox txtPostcode;
+        private System.Windows.Forms.TextBox txtCity;
+        private System.Windows.Forms.TextBox txtState;
+        private System.Windows.Forms.TextBox txtLastName;
+        private System.Windows.Forms.RadioButton radioMan;
+        private System.Windows.Forms.RadioButton radioFirm;
     }
 }

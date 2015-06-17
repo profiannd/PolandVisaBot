@@ -10,52 +10,52 @@ namespace E_Konsulat
             InitializeComponent();
         }
 
-        public string LastName
+        public string LastNamePersonal
         {
             get { return txtLastName.Text; }
             set { txtLastName.Text = value; }
         }
 
-        public string PreviousLastName
+        public string PreviousLastNamePersonal
         {
             get { return txtPrevLastName.Text; }
             set { txtPrevLastName.Text = value; }
         }
 
-        public string FirstName
+        public string FirstNamePersonal
         {
             get { return txtName.Text; }
             set { txtName.Text = value; }
         }
 
-        public DateTime Dob
+        public DateTime DobPersonal
         {
             get { return dtDob.Value; }
             set { dtDob.Value = value; }
         }
 
-        public string DobCity
+        public string DobCityPersonal
         {
             get { return txtBirthPlace.Text; }
             set { txtBirthPlace.Text = value; }
         }
-        public string DobCountry
+        public string DobCountryPersonal
         {
             get { return txtBirthCountry.Text; }
             set { txtBirthCountry.Text = value; }
         }
-        public string Citizenship
+        public string CitizenshipPersonal
         {
             get { return txtCitizenshipNow.Text; }
             set { txtCitizenshipNow.Text = value; }
         }
-        public string Nationality
+        public string NationalityPersonal
         {
             get { return txtDobNationality.Text; }
             set { txtDobNationality.Text = value; }
         }
 
-        public bool SexMRadio
+        public bool SexMRadioPersonal
         {
             get { return radioSexM.Checked; }
             set
@@ -64,7 +64,7 @@ namespace E_Konsulat
                 radioSexF.Checked = !value;
             }
         }
-        public string FamilyStateRadio
+        public string FamilyStateRadioPersonal
         {
             get
             {

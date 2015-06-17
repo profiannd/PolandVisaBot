@@ -42,9 +42,9 @@
             this.txtZip = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.txtCountry = new System.Windows.Forms.TextBox();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.txtCountry = new System.Windows.Forms.TextBox();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -123,6 +123,7 @@
             // 
             // txtCity
             // 
+            this.txtCity.AccessibleRole = System.Windows.Forms.AccessibleRole.Animation;
             this.txtCity.Location = new System.Drawing.Point(16, 234);
             this.txtCity.Name = "txtCity";
             this.txtCity.Size = new System.Drawing.Size(139, 20);
@@ -177,13 +178,6 @@
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             // 
-            // txtCountry
-            // 
-            this.txtCountry.Location = new System.Drawing.Point(16, 153);
-            this.txtCountry.Name = "txtCountry";
-            this.txtCountry.Size = new System.Drawing.Size(232, 20);
-            this.txtCountry.TabIndex = 18;
-            // 
             // txtAddress
             // 
             this.txtAddress.Location = new System.Drawing.Point(16, 316);
@@ -199,6 +193,13 @@
             this.label8.Size = new System.Drawing.Size(41, 13);
             this.label8.TabIndex = 19;
             this.label8.Text = "Адрес ";
+            // 
+            // txtCountry
+            // 
+            this.txtCountry.Location = new System.Drawing.Point(16, 153);
+            this.txtCountry.Name = "txtCountry";
+            this.txtCountry.Size = new System.Drawing.Size(232, 20);
+            this.txtCountry.TabIndex = 18;
             // 
             // ChildData
             // 

@@ -12,7 +12,15 @@ namespace E_Konsulat
         {
             InitializeComponent();
         }
-
+        public bool FingYNFingerprints
+        {
+            get { return radioYes.Checked; }
+            set
+            {
+                radioYes.Checked = value;
+                radioNo.Checked = !value;
+            }
+        }
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 

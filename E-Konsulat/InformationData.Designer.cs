@@ -28,63 +28,96 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupInformation = new System.Windows.Forms.GroupBox();
-            this.dateTimeCheckOut = new System.Windows.Forms.DateTimePicker();
+            this.gBInformation = new System.Windows.Forms.GroupBox();
+            this.radioMultiple = new System.Windows.Forms.RadioButton();
+            this.radioDouble = new System.Windows.Forms.RadioButton();
+            this.radioSingle = new System.Windows.Forms.RadioButton();
+            this.dtCheckOut = new System.Windows.Forms.DateTimePicker();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.dateTimeArrival = new System.Windows.Forms.DateTimePicker();
+            this.dtArrival = new System.Windows.Forms.DateTimePicker();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBoxNumberDay = new System.Windows.Forms.TextBox();
+            this.txtNumbDay = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBoxWaiver = new System.Windows.Forms.ComboBox();
-            this.comboBoxdestination = new System.Windows.Forms.ComboBox();
-            this.radioButtonSingle = new System.Windows.Forms.RadioButton();
-            this.radioButtonDouble = new System.Windows.Forms.RadioButton();
-            this.radioButtonMultiple = new System.Windows.Forms.RadioButton();
-            this.groupInformation.SuspendLayout();
+            this.txtWaiver = new System.Windows.Forms.ComboBox();
+            this.txtDestination = new System.Windows.Forms.ComboBox();
+            this.gBInformation.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupInformation
+            // gBInformation
             // 
-            this.groupInformation.Controls.Add(this.radioButtonMultiple);
-            this.groupInformation.Controls.Add(this.radioButtonDouble);
-            this.groupInformation.Controls.Add(this.radioButtonSingle);
-            this.groupInformation.Controls.Add(this.dateTimeCheckOut);
-            this.groupInformation.Controls.Add(this.label10);
-            this.groupInformation.Controls.Add(this.label11);
-            this.groupInformation.Controls.Add(this.dateTimeArrival);
-            this.groupInformation.Controls.Add(this.label9);
-            this.groupInformation.Controls.Add(this.label8);
-            this.groupInformation.Controls.Add(this.label7);
-            this.groupInformation.Controls.Add(this.textBoxNumberDay);
-            this.groupInformation.Controls.Add(this.label6);
-            this.groupInformation.Controls.Add(this.label3);
-            this.groupInformation.Controls.Add(this.label5);
-            this.groupInformation.Controls.Add(this.label1);
-            this.groupInformation.Controls.Add(this.label2);
-            this.groupInformation.Controls.Add(this.label4);
-            this.groupInformation.Controls.Add(this.comboBoxWaiver);
-            this.groupInformation.Controls.Add(this.comboBoxdestination);
-            this.groupInformation.Location = new System.Drawing.Point(0, 0);
-            this.groupInformation.Name = "groupInformation";
-            this.groupInformation.Size = new System.Drawing.Size(422, 347);
-            this.groupInformation.TabIndex = 0;
-            this.groupInformation.TabStop = false;
-            this.groupInformation.Text = "Сведения, касающиеся поездки";
+            this.gBInformation.Controls.Add(this.radioMultiple);
+            this.gBInformation.Controls.Add(this.radioDouble);
+            this.gBInformation.Controls.Add(this.radioSingle);
+            this.gBInformation.Controls.Add(this.dtCheckOut);
+            this.gBInformation.Controls.Add(this.label10);
+            this.gBInformation.Controls.Add(this.label11);
+            this.gBInformation.Controls.Add(this.dtArrival);
+            this.gBInformation.Controls.Add(this.label9);
+            this.gBInformation.Controls.Add(this.label8);
+            this.gBInformation.Controls.Add(this.label7);
+            this.gBInformation.Controls.Add(this.txtNumbDay);
+            this.gBInformation.Controls.Add(this.label6);
+            this.gBInformation.Controls.Add(this.label3);
+            this.gBInformation.Controls.Add(this.label5);
+            this.gBInformation.Controls.Add(this.label1);
+            this.gBInformation.Controls.Add(this.label2);
+            this.gBInformation.Controls.Add(this.label4);
+            this.gBInformation.Controls.Add(this.txtWaiver);
+            this.gBInformation.Controls.Add(this.txtDestination);
+            this.gBInformation.Location = new System.Drawing.Point(0, 0);
+            this.gBInformation.Name = "gBInformation";
+            this.gBInformation.Size = new System.Drawing.Size(422, 347);
+            this.gBInformation.TabIndex = 0;
+            this.gBInformation.TabStop = false;
+            this.gBInformation.Text = "Сведения, касающиеся поездки";
             // 
-            // dateTimeCheckOut
+            // radioMultiple
             // 
-            this.dateTimeCheckOut.Location = new System.Drawing.Point(135, 282);
-            this.dateTimeCheckOut.Name = "dateTimeCheckOut";
-            this.dateTimeCheckOut.Size = new System.Drawing.Size(122, 20);
-            this.dateTimeCheckOut.TabIndex = 15;
+            this.radioMultiple.AutoSize = true;
+            this.radioMultiple.Location = new System.Drawing.Point(6, 166);
+            this.radioMultiple.Name = "radioMultiple";
+            this.radioMultiple.Size = new System.Drawing.Size(143, 17);
+            this.radioMultiple.TabIndex = 18;
+            this.radioMultiple.TabStop = true;
+            this.radioMultiple.Text = "Многократного въезда";
+            this.radioMultiple.UseVisualStyleBackColor = true;
+            // 
+            // radioDouble
+            // 
+            this.radioDouble.AutoSize = true;
+            this.radioDouble.Location = new System.Drawing.Point(6, 143);
+            this.radioDouble.Name = "radioDouble";
+            this.radioDouble.Size = new System.Drawing.Size(131, 17);
+            this.radioDouble.TabIndex = 17;
+            this.radioDouble.TabStop = true;
+            this.radioDouble.Text = "Двукратного въезда";
+            this.radioDouble.UseVisualStyleBackColor = true;
+            // 
+            // radioSingle
+            // 
+            this.radioSingle.AutoSize = true;
+            this.radioSingle.Location = new System.Drawing.Point(6, 122);
+            this.radioSingle.Name = "radioSingle";
+            this.radioSingle.Size = new System.Drawing.Size(137, 17);
+            this.radioSingle.TabIndex = 16;
+            this.radioSingle.TabStop = true;
+            this.radioSingle.Text = "Однократного въезда";
+            this.radioSingle.UseVisualStyleBackColor = true;
+            // 
+            // dtCheckOut
+            // 
+            this.dtCheckOut.Location = new System.Drawing.Point(135, 282);
+            this.dtCheckOut.Name = "dtCheckOut";
+            this.dtCheckOut.Size = new System.Drawing.Size(122, 20);
+            this.dtCheckOut.TabIndex = 15;
             // 
             // label10
             // 
@@ -103,14 +136,14 @@
             this.label11.Size = new System.Drawing.Size(224, 13);
             this.label11.TabIndex = 13;
             this.label11.Text = "Планируемая дата выезда из Республики ";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
-            // dateTimeArrival
+            // dtArrival
             // 
-            this.dateTimeArrival.Location = new System.Drawing.Point(135, 219);
-            this.dateTimeArrival.Name = "dateTimeArrival";
-            this.dateTimeArrival.Size = new System.Drawing.Size(122, 20);
-            this.dateTimeArrival.TabIndex = 12;
+            this.dtArrival.CalendarTitleForeColor = System.Drawing.SystemColors.Window;
+            this.dtArrival.Location = new System.Drawing.Point(135, 219);
+            this.dtArrival.Name = "dtArrival";
+            this.dtArrival.Size = new System.Drawing.Size(122, 20);
+            this.dtArrival.TabIndex = 12;
             // 
             // label9
             // 
@@ -129,7 +162,6 @@
             this.label8.Size = new System.Drawing.Size(228, 13);
             this.label8.TabIndex = 10;
             this.label8.Text = "Планируемая дата прибытия в Республику ";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // label7
             // 
@@ -140,12 +172,12 @@
             this.label7.TabIndex = 9;
             this.label7.Text = "дней (>90)";
             // 
-            // textBoxNumberDay
+            // txtNumbDay
             // 
-            this.textBoxNumberDay.Location = new System.Drawing.Point(299, 141);
-            this.textBoxNumberDay.Name = "textBoxNumberDay";
-            this.textBoxNumberDay.Size = new System.Drawing.Size(23, 20);
-            this.textBoxNumberDay.TabIndex = 8;
+            this.txtNumbDay.Location = new System.Drawing.Point(299, 141);
+            this.txtNumbDay.Name = "txtNumbDay";
+            this.txtNumbDay.Size = new System.Drawing.Size(23, 20);
+            this.txtNumbDay.TabIndex = 8;
             // 
             // label6
             // 
@@ -164,7 +196,6 @@
             this.label3.Size = new System.Drawing.Size(138, 13);
             this.label3.TabIndex = 3;
             this.label3.Text = "Виза запрашивается для ";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label5
             // 
@@ -183,7 +214,6 @@
             this.label1.Size = new System.Drawing.Size(252, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Продолжительность пребывания или транзита. ";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -202,93 +232,57 @@
             this.label4.Size = new System.Drawing.Size(127, 13);
             this.label4.TabIndex = 5;
             this.label4.Text = "Страна первого въезда";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
-            // comboBoxWaiver
+            // txtWaiver
             // 
-            this.comboBoxWaiver.FormattingEnabled = true;
-            this.comboBoxWaiver.Location = new System.Drawing.Point(232, 60);
-            this.comboBoxWaiver.Name = "comboBoxWaiver";
-            this.comboBoxWaiver.Size = new System.Drawing.Size(184, 21);
-            this.comboBoxWaiver.TabIndex = 1;
-            this.comboBoxWaiver.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.txtWaiver.FormattingEnabled = true;
+            this.txtWaiver.Location = new System.Drawing.Point(232, 60);
+            this.txtWaiver.Name = "txtWaiver";
+            this.txtWaiver.Size = new System.Drawing.Size(184, 21);
+            this.txtWaiver.TabIndex = 1;
             // 
-            // comboBoxdestination
+            // txtDestination
             // 
-            this.comboBoxdestination.FormattingEnabled = true;
-            this.comboBoxdestination.Location = new System.Drawing.Point(6, 60);
-            this.comboBoxdestination.Name = "comboBoxdestination";
-            this.comboBoxdestination.Size = new System.Drawing.Size(184, 21);
-            this.comboBoxdestination.TabIndex = 1;
-            // 
-            // radioButtonSingle
-            // 
-            this.radioButtonSingle.AutoSize = true;
-            this.radioButtonSingle.Location = new System.Drawing.Point(6, 122);
-            this.radioButtonSingle.Name = "radioButtonSingle";
-            this.radioButtonSingle.Size = new System.Drawing.Size(137, 17);
-            this.radioButtonSingle.TabIndex = 16;
-            this.radioButtonSingle.TabStop = true;
-            this.radioButtonSingle.Text = "Однократного въезда";
-            this.radioButtonSingle.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonDouble
-            // 
-            this.radioButtonDouble.AutoSize = true;
-            this.radioButtonDouble.Location = new System.Drawing.Point(6, 143);
-            this.radioButtonDouble.Name = "radioButtonDouble";
-            this.radioButtonDouble.Size = new System.Drawing.Size(131, 17);
-            this.radioButtonDouble.TabIndex = 17;
-            this.radioButtonDouble.TabStop = true;
-            this.radioButtonDouble.Text = "Двукратного въезда";
-            this.radioButtonDouble.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonMultiple
-            // 
-            this.radioButtonMultiple.AutoSize = true;
-            this.radioButtonMultiple.Location = new System.Drawing.Point(6, 166);
-            this.radioButtonMultiple.Name = "radioButtonMultiple";
-            this.radioButtonMultiple.Size = new System.Drawing.Size(143, 17);
-            this.radioButtonMultiple.TabIndex = 18;
-            this.radioButtonMultiple.TabStop = true;
-            this.radioButtonMultiple.Text = "Многократного въезда";
-            this.radioButtonMultiple.UseVisualStyleBackColor = true;
+            this.txtDestination.FormattingEnabled = true;
+            this.txtDestination.Location = new System.Drawing.Point(6, 60);
+            this.txtDestination.Name = "txtDestination";
+            this.txtDestination.Size = new System.Drawing.Size(184, 21);
+            this.txtDestination.TabIndex = 1;
             // 
             // InformationData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupInformation);
+            this.Controls.Add(this.gBInformation);
             this.Name = "InformationData";
             this.Size = new System.Drawing.Size(422, 347);
-            this.Load += new System.EventHandler(this.InformationData_Load);
-            this.groupInformation.ResumeLayout(false);
-            this.groupInformation.PerformLayout();
+            this.gBInformation.ResumeLayout(false);
+            this.gBInformation.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupInformation;
-        private System.Windows.Forms.ComboBox comboBoxWaiver;
-        private System.Windows.Forms.ComboBox comboBoxdestination;
+        private System.Windows.Forms.GroupBox gBInformation;
+        private System.Windows.Forms.ComboBox txtWaiver;
+        private System.Windows.Forms.ComboBox txtDestination;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBoxNumberDay;
+        private System.Windows.Forms.TextBox txtNumbDay;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.DateTimePicker dateTimeArrival;
-        private System.Windows.Forms.DateTimePicker dateTimeCheckOut;
+        private System.Windows.Forms.DateTimePicker dtArrival;
+        private System.Windows.Forms.DateTimePicker dtCheckOut;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.RadioButton radioButtonMultiple;
-        private System.Windows.Forms.RadioButton radioButtonDouble;
-        private System.Windows.Forms.RadioButton radioButtonSingle;
+        private System.Windows.Forms.RadioButton radioMultiple;
+        private System.Windows.Forms.RadioButton radioDouble;
+        private System.Windows.Forms.RadioButton radioSingle;
     }
 }

@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.groupFingerprints = new System.Windows.Forms.GroupBox();
-            this.radioButtonNo = new System.Windows.Forms.RadioButton();
-            this.radioButtonYes = new System.Windows.Forms.RadioButton();
+            this.radioYes = new System.Windows.Forms.RadioButton();
+            this.radioNo = new System.Windows.Forms.RadioButton();
             this.groupFingerprints.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupFingerprints
             // 
-            this.groupFingerprints.Controls.Add(this.radioButtonYes);
-            this.groupFingerprints.Controls.Add(this.radioButtonNo);
+            this.groupFingerprints.Controls.Add(this.radioYes);
+            this.groupFingerprints.Controls.Add(this.radioNo);
             this.groupFingerprints.Location = new System.Drawing.Point(0, 0);
             this.groupFingerprints.Name = "groupFingerprints";
             this.groupFingerprints.Size = new System.Drawing.Size(522, 86);
@@ -47,27 +47,27 @@
     "й визы";
             this.groupFingerprints.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // radioButtonNo
+            // radioYes
             // 
-            this.radioButtonNo.AutoSize = true;
-            this.radioButtonNo.Location = new System.Drawing.Point(6, 19);
-            this.radioButtonNo.Name = "radioButtonNo";
-            this.radioButtonNo.Size = new System.Drawing.Size(44, 17);
-            this.radioButtonNo.TabIndex = 2;
-            this.radioButtonNo.TabStop = true;
-            this.radioButtonNo.Text = "Нет";
-            this.radioButtonNo.UseVisualStyleBackColor = true;
+            this.radioYes.AutoSize = true;
+            this.radioYes.Location = new System.Drawing.Point(6, 42);
+            this.radioYes.Name = "radioYes";
+            this.radioYes.Size = new System.Drawing.Size(40, 17);
+            this.radioYes.TabIndex = 3;
+            this.radioYes.TabStop = true;
+            this.radioYes.Text = "Да";
+            this.radioYes.UseVisualStyleBackColor = true;
             // 
-            // radioButtonYes
+            // radioNo
             // 
-            this.radioButtonYes.AutoSize = true;
-            this.radioButtonYes.Location = new System.Drawing.Point(6, 42);
-            this.radioButtonYes.Name = "radioButtonYes";
-            this.radioButtonYes.Size = new System.Drawing.Size(40, 17);
-            this.radioButtonYes.TabIndex = 3;
-            this.radioButtonYes.TabStop = true;
-            this.radioButtonYes.Text = "Да";
-            this.radioButtonYes.UseVisualStyleBackColor = true;
+            this.radioNo.AutoSize = true;
+            this.radioNo.Location = new System.Drawing.Point(6, 19);
+            this.radioNo.Name = "radioNo";
+            this.radioNo.Size = new System.Drawing.Size(44, 17);
+            this.radioNo.TabIndex = 2;
+            this.radioNo.TabStop = true;
+            this.radioNo.Text = "Нет";
+            this.radioNo.UseVisualStyleBackColor = true;
             // 
             // FingerprintsData
             // 
@@ -85,7 +85,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupFingerprints;
-        private System.Windows.Forms.RadioButton radioButtonYes;
-        private System.Windows.Forms.RadioButton radioButtonNo;
+        private System.Windows.Forms.RadioButton radioYes;
+        private System.Windows.Forms.RadioButton radioNo;
     }
 }

@@ -339,7 +339,7 @@ namespace PolandVisaAuto
 
         private void btnCreateEmail_Click(object sender, EventArgs e)
         {
-            txtEmail.Text = string.Format("{0}@gmeil.com", txtLastName.Text);
+            txtEmail.Text = string.Format("{0}@gmeil.com", txtLastName.Text+txtName.Text);
             txtPass.Text = Guid.NewGuid().ToString().Replace("-","").Remove(8);
         }
 

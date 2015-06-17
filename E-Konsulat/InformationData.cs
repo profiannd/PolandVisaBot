@@ -12,64 +12,56 @@ namespace E_Konsulat
             InitializeComponent();
         }
 
-        private void InformationData_Load(object sender, EventArgs e)
+        public string DestinationInform
         {
-
+            get { return txtDestination.Text; }
+            set { txtDestination.Text = value; }
+        }
+        public string WaiverInform
+        {
+            get { return txtWaiver.Text; }
+            set { txtWaiver.Text = value; }
+        }
+        public string NumbDayInform
+        {
+            get { return txtNumbDay.Text; }
+            set { txtNumbDay.Text = value; }
+        }
+        public DateTime ArrivalInform
+        {
+            get { return dtArrival.Value; }
+            set { dtArrival.Value = value; }
+        }
+        public DateTime CheckOutInform
+        {
+            get { return dtCheckOut.Value; }
+            set { dtCheckOut.Value = value; }
         }
 
-        private void groupBox2_Enter(object sender, EventArgs e)
+        public string EntryStateRadioInform
         {
-
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
+            get
+            {
+                for (int index = 0; index < gBInformation.Controls.Count; index++)
+                {
+                    RadioButton rb = gBInformation.Controls[index] as RadioButton;
+                    if (rb != null && rb.Checked)
+                        return rb.Name;
+                }
+                return "";
+            }
+            set
+            {
+                for (int index = 0; index < gBInformation.Controls.Count; index++)
+                {
+                    RadioButton rb = gBInformation.Controls[index] as RadioButton;
+                    if (rb != null && rb.Name == value)
+                    {
+                        rb.Checked = true;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

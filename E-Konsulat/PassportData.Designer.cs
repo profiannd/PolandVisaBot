@@ -37,7 +37,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtPassNumber = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gbPassportType = new System.Windows.Forms.GroupBox();
             this.txtAnother = new System.Windows.Forms.TextBox();
             this.radioAnother = new System.Windows.Forms.RadioButton();
             this.radioOsobi = new System.Windows.Forms.RadioButton();
@@ -46,7 +46,7 @@
             this.radioDippass = new System.Windows.Forms.RadioButton();
             this.radioPass = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.gbPassportType.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -59,7 +59,7 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txtPassNumber);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.Controls.Add(this.gbPassportType);
             this.groupBox1.Location = new System.Drawing.Point(6, 7);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(464, 225);
@@ -135,24 +135,25 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Номер проездного документа";
             // 
-            // groupBox2
+            // gbPassportType
             // 
-            this.groupBox2.Controls.Add(this.txtAnother);
-            this.groupBox2.Controls.Add(this.radioAnother);
-            this.groupBox2.Controls.Add(this.radioOsobi);
-            this.groupBox2.Controls.Add(this.radioOficial);
-            this.groupBox2.Controls.Add(this.radioSluz);
-            this.groupBox2.Controls.Add(this.radioDippass);
-            this.groupBox2.Controls.Add(this.radioPass);
-            this.groupBox2.Location = new System.Drawing.Point(6, 19);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(217, 191);
-            this.groupBox2.TabIndex = 0;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Тип проездного документа ";
+            this.gbPassportType.Controls.Add(this.txtAnother);
+            this.gbPassportType.Controls.Add(this.radioAnother);
+            this.gbPassportType.Controls.Add(this.radioOsobi);
+            this.gbPassportType.Controls.Add(this.radioOficial);
+            this.gbPassportType.Controls.Add(this.radioSluz);
+            this.gbPassportType.Controls.Add(this.radioDippass);
+            this.gbPassportType.Controls.Add(this.radioPass);
+            this.gbPassportType.Location = new System.Drawing.Point(6, 19);
+            this.gbPassportType.Name = "gbPassportType";
+            this.gbPassportType.Size = new System.Drawing.Size(217, 191);
+            this.gbPassportType.TabIndex = 0;
+            this.gbPassportType.TabStop = false;
+            this.gbPassportType.Text = "Тип проездного документа ";
             // 
             // txtAnother
             // 
+            this.txtAnother.Enabled = false;
             this.txtAnother.Location = new System.Drawing.Point(18, 160);
             this.txtAnother.Name = "txtAnother";
             this.txtAnother.Size = new System.Drawing.Size(189, 20);
@@ -168,6 +169,7 @@
             this.radioAnother.TabStop = true;
             this.radioAnother.Text = "Иной проездной документ (указать, какой)";
             this.radioAnother.UseVisualStyleBackColor = true;
+            this.radioAnother.CheckedChanged += new System.EventHandler(this.radioAnother_CheckedChanged);
             // 
             // radioOsobi
             // 
@@ -179,6 +181,7 @@
             this.radioOsobi.TabStop = true;
             this.radioOsobi.Text = "Особый паспорт";
             this.radioOsobi.UseVisualStyleBackColor = true;
+            this.radioOsobi.CheckedChanged += new System.EventHandler(this.radioAnother_CheckedChanged);
             // 
             // radioOficial
             // 
@@ -190,6 +193,7 @@
             this.radioOficial.TabStop = true;
             this.radioOficial.Text = "Официальный паспорт";
             this.radioOficial.UseVisualStyleBackColor = true;
+            this.radioOficial.CheckedChanged += new System.EventHandler(this.radioAnother_CheckedChanged);
             // 
             // radioSluz
             // 
@@ -201,6 +205,7 @@
             this.radioSluz.TabStop = true;
             this.radioSluz.Text = "Служебный паспорт";
             this.radioSluz.UseVisualStyleBackColor = true;
+            this.radioSluz.CheckedChanged += new System.EventHandler(this.radioAnother_CheckedChanged);
             // 
             // radioDippass
             // 
@@ -212,6 +217,7 @@
             this.radioDippass.TabStop = true;
             this.radioDippass.Text = "Дипломатический паспорт";
             this.radioDippass.UseVisualStyleBackColor = true;
+            this.radioDippass.CheckedChanged += new System.EventHandler(this.radioAnother_CheckedChanged);
             // 
             // radioPass
             // 
@@ -223,6 +229,7 @@
             this.radioPass.TabStop = true;
             this.radioPass.Text = "Обычный паспорт";
             this.radioPass.UseVisualStyleBackColor = true;
+            this.radioPass.CheckedChanged += new System.EventHandler(this.radioAnother_CheckedChanged);
             // 
             // PassportData
             // 
@@ -233,8 +240,8 @@
             this.Size = new System.Drawing.Size(470, 232);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.gbPassportType.ResumeLayout(false);
+            this.gbPassportType.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -242,7 +249,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gbPassportType;
         private System.Windows.Forms.TextBox txtAnother;
         private System.Windows.Forms.RadioButton radioAnother;
         private System.Windows.Forms.RadioButton radioOsobi;

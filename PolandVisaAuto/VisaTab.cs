@@ -370,9 +370,10 @@ namespace PolandVisaAuto
                     case RotEvents.FirstCupture:
                         {
                             ImageResolver.Instance.SystemDecaptcherLoad();
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText))
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText) && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage").InnerText))
                             {
-                                string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText;
+                                string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null?webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText:
+                                       webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage") != null?webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage").InnerText:"";
                                 Logger.Error("Надо исправить ошибку: \r\n " + error);
                                 richText.Text ="Надо исправить ошибку: \r\n " + error;
                                 renewTask.Visible = true;
@@ -555,14 +556,16 @@ namespace PolandVisaAuto
             string value = ImageResolver.Instance.RecognizePictureGetString(ImageToByte(getFirstImage()));
             Logger.Info("End parsing cupture");
 
+            webBrowser.Document.GetElementById("recaptcha_response_field").SetAttribute("value", value);
+            
             //ctl00$plhMain$MyCaptchaControl1
-            HtmlElementCollection elems = webBrowser.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
-            HtmlElement elem = null;
-            if (elems != null && elems.Count > 0)
-            {
-                elem = elems[0];
-                elem.SetAttribute("value", value);
-            }
+//            HtmlElementCollection elems = webBrowser.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
+//            HtmlElement elem = null;
+//            if (elems != null && elems.Count > 0)
+//            {
+//                elem = elems[0];
+//                elem.SetAttribute("value", value);
+//            }
         }
 
         [ComImport, InterfaceType((short)1), Guid("3050F669-98B5-11CF-BB82-00AA00BDCE0B")]
@@ -579,14 +582,17 @@ namespace PolandVisaAuto
             IHTMLDocument2 doc = (IHTMLDocument2)webBrowser.Document.DomDocument;
             foreach (IHTMLImgElement img in doc.images)
             {
-                IHTMLElementRenderFixed render = (IHTMLElementRenderFixed)img;
-                Bitmap bmp = new Bitmap(img.width, img.height);
-                Graphics g = Graphics.FromImage(bmp);
-                IntPtr hdc = g.GetHdc();
-                render.DrawToDC(hdc);
-                g.ReleaseHdc(hdc);
-                Logger.Info("Stop get Image");
-                return bmp;
+                if (img.alt.Contains("reCAPTCHA"))
+                {
+                    IHTMLElementRenderFixed render = (IHTMLElementRenderFixed) img;
+                    Bitmap bmp = new Bitmap(img.width, img.height);
+                    Graphics g = Graphics.FromImage(bmp);
+                    IntPtr hdc = g.GetHdc();
+                    render.DrawToDC(hdc);
+                    g.ReleaseHdc(hdc);
+                    Logger.Info("Stop get Image");
+                    return bmp;
+                }
                 //bmp.Save(@"C:\nameProp.bmp");
 
 
