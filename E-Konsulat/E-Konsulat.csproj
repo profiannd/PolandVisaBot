@@ -33,12 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DecaptcherLib, Version=1.0.4194.40366, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\PolandVisaAuto\bin\Debug\PVM1.0.1.1\DecaptcherLib.dll</HintPath>
+    <Reference Include="DecaptcherLib">
+      <HintPath>..\PolandVisaAuto\bin\Debug\DecaptcherLib.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\PolandVisaAuto\bin\Debug\PVM1.0.1.1\log4net.dll</HintPath>
+      <HintPath>..\PolandVisaAuto\bin\Debug\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -76,6 +75,12 @@
     <Compile Include="CountryData.Designer.cs">
       <DependentUpon>CountryData.cs</DependentUpon>
     </Compile>
+    <Compile Include="DialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogForm.Designer.cs">
+      <DependentUpon>DialogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="E-Konsulat.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +109,12 @@
     </Compile>
     <Compile Include="KonsulatTask.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="OkCancelControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OkCancelControl.Designer.cs">
+      <DependentUpon>OkCancelControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="PassportData.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InfreceivingData.resx">
       <DependentUpon>InfreceivingData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OkCancelControl.resx">
+      <DependentUpon>OkCancelControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PassportData.resx">
       <DependentUpon>PassportData.cs</DependentUpon>

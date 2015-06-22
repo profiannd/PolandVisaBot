@@ -51,6 +51,7 @@ namespace E_Konsulat
             _engine.RefreshViewTabs();
             _engine.ETaskEvent += _engine_ETaskEvent;
 
+            dataGridView1.DataSource = _tasks;
 
         }
 
@@ -80,6 +81,7 @@ namespace E_Konsulat
             _tasks.Add(fillKonsulatTask());
             KonsulatTask.Save(_tasks, KonsulatTaskEntityType.New);
             _engine.RefreshViewTabs();
+            dataGridView1.Refresh();
         }
 
         private KonsulatTask fillKonsulatTask()
@@ -218,6 +220,172 @@ namespace E_Konsulat
             task.ReferredPersCost = personsCostsData1.ReferredPersCost;
             task.TransportPersCost = personsCostsData1.TransportPersCost;
             return task;
+        }
+
+        private void fillDataToControlFromKonsulatTask(KonsulatTask task)
+        {
+            //PersonalData
+            personalData1.LastNamePersonal = task.LastNamePersonal;
+            personalData1.FirstNamePersonal = task.FirstNamePersonal;
+            personalData1.PreviousLastNamePersonal = task.PreviousLastNamePersonal;
+            personalData1.DobPersonal = task.DobPersonal;
+//            task.DobCityPersonal = personalData1.DobCityPersonal;
+//            task.DobCountryPersonal = personalData1.DobCountryPersonal;
+//            task.CitizenshipPersonal = personalData1.CitizenshipPersonal;
+//            task.NationalityPersonal = personalData1.NationalityPersonal;
+//            task.SexMRadioPersonal = personalData1.SexMRadioPersonal;
+//            task.FamilyStateRadioPersonal = personalData1.FamilyStateRadioPersonal;
+//
+//
+//            //PassportData
+//            task.PassportNumber = passportData1.PassportNumber;
+//            task.PassportFromDate = passportData1.PassportFromDate;
+//            task.PassportToDate = passportData1.PassportToDate;
+//            task.PassportSource = passportData1.PassportSource;
+//            task.PassportTypeRadio = passportData1.PassportTypeRadio;
+//
+//
+//            //ChildData
+//            task.CitizenshipChild = childData1.CitizenshipChild;
+//            task.FirstNameChild = childData1.FirstNameChild;
+//            task.LastNameChild = childData1.LastNameChild;
+//            task.StateChild = childData1.StateChild;
+//            task.CityChild = childData1.CityChild;
+//            task.AddressChild = childData1.AddressChild;
+//            task.CountryChild = childData1.CountryChild;
+//            task.ZipChild = childData1.ZipChild;
+//
+//            //AddressData
+//            task.CountryAddress = addressData1.CountryAddress;
+//            task.CityAddress = addressData1.CityAddress;
+//            task.StateAddress = addressData1.StateAddress;
+//            task.ZipAddress = addressData1.ZipAddress;
+//            task.AddressAddress = addressData1.AddressAddress;
+//            task.EmailAddress = addressData1.EmailAddress;
+//            task.PrefixAddress = addressData1.PrefixAddress;
+//            task.TelNumberAddress = addressData1.TelNumberAddress;
+//
+//            //BossAddress
+//            task.CountryBossAddress = bossAddressData1.CityBossAddress;
+//            task.CityBossAddresss = bossAddressData1.CityBossAddress;
+//            task.StateBossAddress = bossAddressData1.StateBossAddress;
+//            task.ZipBossAddress = bossAddressData1.ZipBossAddress;
+//            task.AddressBossAddress = bossAddressData1.AddressBossAddress;
+//            task.EmailBossAddress = bossAddressData1.EmailBossAddress;
+//            task.PrefixBossAddress = bossAddressData1.PrefixBossAddress;
+//            task.TelNumberBossAddress = bossAddressData1.TelNumberBossAddress;
+//            task.FaxBossAddress = bossAddressData1.FaxBossAddress;
+//            task.FaxPrefixBossAddress = bossAddressData1.FaxBossAddress;
+//            task.BLRadioBossAddress = bossAddressData1.BLRadioBossAddress;
+//
+//            //Fingerprints
+//            task.FingYNFingerprints = fingerprintsData1.FingYNFingerprints;
+//
+//            //TheseEuCitizen
+//            task.NameEuCitizen = theseEUCitizenData1.NameEuCitizen;
+//            task.LastNameEuCitizen = theseEUCitizenData1.LastNameEuCitizen;
+//            task.DobEuCitizen = theseEUCitizenData1.DobEuCitizen;
+//            task.PassportNumberEuCitizen = theseEUCitizenData1.PassNumberEuCitizen;
+//            task.DobEuCitizen = theseEUCitizenData1.DobEuCitizen;
+//
+//
+//            //TargetData
+//            task.TourismTarget = targetData1.TourismTarget;
+//            task.FamilyTarget = targetData1.FamilyTarget;
+//            task.SportTarget = targetData1.SportTarget;
+//            task.LearningTarget = targetData1.LearningTarget;
+//            task.TreatmentTarget = targetData1.TreatmentTarget;
+//            task.OfficialTarget = targetData1.OfficialTarget;
+//            task.OtherTarget = targetData1.OtherTarget;
+//            task.TextOtherTarget = targetData1.TextOtherTarget;
+//            task.CultureTarget = targetData1.CultureTarget;
+//            task.DealTarget = targetData1.DealTarget;
+//
+//
+//            //InformationData
+//            task.EntryStateRadioInform = informationData1.EntryStateRadioInform;
+//            task.CheckOutInform = informationData1.CheckOutInform;
+//            task.ArrivalInform = informationData1.ArrivalInform;
+//            task.DestinationInform = informationData1.DestinationInform;
+//            task.NumbDayInform = informationData1.NumbDayInform;
+//            task.WaiverInform = informationData1.WaiverInform;
+//
+//
+//            //SchengenvisasData
+//            task.YNVisa = schengen_visasData1.YNVisa;
+//            task.From1Visa = schengen_visasData1.From1Visa;
+//            task.From2Visa = schengen_visasData1.From2Visa;
+//            task.To1Visa = schengen_visasData1.To1Visa;
+//            task.To2Visa = schengen_visasData1.To2Visa;
+//
+//            //InfereceivingData
+//            task.FirmManRadioInferec = infreceivingData1.FirmManRadioInferec;
+//            task.TitleInferec = infreceivingData1.TitleInferec;
+//            task.NameInferec = infreceivingData1.NameInferec;
+//            task.LastNameInferec = infreceivingData1.LastNameInferec;
+//            task.StateInferec = infreceivingData1.StateInferec;
+//            task.CityInferec = infreceivingData1.CityInferec;
+//            task.PostcodeInferec = infreceivingData1.PostcodeInferec;
+//            task.PrefixInferec = infreceivingData1.PrefixInferec;
+//            task.TelNumberInferec = infreceivingData1.TelNumberInferec;
+//            task.FaxPrefixInferec = infreceivingData1.FaxPrefixInferec;
+//            task.FaxInferec = infreceivingData1.FaxInferec;
+//            task.AddressInferec = infreceivingData1.AddressInferec;
+//            task.HouseNumberInferec = infreceivingData1.HouseNumberInferec;
+//            task.ApNumberInferec = infreceivingData1.ApNumberInferec;
+//            task.EmailInferec = infreceivingData1.EmailInferec;
+//
+//            //CountryData
+//            task.DocumentRadioCountry = countryData1.DocumentRadioCountry;
+//            task.FromCountry = countryData1.FromCountry;
+//            task.PassNumber = countryData1.PassNumber;
+//
+//            //PersonalCostsData
+//            task.CostRadioPersCost = personsCostsData1.CostRadioPersCost;
+//            task.AllCostsPersCost = personsCostsData1.AllCostsPersCost;
+//            task.CardPersCost = personsCostsData1.CardPersCost;
+//            task.ChecksPersCost = personsCostsData1.ChecksPersCost;
+//            task.DateInsurancePersCost = personsCostsData1.DateInsurancePersCost;
+//            task.InsurancePersCost = personsCostsData1.InsurancePersCost;
+//            task.LocationPersCost = personsCostsData1.LocationPersCost;
+//            task.MoneyPersCost = personsCostsData1.MoneyPersCost;
+//            task.OtheCostsPersCost = personsCostsData1.OtheCostsPersCost;
+//            task.OthePersCost = personsCostsData1.OthePersCost;
+//            task.OtherCostsPersCost = personsCostsData1.OtherCostsPersCost;
+//            task.OtherPersCost = personsCostsData1.OtherPersCost;
+//            task.ReferredPersCost = personsCostsData1.ReferredPersCost;
+//            task.TransportPersCost = personsCostsData1.TransportPersCost;
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            KonsulatTask task = dataGridView1.Rows[e.RowIndex].DataBoundItem as KonsulatTask;
+            fillDataToControlFromKonsulatTask(task);
+
+            DialogForm form = new DialogForm();
+            form.Text = "Редактирование задачи";
+            form.Size = new Size(panel1.Size.Width, panel1.Size.Height+50);
+            form.Controls.Add(okCancelControl1);
+            form.Controls.Add(panel1);
+            okCancelControl1.SendToBack();
+            okCancelControl1.OnOk += form.okCancelControl1_OnOk;
+            okCancelControl1.OnCancel += form.okCancelControl1_OnCancel;
+            groupBox6.Visible = groupBox7.Visible = false;
+            okCancelControl1.Visible = true;
+            if (form.ShowDialog(this) == DialogResult.OK)
+            {
+                _tasks.Remove(task);
+                var newTask = fillKonsulatTask();
+                _tasks.Add(newTask);
+                dataGridView1.Refresh();
+            }
+            groupBox6.Visible = groupBox7.Visible = true;
+            okCancelControl1.Visible = false;
+        }
+
+        private void panel1_MouseEnter(object sender, EventArgs e)
+        {
+            panel1.Focus();
         }
     }
 }

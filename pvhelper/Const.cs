@@ -41,7 +41,10 @@ namespace pvhelper
         }
 
         public const string UrlEkonsulat = "https://secure.e-konsulat.gov.pl/default.aspx";
-        public const string Url = "https://www.vfsvisaonline.com/poland-ukraine-appointment/(S(ytzs0pjoptifju555d1inlbs))/AppScheduling/AppWelcome.aspx?P=s2x6znRcBRv7WQQK7h4MTjZiPRbOsXKqJzddYBh3qCA%3d";
+
+        public const string Url =
+            "https://polandonline.vfsglobal.com/poland-ukraine-appointment/(S(ro4garnrik5q0a55hnveytfe))/AppScheduling/AppWelcome.aspx?P=s2x6znRcBRv7WQQK7h4MTnRfnp06lzlPrFCdHEUl1mc=";
+          //"https://www.vfsvisaonline.com/poland-ukraine-appointment/(S(ytzs0pjoptifju555d1inlbs))/AppScheduling/AppWelcome.aspx?P=s2x6znRcBRv7WQQK7h4MTjZiPRbOsXKqJzddYBh3qCA%3d";
         public const string DateFormat = "dd/MM/yyyy";
         public const string DateFormatForFile = "dd_MM_yyyy";
 
@@ -217,6 +220,14 @@ namespace pvhelper
             var dict = new Dictionary<string, string>();
             dict.Add("1", "Національна Віза");//235
             dict.Add("2", "Шенгенська Віза");//229
+            return dict;
+        }
+
+        public static Dictionary<string, string> GetCategoryValueByType()
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add("Національна Віза", "235");
+            dict.Add("Шенгенська Віза", "229");
             return dict;
         }
 
