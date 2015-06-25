@@ -240,9 +240,13 @@ namespace E_Konsulat
         public bool LocationPersCost { get; set; }
         [Browsable(false)]
         public bool TransportPersCost { get; set; }
+        [Browsable(false)]
         public bool InsurancePersCost { get; set; }
+        [Browsable(false)]
         public string OthePersCost { get; set; }
+        [Browsable(false)]
         public string OtheCostsPersCost { get; set; }
+        [Browsable(false)]
         public DateTime DateInsurancePersCost { get; set; }
 
 

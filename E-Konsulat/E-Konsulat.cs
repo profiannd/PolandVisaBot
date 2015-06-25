@@ -378,6 +378,7 @@ namespace E_Konsulat
                 var newTask = fillKonsulatTask();
                 _tasks.Add(newTask);
                 dataGridView1.Refresh();
+                KonsulatTask.Save(_tasks, KonsulatTaskEntityType.New);
             }
             groupBox6.Visible = groupBox7.Visible = true;
             okCancelControl1.Visible = false;
