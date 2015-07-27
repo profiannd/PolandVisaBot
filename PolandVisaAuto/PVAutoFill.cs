@@ -411,7 +411,7 @@ namespace PolandVisaAuto
                 Excel.Worksheet xlWorkSheet;
                 object misValue = System.Reflection.Missing.Value;
 
-                Int16 i, j;
+              //  Int16 i, j;
 
                 xlApp = new Excel.ApplicationClass();
                 xlWorkBook = xlApp.Workbooks.Add(misValue);

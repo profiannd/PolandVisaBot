@@ -17,9 +17,9 @@ namespace pvhelper
         FillReceipt = 6,
         FillEmail = 7,
         Stop = 8,
-        FirstCupture = 9,
-        SecondCupture = 10,
-        ThirdCupture = 11
+        FillMainInfos = 9,
+        SelectDayToVisit = 10,
+        SelectTime = 11
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -165,20 +165,44 @@ namespace pvhelper
         {
             switch (month)
             {
-                case "Січ": return "01";
-                case "Лют": return "02";
-                case "Бер": return "03";
-                case "Кві": return "04";
-                case "Тра": return "05";
-                case "Чер": return "06";
-                case "Лип": return "07";
-                case "Сер": return "08";
-                case "Вер": return "09";
-                case "Жов": return "10";
-                case "Лис": return "11";
-                case "Гру": return "12";
+                case "Січ":
+                case "Січень":
+                case "January": return "01";
+                case "Лют":
+                case "Лютий":
+                case "February": return "02";
+                case "Бер":
+                case "Березень":
+                case "March": return "03";
+                case "Кві":
+                case "Квітень":
+                case "April": return "04";
+                case "Тра":
+                case "Травень":
+                case "May": return "05";
+                case "Чер":
+                case "Червень":
+                case "June": return "06";
+                case "Лип":
+                case "Липень":
+                case "July": return "07";
+                case "Сер":
+                case "Серпень":
+                case "August": return "08";
+                case "Вер":
+                case "Вересень":
+                case "September": return "09";
+                case "Жов":
+                case "Жовтень":
+                case "October": return "10";
+                case "Лис":
+                case "Листопад":
+                case "November": return "11";
+                case "Гру":
+                case "Грудень":
+                case "December": return "12";
             }
-            return null;
+            return month;
         }
 
         public static Dictionary<string, string> FillConfigCities()

@@ -439,7 +439,7 @@ namespace E_Konsulat
 //                        {
 //                            ImageResolver.Instance.SystemDecaptcherLoad();
 //                            decaptcherImage();
-//                            _enum = RotEvents.ThirdCupture;
+//                            _enum = RotEvents.SelectTime;
 //
 //                            //date
 //                            //class = OpenDateAllocated   <a>
@@ -448,7 +448,7 @@ namespace E_Konsulat
 //                            //===============================
 //                            break;
 //                        }
-//                    case RotEvents.ThirdCupture:
+//                    case RotEvents.SelectTime:
 //                        {
 //                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
 //                            {
