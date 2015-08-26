@@ -323,8 +323,17 @@ namespace PolandVisaAuto
                     //    }
                     case RotEvents.FillReceipt:
                         {
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null &&!string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
                             {
+                                if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml.Contains("No date(s) available for appointment"))
+                                {
+                                    Logger.Info(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml);
+                                    richText.Text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml;
+                                    Logger.Info(_currentTask.City + ": "+ richText.Text);
+                                    _tabPage.Text = _currentTask.CityV + "~" + webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml;
+
+                                    throw new Exception("бегаем по кругу, ждем с моря погоды");
+                                }
                                 FillSeconCombo();
                                 break;
                             }
@@ -819,8 +828,10 @@ namespace PolandVisaAuto
         private DateTime ProcessDate(string month, string day, string year)
         {
             DateTime dt = DateTime.MinValue;
-            try 
+            try
             {
+                if (day.Length == 1)
+                    day = "0" + day;
                 //string[] splitted = xnya.Replace("Найближча доступна дата для реєстрації є ", "").Split('.');
                 string s = string.Format("{0}/{1}/{2}", day, month, year);
                 dt = DateTime.ParseExact(s, Const.DateFormat, CultureInfo.InvariantCulture);
