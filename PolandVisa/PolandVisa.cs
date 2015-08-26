@@ -3,14 +3,18 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using mshtml;
 using pvhelper;
+using Encoder = System.Text.Encoder;
 
 namespace PolandVisaMonitor
 {
@@ -36,6 +40,13 @@ namespace PolandVisaMonitor
         private List<string> settingsVisas = new List<string>() { RUX, VISA, SHEN };
         BindingList<CityDataSet> settingsCitiesList = new BindingList<CityDataSet>();
         List<CityDataSet> _listToMonitor = new List<CityDataSet>();
+
+        [ComImport, InterfaceType((short)1), Guid("3050F669-98B5-11CF-BB82-00AA00BDCE0B")]
+        private interface IHTMLElementRenderFixed
+        {
+            void DrawToDC(IntPtr hdc);
+            void SetDocumentPrinter(string bstrPrinterName, IntPtr hdc);
+        }
 
         public PolandVisa()
         {
@@ -263,22 +274,104 @@ namespace PolandVisaMonitor
         {
             if (_listToMonitor.Count == 0)
                 return;
-            this.webBrowser1.Document.GetElementById("ctl00_plhMain_cboVAC").SetAttribute("selectedIndex", _listToMonitor[_currentIndex].CityCode);
-            this.webBrowser1.Document.GetElementById("ctl00_plhMain_cboVAC").InvokeMember("onchange");
+            this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVAC").SetAttribute("selectedIndex", _listToMonitor[_currentIndex].CityCode);
+            this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVAC").InvokeMember("onchange");
         }
 
         private void processInvoke()
         {
-            for (int i = 0; i<this.webBrowser1.Document.GetElementById("ctl00_plhMain_cboVisaCategory").Children.Count;i++)
+            if (this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").Children.Count == 0)
             {
-                HtmlElement child = this.webBrowser1.Document.GetElementById("ctl00_plhMain_cboVisaCategory").Children[i];
+                throw new Exception("Visa category is not loaded");
+            }
+            for (int i = 0; i < this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").Children.Count; i++)
+            {
+                HtmlElement child = this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").Children[i];
                 if (child.InnerText == _visaType)
                 {
-                    this.webBrowser1.Document.GetElementById("ctl00_plhMain_cboVisaCategory").SetAttribute("selectedIndex", i.ToString());
+                    this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").SetAttribute("selectedIndex", i.ToString());
                     break;
                 }
             }
-            this.webBrowser1.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+            ImageResolver.Instance.SystemDecaptcherLoad();
+            decaptcherImage();
+            this.webBrowser1.Document.GetElementById("ctl00$plhMain$btnSubmit").InvokeMember("click");
+        }
+
+        private void decaptcherImage()
+        {
+            if (!ImageResolver.Instance.AutoResolveImage)
+                return;
+            string value = ImageResolver.Instance.RecognizePictureGetString(ImageToByte(getFirstImage()));
+
+            // webBrowser.Document.GetElementById("recaptcha_response_field").SetAttribute("value", value);
+
+            //ctl00$plhMain$MyCaptchaControl1
+            HtmlElementCollection elems = webBrowser1.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
+            HtmlElement elem = null;
+            if (elems != null && elems.Count > 0)
+            {
+                elem = elems[0];
+                elem.SetAttribute("value", value);
+            }
+        }
+
+        public Bitmap getFirstImage()
+        {
+            IHTMLDocument2 doc = (IHTMLDocument2)webBrowser1.Document.DomDocument;
+            foreach (IHTMLImgElement img in doc.images)
+            {
+                if (img.readyState == "uninitialized")
+                {
+                    throw new Exception("Cupture Img is not shown");
+                }
+                IHTMLElementRenderFixed render = (IHTMLElementRenderFixed)img;
+                Bitmap bmp = new Bitmap(img.width, img.height);
+                Graphics g = Graphics.FromImage(bmp);
+                IntPtr hdc = g.GetHdc();
+                render.DrawToDC(hdc);
+                g.ReleaseHdc(hdc);
+                return bmp;
+            }
+            return null;
+        }
+        private byte[] ImageToByte(Image img)
+        {
+            byte[] byteArray = new byte[0];
+
+            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+            // Create an Encoder object based on the GUID
+            // for the Quality parameter category.
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            // Create an EncoderParameters object.
+            // An EncoderParameters object has an array of EncoderParameter
+            // objects. In this case, there is only one
+            // EncoderParameter object in the array.
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 50L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                img.Save(stream, jgpEncoder, myEncoderParameters);//ImageFormat.Jpeg);
+                stream.Close();
+
+                byteArray = stream.ToArray();
+            }
+            return byteArray;
+        }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
 
        private string getData()
@@ -305,45 +398,68 @@ namespace PolandVisaMonitor
      
        void timer1_Tick(object sender, System.EventArgs e)
         {
-            switch (_enum)
-            {
-                case RotEvents.Firsthl:
-                    pressOnLink(webBrowser1, "Перевірити доступні для реєстрації дати в кол-центрі");
-                    _enum = RotEvents.FirstCombo;
-                    intTimer.Stop();
-                    break;
-                case RotEvents.FirstCombo:
-                    {
-//                        if(MaxIndex == -1)
+           try
+           {
+
+               switch (_enum)
+               {
+                   case RotEvents.Firsthl:
+                       webBrowser1.Document.GetElementById("ctl00_plhMain_lnkChkAppmntAvailability").InvokeMember("click");
+                       _enum = RotEvents.FirstCombo;
+                       intTimer.Stop();
+                       break;
+                   case RotEvents.FirstCombo:
+                   {
+                       if (webBrowser1.Document.GetElementById("ctl00_plhMain_lnkChkAppmntAvailability") != null)
+                       {
+                           webBrowser1.Document.GetElementById("ctl00_plhMain_lnkChkAppmntAvailability").InvokeMember("click");
+                           _enum = RotEvents.FirstCombo;
+                           intTimer.Stop();
+                           break;
+                       }
+                       if (this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVAC") == null)
+                       {
+                           _enum = RotEvents.FirstCombo;
+                           break;
+                       }
+                       processFirstCombo();
+                       _enum = RotEvents.Submit;
+                       intTimer.Stop();
+                       break;
+                   }
+                   case RotEvents.Submit:
+                   {
+//                        if (webBrowser1.Document.GetElementById("ctl00_plhMain_VS") != null &&
+//                           webBrowser1.Document.GetElementById("ctl00_plhMain_VS").InnerText.Contains("The text you typed does not match the characters in the image."))
 //                        {
-//                            MaxIndex = this.webBrowser1.Document.GetElementById("ctl00_plhMain_cboVAC").Children.Count;
-//                            _currentIndex = 1;
+//                            _enum = RotEvents.FirstCombo;
+//                            break;
 //                        }
-                        processFirstCombo();
-                        _enum = RotEvents.Submit;
-                        intTimer.Stop();
-                        break;
-                    }
-                case RotEvents.Submit:
-                    {
-                        processInvoke();
-                        _enum = RotEvents.GetData;
-                        intTimer.Stop();
-                        break;
-                    }
-                case RotEvents.GetData:
-                    {
-                        int code = int.Parse(_listToMonitor[_currentIndex].CityCode);
-                        if (_values.ContainsKey(code))
-                            _values[code] = getData();
-                        else
-                            _values.Add(code, getData());
-                        Debug.WriteLine("get data " + DateTime.Now.ToLongTimeString() + " " + _values[code]);
-                        _enum = RotEvents.FirstCombo;
-                        IncrementOrFreeze();
-                        break;
-                    }
-            }
+                       processInvoke();
+                       _enum = RotEvents.GetData;
+                       intTimer.Stop();
+                       break;
+                   }
+                   case RotEvents.GetData:
+                   {
+                       int code = int.Parse(_listToMonitor[_currentIndex].CityCode);
+                       if (_values.ContainsKey(code))
+                           _values[code] = getData();
+                       else
+                           _values.Add(code, getData());
+                       Debug.WriteLine("get data " + DateTime.Now.ToLongTimeString() + " " + _values[code]);
+                       _enum = RotEvents.FirstCombo;
+                       IncrementOrFreeze();
+                       break;
+                   }
+               }
+           }
+           catch (Exception)
+           {
+               _enum = RotEvents.FirstCombo;
+               intTimer.Start();
+           }
+
         }
 
        private void pressOnLink(WebBrowser webBrowser, string text)

@@ -89,7 +89,7 @@ namespace PolandVisaMonitor
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 392);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1032, 231);
+            this.panel2.Size = new System.Drawing.Size(1032, 370);
             this.panel2.TabIndex = 2;
             // 
             // webBrowser1
@@ -98,7 +98,7 @@ namespace PolandVisaMonitor
             this.webBrowser1.Location = new System.Drawing.Point(0, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1032, 231);
+            this.webBrowser1.Size = new System.Drawing.Size(1032, 370);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
@@ -247,7 +247,7 @@ namespace PolandVisaMonitor
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(378, 136);
+            this.label6.Location = new System.Drawing.Point(371, 136);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(127, 13);
             this.label6.TabIndex = 10;
@@ -398,7 +398,7 @@ namespace PolandVisaMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1032, 623);
+            this.ClientSize = new System.Drawing.Size(1032, 762);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel1);
