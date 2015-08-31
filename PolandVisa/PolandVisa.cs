@@ -153,7 +153,7 @@ namespace PolandVisaMonitor
             foreach (KeyValuePair<int, string> pair in _values)
             {
                 CityData cd = new CityData();
-                cd.City = this.webBrowser1.Document.GetElementById("ctl00_plhMain_cboVAC").Children[pair.Key].InnerText.Replace("Польщі ", "");
+                cd.City = this.webBrowser1.Document.GetElementById("ctl00_plhMain_cboVAC").Children[pair.Key].InnerText.Replace("Польщі ", "").Replace("Poland ", "");
                 cd.Date = ProcessDate(pair.Value);
                 _cityData.Add(cd);
             }
@@ -178,7 +178,7 @@ namespace PolandVisaMonitor
                 if(cset.IsSelected)
                 {
                      CityData cd = getCity(cset.City);
-                    if(cd != null && cd.Date != DateTime.MinValue && cd.Date < cset.Date)
+                     if (cd != null && cd.Date != DateTime.MinValue && (cset.Date == DateTime.MinValue || cd.Date < cset.Date))
                     {
                         NotifyUser(cd);
                     }
@@ -219,11 +219,36 @@ namespace PolandVisaMonitor
             sp.Play(); 
         }
 
+        private string getEngCity(string city)
+        {
+            switch (city)
+            {
+                case "Івано-Франківськ" :  return  "Ivano-Frankivsk";
+                case "Львів"            :  return  "Lviv";
+                case "Тернопіль"        :  return  "Ternopil";
+                case "Рівне"            :  return  "Rivne";
+                case "Луцьк"            :  return  "Lutsk";
+                case "Дніпропетровськ"  :  return  "Dnipropetrovsk";
+                case "Харків"           :  return  "Kharkiv";
+                case "Київ"             :  return  "Kiev";
+                case "Одеса"            :  return  "Odessa";
+                case  "Хмельницький"    :  return  "Khmelnitskiy";
+                case  "Житомир"         :  return  "Zhytomyr";
+                case  "Вінниця"         :  return  "Vinnitsya";
+                case  "Донецьк"         :  return  "Donetsk";
+                case  "Ужгород"         :  return  "Uzhgorod";
+                case  "Чернівці"        :  return  "Chernivtsi";
+                case "Луганськ"         :  return  "Lugansk";
+            }
+            return string.Empty;
+        }
+
         private CityData getCity(string city)
         {
+            string cityEng = getEngCity(city);
             foreach (CityData cityData in _cityData)
             {
-                if (cityData.City == city)
+                if (cityData.City == city || cityData.City == cityEng)
                     return cityData;
             }
             return null;
