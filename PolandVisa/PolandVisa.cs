@@ -29,6 +29,7 @@ namespace PolandVisaMonitor
         private const string TypeVisa = "TypeVisa";
         private const string NotifCount = "NotifCount";
         private string _visaType = VISA;
+        private string _visaCode = string.Empty;
         private RotEvents _enum = RotEvents.Start;
         private int _currentIndex = 0;
         private int _notificCount = 0;
@@ -119,6 +120,7 @@ namespace PolandVisaMonitor
             txtNotif.Text = ConfigurationManager.AppSettings[NotifCount];
             int.TryParse(ConfigurationManager.AppSettings[NotifCount], out notifsett);
             _visaType = cbxVisas.SelectedItem.ToString();
+            _visaCode = getVisaId(_visaType);
         }
 
         private void SaveConfig()
@@ -232,8 +234,8 @@ namespace PolandVisaMonitor
             DateTime dt = DateTime.MinValue;
             try
             {
-                string[] splitted = xnya.Replace("Найближча доступна дата для реєстрації є ", "").Split('.');
-                string s = string.Format("{0}/{1}/{2}", splitted[0], Const.GetMonthAsInt(splitted[1]), splitted[2]);
+                string[] splitted = xnya.Replace("Найближча доступна дата для реєстрації є ", "").Replace("The next available slot for an appointment is ","").Split(new string[]{".","/"},StringSplitOptions.None);
+                string s = string.Format("{0}/{1}/{2}", splitted[0].Length == 1 ? "0" + splitted[0] : splitted[0], Const.GetMonthAsInt(splitted[1]), splitted[2]);
                 dt = DateTime.ParseExact(s, Const.DateFormat, CultureInfo.InvariantCulture);
             }
             catch(Exception ex)
@@ -278,6 +280,18 @@ namespace PolandVisaMonitor
             this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVAC").InvokeMember("onchange");
         }
 
+        private string getVisaId(string visa)
+        {
+            switch (visa)
+            {
+                case "Національна Віза":
+                    return "235";
+                case "Шенгенська Віза":
+                    return "229";
+            }
+            return string.Empty;
+        }
+
         private void processInvoke()
         {
             if (this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").Children.Count == 0)
@@ -287,9 +301,10 @@ namespace PolandVisaMonitor
             for (int i = 0; i < this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").Children.Count; i++)
             {
                 HtmlElement child = this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").Children[i];
-                if (child.InnerText == _visaType)
+                if (child.InnerText == _visaType || child.GetAttribute("value") == getVisaId(_visaType))
                 {
-                    this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").SetAttribute("selectedIndex", i.ToString());
+                    this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").SetAttribute("value", getVisaId(_visaType));
+                    //this.webBrowser1.Document.GetElementById("ctl00$plhMain$cboVisaCategory").SetAttribute("selectedIndex", i.ToString());
                     break;
                 }
             }
@@ -619,7 +634,7 @@ namespace PolandVisaMonitor
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
-            this.Text += version;
+            this.Text += version + "   De-Captcher Balance: " + ImageResolver.Instance.GetBalance() + "$"; ;
         }
     }
 }

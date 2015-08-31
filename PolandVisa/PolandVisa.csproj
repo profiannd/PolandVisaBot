@@ -44,6 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -60,7 +61,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DecaptcherLib">
-      <HintPath>..\PolandVisaAuto\bin\Debug\PVM1.0.1.1\DecaptcherLib.dll</HintPath>
+      <HintPath>..\PolandVisaAuto\lib\DecaptcherLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

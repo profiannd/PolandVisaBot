@@ -167,40 +167,51 @@ namespace pvhelper
             {
                 case "Січ":
                 case "Січень":
-                case "January": return "01";
+                case "January":
+                case "Jan": return "01";
                 case "Лют":
                 case "Лютий":
-                case "February": return "02";
+                case "February":
+                case "Feb": return "02";
                 case "Бер":
                 case "Березень":
-                case "March": return "03";
+                case "March":
+                case "Mar": return "03";
                 case "Кві":
                 case "Квітень":
-                case "April": return "04";
+                case "April":
+                case "Apr": return "04";
                 case "Тра":
                 case "Травень":
                 case "May": return "05";
                 case "Чер":
                 case "Червень":
-                case "June": return "06";
+                case "June":
+                case "Jun": return "06";
                 case "Лип":
                 case "Липень":
-                case "July": return "07";
+                case "July":
+                case "Jul": return "07";
                 case "Сер":
                 case "Серпень":
-                case "August": return "08";
+                case "August":
+                case "Aug": return "08";
                 case "Вер":
                 case "Вересень":
-                case "September": return "09";
+                case "September":
+                case "Sep": return "09";
                 case "Жов":
                 case "Жовтень":
-                case "October": return "10";
+                case "October":
+                case "Oct": return "10";
                 case "Лис":
                 case "Листопад":
-                case "November": return "11";
+                case "November":
+                case "Nov": return "11";
                 case "Гру":
                 case "Грудень":
-                case "December": return "12";
+                case "December":
+                case "Dec": return "12";
             }
             return month;
         }
