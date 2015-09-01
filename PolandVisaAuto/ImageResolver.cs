@@ -36,6 +36,7 @@ namespace PolandVisaAuto
             passw = ConfigurationManager.AppSettings[Const.PASSW];
             AutoResolveImage = bool.Parse(ConfigurationManager.AppSettings[Const.AUTORESOLVE]);
             UseProxy = bool.Parse(ConfigurationManager.AppSettings[Const.USEPROXY]);
+            AskMaster = bool.Parse(ConfigurationManager.AppSettings[Const.ASKMASTER]);
             AllowReg = int.Parse(ConfigurationManager.AppSettings[Const.ALLOWREG]);
             ParseRegCounts(ConfigurationManager.AppSettings[Const.REGCOUNTS]);
             ParseProxies(ConfigurationManager.AppSettings[Const.PROXYSERVERS]);
@@ -203,6 +204,7 @@ namespace PolandVisaAuto
 
         private int _preventDeadLock = 0;
         private bool _useProxy;
+        private bool _askMaster;
 
         public void SelectNextProxy()
         {
@@ -311,6 +313,12 @@ namespace PolandVisaAuto
                     SaveProxyRegList();
                 }
             }
+        }
+
+        public bool AskMaster
+        {
+            get { return _askMaster; }
+            set { _askMaster = value; }
         }
     }
 }

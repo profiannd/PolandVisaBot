@@ -382,6 +382,7 @@ namespace PolandVisaAuto
                                 webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmitDetails").InvokeMember("click");
                                 break;
                             }
+
                             ImageResolver.Instance.SystemDecaptcherLoad();
                             if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText) && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage").InnerText))
                             {
@@ -393,6 +394,11 @@ namespace PolandVisaAuto
                                 deleteTask.Visible = true;
                                 _enum = RotEvents.FillEmail;
                                 break;
+                            }
+
+                            if (ImageResolver.Instance.AskMaster)
+                            {
+                                TurnAlarmOn(true);
                             }
 
                             Logger.Warning("заполняю информацию о человеке "+ _currentTask.GetInfo());

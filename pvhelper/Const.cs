@@ -54,6 +54,7 @@ namespace pvhelper
         public const string PORT = "port";
         public const string AUTORESOLVE = "autoResolve";
         public const string USEPROXY = "useProxy";
+        public const string ASKMASTER = "askMaster";
         public const string PROXYSERVERS = "proxyServers";
         public const string REGCOUNTS = "regCounts";
         public static string DELETEDTASKS = "DeletedTasks";

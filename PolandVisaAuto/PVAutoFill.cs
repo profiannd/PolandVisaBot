@@ -93,6 +93,7 @@ namespace PolandVisaAuto
             radiocom.Checked = ImageResolver.Instance.Host == radiocom.Text;
             radioinfo.Checked = ImageResolver.Instance.Host == radioinfo.Text;
             chbProxy.Checked = ImageResolver.Instance.UseProxy;
+            chkAsk.Checked = ImageResolver.Instance.AskMaster;
 
             cbxCity.DataSource = Const.GetListFromDict(Const.SettingsCities);
             cbxNation.DataSource = Const.GetListFromDict(Const.FillNations());
@@ -395,6 +396,12 @@ namespace PolandVisaAuto
         {
             ImageResolver.Instance.UseProxy = chbProxy.Checked;
             UpdateSetting(Const.USEPROXY, ImageResolver.Instance.UseProxy.ToString());
+        }
+
+        private void chkAsk_CheckedChanged(object sender, EventArgs e)
+        {
+            ImageResolver.Instance.AskMaster = chkAsk.Checked;
+            UpdateSetting(Const.ASKMASTER, ImageResolver.Instance.AskMaster.ToString());
         }
 
         #region Export To Excel

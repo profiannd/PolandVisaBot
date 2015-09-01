@@ -36,6 +36,7 @@ namespace PolandVisaAuto
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.chbProxy = new System.Windows.Forms.CheckBox();
+            this.chkAsk = new System.Windows.Forms.CheckBox();
             this.label18 = new System.Windows.Forms.Label();
             this.radioinfo = new System.Windows.Forms.RadioButton();
             this.radiocom = new System.Windows.Forms.RadioButton();
@@ -171,6 +172,7 @@ namespace PolandVisaAuto
             // 
             this.groupBox7.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox7.Controls.Add(this.chbProxy);
+            this.groupBox7.Controls.Add(this.chkAsk);
             this.groupBox7.Controls.Add(this.label18);
             this.groupBox7.Controls.Add(this.radioinfo);
             this.groupBox7.Controls.Add(this.radiocom);
@@ -193,7 +195,17 @@ namespace PolandVisaAuto
             this.chbProxy.TabIndex = 4;
             this.chbProxy.Text = "Использовать прокси";
             this.chbProxy.UseVisualStyleBackColor = true;
-            this.chbProxy.CheckedChanged += new System.EventHandler(this.chbProxy_CheckedChanged);
+            this.chbProxy.CheckedChanged += new System.EventHandler(this.chbProxy_CheckedChanged); // 
+            // chkAsk
+            // 
+            this.chkAsk.AutoSize = true;
+            this.chkAsk.Location = new System.Drawing.Point(190, 132);
+            this.chkAsk.Name = "chbProxy";
+            this.chkAsk.Size = new System.Drawing.Size(288, 21);
+            this.chkAsk.TabIndex = 4;
+            this.chkAsk.Text = "Вопрошать повелителя";
+            this.chkAsk.UseVisualStyleBackColor = true;
+            this.chkAsk.CheckedChanged += new System.EventHandler(this.chkAsk_CheckedChanged);
             // 
             // label18
             // 
@@ -241,7 +253,7 @@ namespace PolandVisaAuto
             //exportButton
             //
             this.exportButton.BackColor = System.Drawing.Color.YellowGreen;
-            this.exportButton.Location = new System.Drawing.Point(320, 120);
+            this.exportButton.Location = new System.Drawing.Point(320, 100);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(120, 30);
             this.exportButton.UseVisualStyleBackColor = false;
@@ -1050,6 +1062,7 @@ namespace PolandVisaAuto
         private DataGridViewTextBoxColumn NameColumn2;
         private DataGridViewTextBoxColumn ResultColumn;
         private CheckBox chbProxy;
+        private CheckBox chkAsk;
         private Label label19;
         private DateTimePicker dtGreenLine;
 
