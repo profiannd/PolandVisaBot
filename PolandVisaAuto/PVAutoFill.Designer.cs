@@ -31,6 +31,7 @@ namespace PolandVisaAuto
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            _timer = new Timer();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PVAutoFill));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -135,6 +136,11 @@ namespace PolandVisaAuto
             ((System.ComponentModel.ISupportInitialize)(this.emailErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PasserrorProvider)).BeginInit();
             this.SuspendLayout();
+            //
+            //_timer
+            //
+            _timer.Interval = 1000;
+            _timer.Tick += _timer_Tick;
             // 
             // tabControl1
             // 
@@ -950,6 +956,7 @@ namespace PolandVisaAuto
             this.Name = "PVAutoFill";
             this.Text = "Poland Visa Auto  ";
             this.Load += new System.EventHandler(this.PvAutoLoad);
+            this.Shown += PVAutoFill_Shown;
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);

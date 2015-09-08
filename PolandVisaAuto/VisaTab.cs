@@ -253,18 +253,60 @@ namespace PolandVisaAuto
                             break;
                     }
                     case RotEvents.FirstCombo:
-                        {
-                            Logger.Warning("выбираю город, код");
-                            webBrowser.Document.GetElementById("ctl00_plhMain_cboVAC").SetAttribute("selectedIndex", _currentTask.CityCode);
-                            webBrowser.Document.GetElementById("ctl00_plhMain_cboPurpose").SetAttribute("selectedIndex", _currentTask.PurposeCode);
-                            _enum = RotEvents.SecondCombo;
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
-                            break;
-                        }
+                    {
+                        Logger.Warning("выбираю город, код");
+                        webBrowser.Document.GetElementById("ctl00_plhMain_cboVAC").SetAttribute("selectedIndex", _currentTask.CityCode);
+                        webBrowser.Document.GetElementById("ctl00_plhMain_cboPurpose").SetAttribute("selectedIndex", _currentTask.PurposeCode);
+                        _enum = RotEvents.SecondCombo;
+                        webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+                        break;
+                    }
                     case RotEvents.SecondCombo:
                     {
                         Logger.Warning("выбираю тип визы");
-                        FillSeconCombo();
+                        webBrowser.Document.GetElementById("ctl00_plhMain_tbxNumOfApplicants").SetAttribute("value", _currentTask.CountAdult.ToString());
+                        if (webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren") != null)
+                            webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren").SetAttribute("value", _currentTask.CountChild.ToString());
+                        var dict = Const.GetCategoryValueByType();
+                        if (dict.ContainsKey(_currentTask.Category))
+                        {
+                            webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").SetAttribute("value", dict[_currentTask.Category]);
+                            webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").InvokeMember("onchange");
+                        }
+
+//                        ImageResolver.Instance.SystemDecaptcherLoad();
+//                        decaptcherImage();
+//
+                        _enum = RotEvents.Submit;
+
+                      //  FillSeconCombo();
+                        break;
+                    }
+                    case RotEvents.Submit:
+                    {
+                        if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+                        {
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml.Contains("No date(s) available for appointment"))
+                            {
+                                Logger.Info(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml);
+                                richText.Text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml;
+                                Logger.Info(_currentTask.City + ": " + richText.Text);
+                                _tabPage.Text = _currentTask.CityV + "~No date(s) available";
+
+                                throw new Exception("бегаем по кругу, ждем с моря погоды");
+                            }
+
+                            ImageResolver.Instance.SystemDecaptcherLoad();
+                            decaptcherImage();
+
+                            _enum = RotEvents.FillReceipt;
+
+                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+                        }
+                        else
+                        {
+                            Logger.Error("Нет информации о дате или об отсутствии дат.");
+                        }
                         break;
                     }
                         //case RotEvents.Submit:
@@ -323,20 +365,30 @@ namespace PolandVisaAuto
                     //    }
                     case RotEvents.FillReceipt:
                         {
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+                            if (webBrowser.Document.GetElementById("recaptcha_image") != null)
                             {
-                                if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml.Contains("No date(s) available for appointment"))
-                                {
-                                    Logger.Info(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml);
-                                    richText.Text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml;
-                                    Logger.Info(_currentTask.City + ": "+ richText.Text);
-                                    _tabPage.Text = _currentTask.CityV + "~" + webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml;
+                                ImageResolver.Instance.SystemDecaptcherLoad();
+                                decaptcherImage();
 
-                                    throw new Exception("бегаем по кругу, ждем с моря погоды");
-                                }
-                                FillSeconCombo();
+                                _enum = RotEvents.FillReceipt;
+
+                                webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                                 break;
                             }
+//                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
+//                            {
+//                                if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml.Contains("No date(s) available for appointment"))
+//                                {
+//                                    Logger.Info(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml);
+//                                    richText.Text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml;
+//                                    Logger.Info(_currentTask.City + ": "+ richText.Text);
+//                                    _tabPage.Text = _currentTask.CityV + "~No date(s) available";
+//
+//                                    throw new Exception("бегаем по кругу, ждем с моря погоды");
+//                                }
+//                                FillSeconCombo();
+//                                break;
+//                            }
                             Logger.Info(_currentTask.City+": Номер квитанции: " + _currentTask.Receipt);
                             webBrowser.Document.GetElementById("ctl00_plhMain_repAppReceiptDetails_ctl01_txtReceiptNumber").SetAttribute("value", _currentTask.Receipt);
                             _enum = RotEvents.FillEmail;
@@ -399,6 +451,7 @@ namespace PolandVisaAuto
                             if (ImageResolver.Instance.AskMaster)
                             {
                                 TurnAlarmOn(true);
+                                return;
                             }
 
                             Logger.Warning("заполняю информацию о человеке "+ _currentTask.GetInfo());
@@ -649,8 +702,8 @@ namespace PolandVisaAuto
             decaptcherImage();
 
             _enum = RotEvents.FillReceipt;
-            if (!ImageResolver.Instance.AutoResolveImage)
-                return;
+//            if (!ImageResolver.Instance.AutoResolveImage)
+//                return;
 
             webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
         }
@@ -699,16 +752,18 @@ namespace PolandVisaAuto
             string value = ImageResolver.Instance.RecognizePictureGetString(ImageToByte(getFirstImage()));
             Logger.Info("End parsing cupture");
 
-           // webBrowser.Document.GetElementById("recaptcha_response_field").SetAttribute("value", value);
-            
+            if (webBrowser.Document.GetElementById("recaptcha_response_field") != null)
+                webBrowser.Document.GetElementById("recaptcha_response_field").SetAttribute("value", value);
+            else
+                Logger.Error("recaptcha_response_field is not found!!!");
             //ctl00$plhMain$MyCaptchaControl1
-            HtmlElementCollection elems = webBrowser.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
-            HtmlElement elem = null;
-            if (elems != null && elems.Count > 0)
-            {
-                elem = elems[0];
-                elem.SetAttribute("value", value);
-            }
+//            HtmlElementCollection elems = webBrowser.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
+//            HtmlElement elem = null;
+//            if (elems != null && elems.Count > 0)
+//            {
+//                elem = elems[0];
+//                elem.SetAttribute("value", value);
+//            }
         }
 
         [ComImport, InterfaceType((short)1), Guid("3050F669-98B5-11CF-BB82-00AA00BDCE0B")]

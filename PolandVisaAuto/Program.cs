@@ -13,7 +13,7 @@ namespace PolandVisaAuto
         /// </summary>
         [STAThread]
         [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -26,7 +26,14 @@ namespace PolandVisaAuto
                 Logger.Info("");
                 Logger.Info("=========================================Program started=====================================");
                 Logger.Info("");
-                Application.Run(new PVAutoFill());
+                if (args.Length > 0)
+                {
+                    if(args[0] == "isMain")
+                        Application.Run(new PVAutoFill(args[1]=="1"));
+                }
+                else
+                    Application.Run(new PVAutoFill());
+
             }
             catch (Exception ex)
             {

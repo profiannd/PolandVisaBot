@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
@@ -11,6 +12,7 @@ using System.Threading;
 using System.Windows.Forms;
 using pvhelper;
 using Excel = Microsoft.Office.Interop.Excel;
+using Timer = System.Windows.Forms.Timer;
 
 namespace PolandVisaAuto
 {
@@ -26,15 +28,27 @@ namespace PolandVisaAuto
 
     public partial class PVAutoFill : Form
     {
+        private const string COMM = "Comm";
+        private string _commFolder = string.Empty;
+        private string _parentFolder = string.Empty;
         public const string DateFormat = "dd/MM/yyyy";
         private BindingList<VisaTask> _visaTasks;
         private BindingList<VisaTask> _completedVisaTasks;
         private string _cityBefore = string.Empty;
         private Engine _engine;
+        private Dictionary<string, BindingList<VisaTask>> _cityTasks = new Dictionary<string, BindingList<VisaTask>>();
+        private bool _isMain = true;
+        Timer _timer;
 
         public PVAutoFill()
         {
             InitializeComponent();
+        }
+
+        public PVAutoFill(bool isMain)
+        {
+            InitializeComponent();
+            _isMain = isMain;
         }
 
         private void btnaddTask_Click(object sender, EventArgs e)
@@ -78,14 +92,95 @@ namespace PolandVisaAuto
             _visaTasks.Add(task);
             VisaTask.Save(_visaTasks, VisaEntityType.New);
             dataGridView1.Refresh();
-            
+            SendMessage(task, Actions.Create);
+
             _engine.RefreshViewTabs();
 
             txtPass.Text = txtName.Text = txtBillNum.Text = txtEmail.Text = txtLastName.Text = txtName.Text = string.Empty;
         }
 
+        private void SendMessage(VisaTask task, Actions action)
+        {
+            Message mess = new Message()
+                {
+                    Action = action,
+                    Task = task
+                };
+            Message.Serialize(mess, FilePath(task.City, task.Receipt));
+        }
+
+        private string FilePath(string city, string receipt)
+        {
+            if (_isMain)
+            {
+                return Path.Combine(Path.Combine(Path.Combine(Environment.CurrentDirectory, city), COMM), receipt + ".xml");
+            }
+            else
+            {
+                return Path.Combine(Path.Combine(Environment.CurrentDirectory, COMM), receipt + ".xml");
+            }
+        }
+
+        private void CreateMainCityInfo()
+        {
+            foreach (VisaTask vt in _visaTasks)
+            {
+                bool existsName = false;
+                if (!_cityTasks.ContainsKey(vt.City))
+                {
+                    _cityTasks.Add(vt.City, new BindingList<VisaTask>() { vt });
+                }
+                else
+                {
+                    foreach (VisaTask visaTask in _cityTasks[vt.City])
+                    {
+                        if (visaTask.Password == vt.Password)
+                        {
+                            existsName = true;
+                            break;
+                        }
+                    }
+                    if (!existsName)
+                        _cityTasks[vt.City].Add(vt);
+                }
+            }
+
+            foreach (KeyValuePair<string, BindingList<VisaTask>> cityTask in _cityTasks)
+            {
+                try
+                {
+                    string newDir = Path.Combine(AssemblyDirectory, cityTask.Key);
+                    if (!Directory.Exists(newDir))
+                        Directory.CreateDirectory(newDir);
+                    File.Copy(Path.Combine(AssemblyDirectory, "PolandVisaAuto.exe"), Path.Combine(newDir, "PolandVisaAuto.exe"), true);
+                    File.Copy(Path.Combine(AssemblyDirectory, "PolandVisaAuto.exe.Config"), Path.Combine(newDir, "PolandVisaAuto.exe.Config"), true);
+                    File.Copy(Path.Combine(AssemblyDirectory, "pvhelper.dll"), Path.Combine(newDir, "pvhelper.dll"), true);
+                    File.Copy(Path.Combine(AssemblyDirectory, "DecaptcherLib.dll"), Path.Combine(newDir, "DecaptcherLib.dll"), true);
+                    File.Copy(Path.Combine(AssemblyDirectory, "log4net.dll"), Path.Combine(newDir, "log4net.dll"), true);
+                    if (File.Exists(Path.Combine(newDir, "data.xml")))
+                        File.Delete(Path.Combine(newDir, "data.xml"));
+                    VisaTask.SaveDataToFolder(cityTask.Value, Path.Combine(newDir, "data.xml"));
+                    Process process = new Process();
+                    process.StartInfo.FileName = Path.Combine(newDir, "PolandVisaAuto.exe");
+                    process.StartInfo.Arguments = "isMain 0";
+                    process.Start();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+
+        }
+
         private void PvAutoLoad(object sender, EventArgs e)
         {
+            _commFolder = Path.Combine(AssemblyDirectory, COMM);
+            if (!Directory.Exists(_commFolder))
+                Directory.CreateDirectory(_commFolder);
+            if (!_isMain)
+                _parentFolder = Path.Combine(Environment.CurrentDirectory, COMM);
+            Logger.Info("_commFolder " + _commFolder + " _parentFolder " + _parentFolder);
             ImageResolver.Instance.ChangeUseProxy += Instance_ChangeUseProxy;
 
             UpdateHeader();
@@ -134,11 +229,100 @@ namespace PolandVisaAuto
             {
                 Engine.TabColors.Add(tabPage, Color.White);
             }
-            _engine = new Engine(_visaTasks, tabControl1);//, _completedVisaTasks);
-            //!! 
-           // _engine.SetProxy();
+            
+            _engine = new Engine(_visaTasks, tabControl1, _isMain);//, _completedVisaTasks);
             _engine.RefreshViewTabs();
             _engine.ETaskEvent += _engine_ETaskEvent;
+        }
+        
+        void _timer_Tick(object sender, System.EventArgs e)
+        {
+            var files = Directory.GetFiles(_commFolder);
+            foreach (string file in files)
+            {
+                Logger.Info("Processing file " + file);
+                try
+                {
+                    Message mess = Message.DeSerialize(file);
+                    switch (mess.Action)
+                    {
+                        case Actions.Create:
+                            if (mess.Task != null)
+                            {
+                                _visaTasks.Add(mess.Task);
+                                //dataGridView1.Refresh();
+                            }
+                            else 
+                                Logger.Error("mess.Task is null");
+                            break;
+                        case Actions.Delete:
+                            VisaTask taskToDelete = null;
+                            foreach (VisaTask visaTask in _visaTasks)
+                            {
+                                if (visaTask.Receipt == mess.Task.Receipt)
+                                {
+                                    taskToDelete = visaTask;
+                                    break;
+                                }
+                            }
+                            if (taskToDelete != null)
+                                DeleteTask(taskToDelete);
+                            else
+                                Logger.Error("Can't Delete task");
+                            break;
+                        case Actions.Restore:
+                            VisaTask taskTorestore = null;
+                            foreach (VisaTask visaTask in _completedVisaTasks)
+                            {
+                                if (visaTask.Receipt == mess.Task.Receipt)
+                                {
+                                    taskTorestore = visaTask;
+                                    break;
+                                }
+                            }
+                            if (taskTorestore != null)
+                            {
+                                _completedVisaTasks.Remove(taskTorestore);
+                                VisaTask.Save(_completedVisaTasks, VisaEntityType.Completed);
+                                _visaTasks.Add(taskTorestore);
+                                VisaTask.Save(_visaTasks, VisaEntityType.New);
+                            }
+                            else
+                                Logger.Error("Can't Restore task");
+                            break;
+                        case Actions.Remove:
+                            VisaTask taskToremove = null;
+                            foreach (VisaTask visaTask in _completedVisaTasks)
+                            {
+                                if (visaTask.Receipt == mess.Task.Receipt)
+                                {
+                                    taskToremove = visaTask;
+                                    break;
+                                }
+                            }
+                            if (taskToremove != null)
+                            {
+                                _completedVisaTasks.Remove(taskToremove);
+                                VisaTask.Save(_completedVisaTasks, VisaEntityType.Completed);
+                            }
+                            else
+                                Logger.Error("Can't Remove task");
+                            break;
+                    }
+                    File.Delete(file);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+        }
+
+        void PVAutoFill_Shown(object sender, System.EventArgs e)
+        {
+            if (_isMain)
+                CreateMainCityInfo();
+            _timer.Start();
         }
 
         void Instance_ChangeUseProxy(bool useProxy)
@@ -149,7 +333,8 @@ namespace PolandVisaAuto
         void _engine_ETaskEvent(VisaTask task)
         {
             WriteReportFile(task);
-            RemoveTask(task);
+            DeleteTask(task);
+            SendMessage(task, Actions.Delete);
         }
 
         private void WriteReportFile(VisaTask task)
@@ -226,27 +411,30 @@ namespace PolandVisaAuto
                 Logger.Warning("Удаляю задание " + vt.GetInfo());
                 _engine.DeleteTask(vt);
                 dataGridView1.Rows.RemoveAt(e.RowIndex);
-                RemoveTask(vt);
+                DeleteTask(vt);
+                SendMessage(vt, Actions.Delete);
             }
             if (e.ColumnIndex == dataGridView1.Columns["duplColumn"].Index)
             {
                 var currItem = (VisaTask)dataGridView1.CurrentRow.DataBoundItem;
-                DuplForm form = new DuplForm();
-                form.FillCombo(Const.GetListFromDict(Const.SettingsCities));
-                if (form.ShowDialog(this) == DialogResult.OK)
+                using (DuplForm form = new DuplForm())
                 {
-                    VisaTask vt = currItem.Clone();
-                    vt.City = form.GetSelectedCity();
-                    vt.CityCode = Const.CityCodeByCity(vt.City);
-                    _visaTasks.Add(vt);
-                    VisaTask.Save(_visaTasks, VisaEntityType.New);
-                    _engine.RefreshViewTabs();
+                    form.FillCombo(Const.GetListFromDict(Const.SettingsCities));
+                    if (form.ShowDialog(this) == DialogResult.OK)
+                    {
+                        VisaTask vt = currItem.Clone();
+                        vt.City = form.GetSelectedCity();
+                        vt.CityCode = Const.CityCodeByCity(vt.City);
+                        _visaTasks.Add(vt);
+                        VisaTask.Save(_visaTasks, VisaEntityType.New);
+                        _engine.RefreshViewTabs();
+                        SendMessage(vt, Actions.Create);
+                    }
                 }
-                form.Dispose();
             }
         }
 
-        private void RemoveTask(VisaTask vt)
+        private void DeleteTask(VisaTask vt)
         {
             _visaTasks.Remove(vt);
             VisaTask.Save(_visaTasks, VisaEntityType.New);
@@ -271,8 +459,9 @@ namespace PolandVisaAuto
             if (e.ColumnIndex == dataGridView1.Columns["City"].Index)
             {
                 var currItem = (VisaTask)dataGridView1.CurrentRow.DataBoundItem;
+                SendMessage(currItem, Actions.Delete);
                 currItem.CityCode = Const.CityCodeByCity(dataGridView1.CurrentCell.Value.ToString());
-
+                SendMessage(currItem, Actions.Create);
 
                 Logger.Info(string.Format("Город изменен с {0} на {1}", _cityBefore, currItem.City));
                 TabPage tp1 = null;
@@ -325,6 +514,7 @@ namespace PolandVisaAuto
                 dataGridView2.Rows.RemoveAt(e.RowIndex);
                 VisaTask.Save(_completedVisaTasks, VisaEntityType.Completed);
                 vt.Save();
+                SendMessage(vt, Actions.Remove);
             }
             else if (e.ColumnIndex == dataGridView2.Columns["restoreColumn"].Index)
             {
@@ -335,6 +525,7 @@ namespace PolandVisaAuto
                 _visaTasks.Add(vt);
                 VisaTask.Save(_visaTasks, VisaEntityType.New);
                 _engine.RefreshViewTabs();
+                SendMessage(vt, Actions.Restore);
             }
         }
 

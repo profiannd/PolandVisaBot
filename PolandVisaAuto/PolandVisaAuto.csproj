@@ -92,6 +92,7 @@
     <Compile Include="Engine.cs" />
     <Compile Include="ImageResolver.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Proxy.cs" />
     <Compile Include="PVAutoFill.cs">

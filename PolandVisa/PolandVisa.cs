@@ -347,11 +347,12 @@ namespace PolandVisaMonitor
             // webBrowser.Document.GetElementById("recaptcha_response_field").SetAttribute("value", value);
 
             //ctl00$plhMain$MyCaptchaControl1
-            HtmlElementCollection elems = webBrowser1.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
-            HtmlElement elem = null;
-            if (elems != null && elems.Count > 0)
+            //HtmlElementCollection elems = webBrowser1.Document.All.GetElementsByName("ctl00$plhMain$MyCaptchaControl1");
+            HtmlElement elem = webBrowser1.Document.GetElementById("recaptcha_response_field");
+           // if (elems != null && elems.Count > 0)
+            if(elem != null)
             {
-                elem = elems[0];
+               // elem = elems[0];
                 elem.SetAttribute("value", value);
             }
         }

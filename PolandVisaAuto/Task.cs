@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net.Mail;
+using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 using PolandVisaAuto.Annotations;
@@ -121,20 +122,40 @@ namespace PolandVisaAuto
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
         public static void Save(BindingList<VisaTask> tasks, VisaEntityType type)
         {
             string filemane = getFileName(type);
-            using (FileStream fs = new FileStream(Environment.CurrentDirectory + filemane, FileMode.Create))
+            using (FileStream fs = new FileStream(AssemblyDirectory + filemane, FileMode.Create))
             {
                 XmlSerializer xs = new XmlSerializer(typeof(BindingList<VisaTask>));
                 xs.Serialize(fs, tasks);
             }
         }
 
+        public static void SaveDataToFolder(BindingList<VisaTask> tasks, string file)
+        {
+            using (FileStream fs = new FileStream(file, FileMode.Create))
+            {
+                XmlSerializer xs = new XmlSerializer(typeof(BindingList<VisaTask>));
+                xs.Serialize(fs, tasks);
+            }
+        }
+        
         public void Save()
         {
             string filemane = createFileName();
-            string dir = Path.Combine(Environment.CurrentDirectory, Const.DELETEDTASKS);
+            string dir = Path.Combine(AssemblyDirectory, Const.DELETEDTASKS);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
@@ -163,9 +184,9 @@ namespace PolandVisaAuto
         {
             string filemane = getFileName(type);
             BindingList<VisaTask> tasks = new BindingList<VisaTask>();
-            if (File.Exists(Environment.CurrentDirectory + filemane))
+            if (File.Exists(AssemblyDirectory + filemane))
             {
-                using (FileStream fs = new FileStream(Environment.CurrentDirectory + filemane, FileMode.Open))
+                using (FileStream fs = new FileStream(AssemblyDirectory + filemane, FileMode.Open))
                 {
                     XmlSerializer xs = new XmlSerializer(typeof(BindingList<VisaTask>));
                     tasks = (BindingList<VisaTask>) xs.Deserialize(fs);

@@ -21,14 +21,16 @@ namespace PolandVisaAuto
         private List<string> _toRemove = new List<string>();
         private List<VisaTab> _activeTabs = new List<VisaTab>();
         private int _activePointer = 0;
+        private bool _isMain = true;
         public static Dictionary<TabPage, Color> TabColors = new Dictionary<TabPage, Color>();
         //BackgroundWorker _oWorker = new BackgroundWorker();
 
         public delegate void ETaskDelegate(VisaTask task);
         public event ETaskDelegate ETaskEvent;
 
-        public Engine(BindingList<VisaTask> visaTasks, TabControl tabControl)//, BindingList<VisaTask> completedVisaTasks)
+        public Engine(BindingList<VisaTask> visaTasks, TabControl tabControl, bool isMain)//, BindingList<VisaTask> completedVisaTasks)
         {
+            _isMain = isMain;
             _tabControl = tabControl;
             _visaTasks = visaTasks;
 //            _completedVisaTasks = completedVisaTasks;
@@ -107,6 +109,8 @@ namespace PolandVisaAuto
 
         public void RefreshViewTabs()
         {
+            if (_isMain)
+                return;
             _timer.Stop();
 //            SetProxy();
             foreach (VisaTask vt in _visaTasks)
@@ -117,14 +121,14 @@ namespace PolandVisaAuto
                     TabPage tabPage = new TabPage(vt.CityV);
                     tabPage.Name = vt.City;
                     WebBrowser webBrowser1 = new WebBrowser();
-                    webBrowser1.Size = new Size(837, 400);
+                    webBrowser1.Size = new Size(837, 500);
                     webBrowser1.Dock = DockStyle.Top;
                     webBrowser1.Location = new Point(0, 0);
                     webBrowser1.Name = "webBrowser" + vt.City;
                     tabPage.Controls.Add(webBrowser1);
 
                     Button deleteTask = new Button();
-                    deleteTask.Location = new System.Drawing.Point(200, 400);
+                    deleteTask.Location = new System.Drawing.Point(200, 450);
                     deleteTask.Name = "deleteTask";
                     deleteTask.Size = new System.Drawing.Size(200, 40);
                     deleteTask.TabIndex = 4;
@@ -134,7 +138,7 @@ namespace PolandVisaAuto
                     tabPage.Controls.Add(deleteTask);
 
                     Button renewTask = new Button();
-                    renewTask.Location = new System.Drawing.Point(650, 400);
+                    renewTask.Location = new System.Drawing.Point(650, 450);
                     renewTask.Name = "renewTask";
                     renewTask.Size = new System.Drawing.Size(200, 40);
                     renewTask.TabIndex = 4;
@@ -146,8 +150,8 @@ namespace PolandVisaAuto
                     RichTextBox richText = new RichTextBox();
                     richText.Name = "richText";
                     richText.Font = new Font("Arial", 10F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(204)));
-                    richText.Location = new Point(0, 451);
-                    richText.Size = new Size(837, 200);
+                    richText.Location = new Point(0, 551);
+                    richText.Size = new Size(837, 100);
                     richText.Dock = DockStyle.Bottom;
                     tabPage.Controls.Add(richText);
 
