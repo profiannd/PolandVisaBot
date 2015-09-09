@@ -8,6 +8,7 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using mshtml;
 using pvhelper;
@@ -180,6 +181,7 @@ namespace PolandVisaAuto
 
         void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            Thread.Sleep(ImageResolver.Instance.ReqInterval);
             _allowStep = true;
         }
 
@@ -295,7 +297,11 @@ namespace PolandVisaAuto
 
                                 throw new Exception("бегаем по кругу, ждем с моря погоды");
                             }
-
+                            if (ImageResolver.Instance.AskMaster)
+                            {
+                                TurnAlarmOn(true);
+                                return;
+                            }
                             ImageResolver.Instance.SystemDecaptcherLoad();
                             decaptcherImage();
 
@@ -446,12 +452,6 @@ namespace PolandVisaAuto
                                 deleteTask.Visible = true;
                                 _enum = RotEvents.FillEmail;
                                 break;
-                            }
-
-                            if (ImageResolver.Instance.AskMaster)
-                            {
-                                TurnAlarmOn(true);
-                                return;
                             }
 
                             Logger.Warning("заполняю информацию о человеке "+ _currentTask.GetInfo());
@@ -674,6 +674,7 @@ namespace PolandVisaAuto
                 TurnAlarmOn(false);
                 if (VisaEvent != null)
                     VisaEvent(this, false);
+                Thread.Sleep(3000);
                 _allowStep = true;
                 _enum = RotEvents.Start;
             }

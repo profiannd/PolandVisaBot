@@ -6,8 +6,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using pvhelper;
@@ -101,12 +103,22 @@ namespace PolandVisaAuto
 
         private void SendMessage(VisaTask task, Actions action)
         {
+            if (action == Actions.Create || action == Actions.Restore)
+            {
+                if (!CheckOnProcessExists(task.City))
+                {
+                    string newDir = Path.Combine(AssemblyDirectory, task.City);
+                    if (!Directory.Exists(newDir))
+                        Directory.CreateDirectory(newDir);
+                    startProcess(task.City, newDir, new BindingList<VisaTask>() { task });
+                }
+            }
             Message mess = new Message()
                 {
                     Action = action,
                     Task = task
                 };
-            Message.Serialize(mess, FilePath(task.City, task.Receipt));
+            Message.Serialize(mess, FilePath(task.City, task.Receipt.Replace("/","_")));
         }
 
         private string FilePath(string city, string receipt)
@@ -150,26 +162,33 @@ namespace PolandVisaAuto
                 try
                 {
                     string newDir = Path.Combine(AssemblyDirectory, cityTask.Key);
-                    if (!Directory.Exists(newDir))
-                        Directory.CreateDirectory(newDir);
-                    File.Copy(Path.Combine(AssemblyDirectory, "PolandVisaAuto.exe"), Path.Combine(newDir, "PolandVisaAuto.exe"), true);
-                    File.Copy(Path.Combine(AssemblyDirectory, "PolandVisaAuto.exe.Config"), Path.Combine(newDir, "PolandVisaAuto.exe.Config"), true);
-                    File.Copy(Path.Combine(AssemblyDirectory, "pvhelper.dll"), Path.Combine(newDir, "pvhelper.dll"), true);
-                    File.Copy(Path.Combine(AssemblyDirectory, "DecaptcherLib.dll"), Path.Combine(newDir, "DecaptcherLib.dll"), true);
-                    File.Copy(Path.Combine(AssemblyDirectory, "log4net.dll"), Path.Combine(newDir, "log4net.dll"), true);
-                    if (File.Exists(Path.Combine(newDir, "data.xml")))
-                        File.Delete(Path.Combine(newDir, "data.xml"));
-                    VisaTask.SaveDataToFolder(cityTask.Value, Path.Combine(newDir, "data.xml"));
-                    Process process = new Process();
-                    process.StartInfo.FileName = Path.Combine(newDir, "PolandVisaAuto.exe");
-                    process.StartInfo.Arguments = "isMain 0";
-                    process.Start();
+                    startProcess(cityTask.Key, newDir, cityTask.Value);
                 }
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
                 }
             }
+
+        }
+
+        private void startProcess(string city, string newDir, BindingList<VisaTask> tasks)
+        {
+            if (!Directory.Exists(newDir))
+                Directory.CreateDirectory(newDir);
+            File.Copy(Path.Combine(AssemblyDirectory, "PolandVisaAuto.exe"), Path.Combine(newDir, "PolandVisaAuto.exe"), true);
+            File.Copy(Path.Combine(AssemblyDirectory, "PolandVisaAuto.exe.Config"), Path.Combine(newDir, "PolandVisaAuto.exe.Config"), true);
+            File.Copy(Path.Combine(AssemblyDirectory, "pvhelper.dll"), Path.Combine(newDir, "pvhelper.dll"), true);
+            File.Copy(Path.Combine(AssemblyDirectory, "DecaptcherLib.dll"), Path.Combine(newDir, "DecaptcherLib.dll"), true);
+            File.Copy(Path.Combine(AssemblyDirectory, "log4net.dll"), Path.Combine(newDir, "log4net.dll"), true);
+            if (File.Exists(Path.Combine(newDir, "data.xml")))
+                File.Delete(Path.Combine(newDir, "data.xml"));
+            VisaTask.SaveDataToFolder(tasks, Path.Combine(newDir, "data.xml"));
+            
+            Process process = new Process();
+            process.StartInfo.FileName = Path.Combine(newDir, "PolandVisaAuto.exe");
+            process.StartInfo.Arguments = "isMain 0 city " + city;
+            process.Start();
 
         }
 
@@ -250,6 +269,7 @@ namespace PolandVisaAuto
                             if (mess.Task != null)
                             {
                                 _visaTasks.Add(mess.Task);
+                                VisaTask.Save(_visaTasks, VisaEntityType.New);
                                 //dataGridView1.Refresh();
                             }
                             else 
@@ -288,7 +308,10 @@ namespace PolandVisaAuto
                                 VisaTask.Save(_visaTasks, VisaEntityType.New);
                             }
                             else
+                            {
+                                _visaTasks.Add(mess.Task);
                                 Logger.Error("Can't Restore task");
+                            }
                             break;
                         case Actions.Remove:
                             VisaTask taskToremove = null;
@@ -459,7 +482,9 @@ namespace PolandVisaAuto
             if (e.ColumnIndex == dataGridView1.Columns["City"].Index)
             {
                 var currItem = (VisaTask)dataGridView1.CurrentRow.DataBoundItem;
-                SendMessage(currItem, Actions.Delete);
+                var prevItem = currItem.Clone();
+                prevItem.City = _cityBefore.Substring(_cityBefore.IndexOf(")")+1);
+                SendMessage(prevItem, Actions.Delete);
                 currItem.CityCode = Const.CityCodeByCity(dataGridView1.CurrentCell.Value.ToString());
                 SendMessage(currItem, Actions.Create);
 
@@ -712,6 +737,37 @@ namespace PolandVisaAuto
             {
                 GC.Collect();
             }
+        }
+
+        #endregion
+
+        #region Process
+        private bool CheckOnProcessExists(string city)
+        {
+            string wmiQuery = string.Format("select CommandLine from Win32_Process where Name='{0}'", GetActiveProcessFileName());
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(wmiQuery);
+            ManagementObjectCollection retObjectCollection = searcher.Get();
+            foreach (ManagementObject retObject in retObjectCollection)
+            {
+                if (retObject["CommandLine"].ToString().Contains(city))
+                    return true;
+            }
+            return false;
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint ProcessId);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        private string GetActiveProcessFileName()
+        {
+            IntPtr hwnd = GetForegroundWindow();
+            uint pid;
+            GetWindowThreadProcessId(hwnd, out pid);
+            Process p = Process.GetProcessById((int)pid);
+            return Path.GetFileName(p.MainModule.FileName);
         }
 
         #endregion

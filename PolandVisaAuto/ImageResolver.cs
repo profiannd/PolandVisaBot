@@ -40,6 +40,7 @@ namespace PolandVisaAuto
             AllowReg = int.Parse(ConfigurationManager.AppSettings[Const.ALLOWREG]);
             ParseRegCounts(ConfigurationManager.AppSettings[Const.REGCOUNTS]);
             ParseProxies(ConfigurationManager.AppSettings[Const.PROXYSERVERS]);
+            ReqInterval = int.Parse(ConfigurationManager.AppSettings[Const.REQINTERVAL]);
         }
         
         public static ImageResolver Instance
@@ -89,6 +90,7 @@ namespace PolandVisaAuto
                     ChangeUseProxy(_useProxy);
             }
         }
+        public int ReqInterval { get; set; }
 
         public int AllowReg { get; set; }
         public List<RegCount> RegCounts { get; set; }

@@ -21,6 +21,7 @@ namespace PolandVisaAuto
             AppDomain currentDomain = AppDomain.CurrentDomain;
             Application.ThreadException += new ThreadExceptionEventHandler(Form1_UIThreadException);
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
+           // Debugger.Launch();
             try
             {
                 Logger.Info("");

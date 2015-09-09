@@ -59,6 +59,7 @@ namespace pvhelper
         public const string REGCOUNTS = "regCounts";
         public static string DELETEDTASKS = "DeletedTasks";
         public static string ALLOWREG = "AllowReg";
+        public static string REQINTERVAL = "ReqInterval";
 
         public static Dictionary<string, string> SettingsCities = FillConfigCities();
         private static Dictionary<string, string> transliter = new Dictionary<string, string>();
