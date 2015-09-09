@@ -181,7 +181,6 @@ namespace PolandVisaAuto
 
         void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            Thread.Sleep(ImageResolver.Instance.ReqInterval);
             _allowStep = true;
         }
 
@@ -297,17 +296,18 @@ namespace PolandVisaAuto
 
                                 throw new Exception("бегаем по кругу, ждем с моря погоды");
                             }
-                            if (ImageResolver.Instance.AskMaster)
-                            {
-                                TurnAlarmOn(true);
-                                return;
-                            }
-                            ImageResolver.Instance.SystemDecaptcherLoad();
-                            decaptcherImage();
-
+                            
                             _enum = RotEvents.FillReceipt;
 
-                            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+                            TurnAlarmOn(true);
+
+                           if(ImageResolver.Instance.AutoResolveImage)
+                           {
+                               ImageResolver.Instance.SystemDecaptcherLoad();
+                               decaptcherImage();
+
+                               webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+                           }
                         }
                         else
                         {
@@ -373,8 +373,8 @@ namespace PolandVisaAuto
                         {
                             if (webBrowser.Document.GetElementById("recaptcha_image") != null)
                             {
-                                ImageResolver.Instance.SystemDecaptcherLoad();
-                                decaptcherImage();
+//                                ImageResolver.Instance.SystemDecaptcherLoad();
+//                                decaptcherImage();
 
                                 _enum = RotEvents.FillReceipt;
 
@@ -441,7 +441,6 @@ namespace PolandVisaAuto
                                 break;
                             }
 
-                            ImageResolver.Instance.SystemDecaptcherLoad();
                             if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText) && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage").InnerText))
                             {
                                 string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null?webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText:
@@ -674,12 +673,23 @@ namespace PolandVisaAuto
                 TurnAlarmOn(false);
                 if (VisaEvent != null)
                     VisaEvent(this, false);
-                Thread.Sleep(3000);
-                _allowStep = true;
-                _enum = RotEvents.Start;
+
+                Thread t = new Thread(DoSomething);
+                t.Start();
+                if (!t.Join(TimeSpan.FromMilliseconds(ImageResolver.Instance.ReqInterval)))
+                {
+                    t.Abort();
+                }
             }
         }
 
+        private void DoSomething()
+        {
+            Thread.Sleep(ImageResolver.Instance.ReqInterval);
+            _allowStep = true;
+            _enum = RotEvents.Start;
+
+        }
         private bool checkOndateInInterval(IEnumerable<DateTime> allowedDays, DateTime greenTime, DateTime redTime)
         {
             foreach (DateTime allowedDay in allowedDays)
@@ -690,24 +700,24 @@ namespace PolandVisaAuto
             return false;
         }
 
-        private void FillSeconCombo()
-        {
-            webBrowser.Document.GetElementById("ctl00_plhMain_tbxNumOfApplicants").SetAttribute("value", _currentTask.CountAdult.ToString());
-            if (webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren") != null)
-                webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren").SetAttribute("value", _currentTask.CountChild.ToString());
-            var dict = Const.GetCategoryValueByType();
-            if (dict.ContainsKey(_currentTask.Category))
-                webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").SetAttribute("value", dict[_currentTask.Category]);
-
-            ImageResolver.Instance.SystemDecaptcherLoad();
-            decaptcherImage();
-
-            _enum = RotEvents.FillReceipt;
-//            if (!ImageResolver.Instance.AutoResolveImage)
-//                return;
-
-            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
-        }
+//        private void FillSeconCombo()
+//        {
+//            webBrowser.Document.GetElementById("ctl00_plhMain_tbxNumOfApplicants").SetAttribute("value", _currentTask.CountAdult.ToString());
+//            if (webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren") != null)
+//                webBrowser.Document.GetElementById("ctl00_plhMain_txtChildren").SetAttribute("value", _currentTask.CountChild.ToString());
+//            var dict = Const.GetCategoryValueByType();
+//            if (dict.ContainsKey(_currentTask.Category))
+//                webBrowser.Document.GetElementById("ctl00_plhMain_cboVisaCategory").SetAttribute("value", dict[_currentTask.Category]);
+//
+//            ImageResolver.Instance.SystemDecaptcherLoad();
+//            decaptcherImage();
+//
+//            _enum = RotEvents.FillReceipt;
+////            if (!ImageResolver.Instance.AutoResolveImage)
+////                return;
+//
+//            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
+//        }
 
         private void PressOnLinkOnCalendar()
         {
@@ -732,18 +742,18 @@ namespace PolandVisaAuto
             webBrowser.Document.GetElementById(id).InvokeMember("click");
         }
 
-        private void PressOnLinkByClass(string className)
-        {
-            var links = webBrowser.Document.GetElementsByTagName("a");
-            foreach (HtmlElement link in links)
-            {
-                if (link.GetAttribute("classname") == className)
-                {
-                    link.InvokeMember("click");
-                    break;
-                }
-            }
-        }
+//        private void PressOnLinkByClass(string className)
+//        {
+//            var links = webBrowser.Document.GetElementsByTagName("a");
+//            foreach (HtmlElement link in links)
+//            {
+//                if (link.GetAttribute("classname") == className)
+//                {
+//                    link.InvokeMember("click");
+//                    break;
+//                }
+//            }
+//        }
 
         private void decaptcherImage()
         {
@@ -905,23 +915,23 @@ namespace PolandVisaAuto
             return dt;
         }
 
-        private void pressOnLink(WebBrowser webBrowser, string text)
-        {
-            try
-            {
-                var link = webBrowser.Document.GetElementsByTagName("a")[0];
-                if (link.InnerText == text)
-                    link.InvokeMember("click");
-            }
-            catch
-            {
-                foreach (HtmlElement link in webBrowser.Document.GetElementsByTagName("a"))
-                {
-                    if (link.InnerText == text)
-                        link.InvokeMember("click");
-                }
-            }
-        }
+//        private void pressOnLink(WebBrowser webBrowser, string text)
+//        {
+//            try
+//            {
+//                var link = webBrowser.Document.GetElementsByTagName("a")[0];
+//                if (link.InnerText == text)
+//                    link.InvokeMember("click");
+//            }
+//            catch
+//            {
+//                foreach (HtmlElement link in webBrowser.Document.GetElementsByTagName("a"))
+//                {
+//                    if (link.InnerText == text)
+//                        link.InvokeMember("click");
+//                }
+//            }
+//        }
 
         #region Proxy
 

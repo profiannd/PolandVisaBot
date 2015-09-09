@@ -30,7 +30,7 @@ namespace PolandVisaAuto
                 if (args.Length > 0)
                 {
                     if(args[0] == "isMain")
-                        Application.Run(new PVAutoFill(args[1]=="1"));
+                        Application.Run(new PVAutoFill(args[1]=="1", args[3]));
                 }
                 else
                     Application.Run(new PVAutoFill());

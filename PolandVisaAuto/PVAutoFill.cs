@@ -47,10 +47,11 @@ namespace PolandVisaAuto
             InitializeComponent();
         }
 
-        public PVAutoFill(bool isMain)
+        public PVAutoFill(bool isMain, string city)
         {
             InitializeComponent();
             _isMain = isMain;
+            this.Text = string.Format("{0} {1} ", city, this.Text);
         }
 
         private void btnaddTask_Click(object sender, EventArgs e)
@@ -109,7 +110,10 @@ namespace PolandVisaAuto
                 {
                     string newDir = Path.Combine(AssemblyDirectory, task.City);
                     if (!Directory.Exists(newDir))
+                    {
                         Directory.CreateDirectory(newDir);
+                        Directory.CreateDirectory(Path.Combine(newDir, COMM));
+                    }
                     startProcess(task.City, newDir, new BindingList<VisaTask>() { task });
                 }
             }
@@ -129,7 +133,10 @@ namespace PolandVisaAuto
             }
             else
             {
-                return Path.Combine(Path.Combine(Environment.CurrentDirectory, COMM), receipt + ".xml");
+                string dir = Path.Combine(Environment.CurrentDirectory, COMM);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+                return Path.Combine(dir, receipt + ".xml");
             }
         }
 
@@ -189,7 +196,6 @@ namespace PolandVisaAuto
             process.StartInfo.FileName = Path.Combine(newDir, "PolandVisaAuto.exe");
             process.StartInfo.Arguments = "isMain 0 city " + city;
             process.Start();
-
         }
 
         private void PvAutoLoad(object sender, EventArgs e)
@@ -286,7 +292,10 @@ namespace PolandVisaAuto
                                 }
                             }
                             if (taskToDelete != null)
+                            {
                                 DeleteTask(taskToDelete);
+                                _engine.DeleteTask(taskToDelete);
+                            }
                             else
                                 Logger.Error("Can't Delete task");
                             break;
