@@ -75,6 +75,8 @@ namespace PolandVisaAuto
         public VisaTab(){}
         public VisaTab(VisaTask task, TabPage tabPage)
         {
+            //Debugger.Launch();
+
             initSound();
             Tasks.Add(task);
             _tabPage = tabPage;
@@ -376,7 +378,7 @@ namespace PolandVisaAuto
 //                                ImageResolver.Instance.SystemDecaptcherLoad();
 //                                decaptcherImage();
 
-                                _enum = RotEvents.FillReceipt;
+                                _enum = RotEvents.Submit;
 
                                 webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
                                 break;

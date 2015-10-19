@@ -201,7 +201,8 @@ namespace PolandVisaAuto
             this.chbProxy.TabIndex = 4;
             this.chbProxy.Text = "Использовать прокси";
             this.chbProxy.UseVisualStyleBackColor = true;
-            this.chbProxy.CheckedChanged += new System.EventHandler(this.chbProxy_CheckedChanged); // 
+            this.chbProxy.CheckedChanged += new System.EventHandler(this.chbProxy_CheckedChanged); 
+            // 
             // chkAsk
             // 
             this.chkAsk.AutoSize = true;
@@ -211,6 +212,7 @@ namespace PolandVisaAuto
             this.chkAsk.TabIndex = 4;
             this.chkAsk.Text = "Вопрошать повелителя";
             this.chkAsk.UseVisualStyleBackColor = true;
+            this.chkAsk.Visible = false;
             this.chkAsk.CheckedChanged += new System.EventHandler(this.chkAsk_CheckedChanged);
             // 
             // label18

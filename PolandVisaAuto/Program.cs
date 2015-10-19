@@ -45,7 +45,8 @@ namespace PolandVisaAuto
 
         static void MyHandler(object sender, UnhandledExceptionEventArgs args)
         {
-            Logger.Error((Exception)args.ExceptionObject);
+            if (args != null)
+                Logger.Error((Exception)args.ExceptionObject);
             rerunApp();
         }
         // Handle the UI exceptions by showing a dialog box, and asking the user whether 
