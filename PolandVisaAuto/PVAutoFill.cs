@@ -269,6 +269,7 @@ namespace PolandVisaAuto
                 try
                 {
                     Message mess = Message.DeSerialize(file);
+                    Logger.Info("Action "+mess.Action);
                     switch (mess.Action)
                     {
                         case Actions.Create:
@@ -276,7 +277,7 @@ namespace PolandVisaAuto
                             {
                                 _visaTasks.Add(mess.Task);
                                 VisaTask.Save(_visaTasks, VisaEntityType.New);
-                                //dataGridView1.Refresh();
+                                _engine.RefreshViewTabs();
                             }
                             else 
                                 Logger.Error("mess.Task is null");
@@ -293,8 +294,8 @@ namespace PolandVisaAuto
                             }
                             if (taskToDelete != null)
                             {
-                                DeleteTask(taskToDelete);
                                 _engine.DeleteTask(taskToDelete);
+                                DeleteTask(taskToDelete);
                             }
                             else
                                 Logger.Error("Can't Delete task");
@@ -315,6 +316,8 @@ namespace PolandVisaAuto
                                 VisaTask.Save(_completedVisaTasks, VisaEntityType.Completed);
                                 _visaTasks.Add(taskTorestore);
                                 VisaTask.Save(_visaTasks, VisaEntityType.New);
+                                Logger.Info("_engine.RefreshViewTabs()");
+                                _engine.RefreshViewTabs();
                             }
                             else
                             {

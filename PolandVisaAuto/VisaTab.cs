@@ -62,7 +62,7 @@ namespace PolandVisaAuto
 
         private SoundPlayer sp;
         private bool _playSound = false;
-        int _countAttempt = 5;
+        int _countAttempt = 0;
         //private bool _blockAlert;
 
         private void initSound()
@@ -240,7 +240,7 @@ namespace PolandVisaAuto
                 {
                     case RotEvents.Start:
                         {
-                            _countAttempt = 5;
+                            _countAttempt = 0;
                             Tasks.Sort(vc);
                             _currentTask = Tasks[0];
                             _tabPage.ToolTipText = GetProxyInfo() + _currentTask.GetInfo();
@@ -443,7 +443,7 @@ namespace PolandVisaAuto
                                 break;
                             }
 
-                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText) && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage").InnerText))
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText))// && ( !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage").InnerText)))
                             {
                                 string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null?webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText:
                                        webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage") != null?webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage").InnerText:"";
@@ -486,7 +486,8 @@ namespace PolandVisaAuto
                     case RotEvents.SelectDayToVisit:
                         {
                             if (webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null &&
-                                webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText.Contains("60"))
+                                (webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText.Contains("60")
+                                || webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText.Contains("correct")))
                             {
                                 Logger.Warning("что то не получилось...");
 
@@ -511,8 +512,9 @@ namespace PolandVisaAuto
                             //Logger.Info(_currentTask.City + ": "+ richText.Text);
 
                             //_tabPage.Text = _currentTask.CityV + "~" + (showStopper.Contains("No date(s) available") ? "No date(s)" : showStopper);
+                            _countAttempt++;
 
-                            if (showStopper == null)// && !showStopper.Contains("No date(s) available"))
+                            if (showStopper == null && _countAttempt <= 5)// && !showStopper.Contains("No date(s) available"))
                             {
                                 Logger.Warning("проверяю наличие дат.");
 
@@ -520,8 +522,8 @@ namespace PolandVisaAuto
                                 HtmlElement el = webBrowser.Document.GetElementById("ctl00_plhMain_cldAppointment");
                                 string monthyear = el.GetElementsByTagName("table")[0].InnerText;
                                 string[] splitStrings = monthyear.Split(' ');
-                                string month = Const.GetMonthAsInt(splitStrings[0]);
-                                string year = splitStrings[1].Replace(">", "");
+                                string month = Const.GetMonthAsInt(splitStrings[0].Replace(">", "").Replace("<", ""));
+                                string year = splitStrings[1].Replace(">", "").Replace("<", "");
                                 foreach (HtmlElement elementDay in webBrowser.Document.GetElementById("ctl00_plhMain_cldAppointment").GetElementsByTagName("td"))
                                 {
                                     if (elementDay.GetAttribute("classname") == "OpenDateAllocated")
@@ -549,8 +551,8 @@ namespace PolandVisaAuto
                                     Logger.Warning("дата укладывается в интервал");
                                     if (ImageResolver.Instance.AutoResolveImage)
                                         PressOnLinkOnCalendar();
-                                    else
-                                        TurnAlarmOn(true);
+//                                    else
+//                                        TurnAlarmOn(true);
                                     break;
                                 }
                                 else
@@ -582,6 +584,8 @@ namespace PolandVisaAuto
                                     break;
                                 }
                             }
+                            if (showStopper == null)
+                                showStopper = "Ошибка при выборе даты.";
                             richText.Text = "Свободна дата: " + showStopper;
                             Logger.Info(_currentTask.City + ": " + richText.Text);
                             _tabPage.Text = _currentTask.CityV + "~" + (showStopper.Contains("No date(s) available") ? "No date(s)" : showStopper);
@@ -591,6 +595,16 @@ namespace PolandVisaAuto
                         }
                     case RotEvents.SelectTime:
                         {
+                            if (webBrowser.Document.GetElementById("ctl00_plhMain_lblAppMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblAppMsg").InnerHtml))
+                            {
+                                if (webBrowser.Document.GetElementById("ctl00_plhMain_lblAppMsg").InnerHtml.Contains("Please select a highlighted date."))
+                                {
+                                    _enum = RotEvents.SelectDayToVisit;
+                                    _allowStep = true;
+                                    break;
+                                }
+                            }
+
                             if (webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerHtml))
                             {
                                 string text = webBrowser.Document.GetElementById("ctl00_plhMain_lblMsg").InnerText;
@@ -733,7 +747,7 @@ namespace PolandVisaAuto
                 //}
                 if (!link.GetAttribute("Title").Contains("Go to the"))
                 {
-                    link.InvokeMember("click");
+                    link.InvokeMember("click", null);
                     break;
                 }
             }
