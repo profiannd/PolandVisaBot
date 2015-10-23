@@ -626,6 +626,7 @@ namespace PolandVisaMonitor
                 e.Handled = true;
             }
         }
+
         #region Flash
         // To support flashing.
         [DllImport("user32.dll")]

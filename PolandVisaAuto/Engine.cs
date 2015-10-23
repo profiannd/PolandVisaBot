@@ -203,7 +203,10 @@ namespace PolandVisaAuto
         void Value_TabEventEx(TabPage tab, bool alarm)
         {
             if (alarm)
+            {
                 SetTabHeader(tab, Color.LightPink);
+                PVAutoFill.FlashWindowEx((Form)tab.Parent.Parent);
+            }
             else
                 SetTabHeader(tab, Color.LightGreen);
         }

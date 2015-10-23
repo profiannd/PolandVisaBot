@@ -199,8 +199,11 @@ namespace PolandVisaAuto
             if (_playSound)
                 playSound();
 
-            if(!_allowStep)
-                return;
+            if (_enum != RotEvents.Stop)
+            {
+                if (!_allowStep)
+                    return;
+            }
             _allowStep = false;
 
             if (_changeProxyOnce != ImageResolver.Instance.UseProxy)
@@ -241,6 +244,8 @@ namespace PolandVisaAuto
                     case RotEvents.Start:
                         {
                             _countAttempt = 0;
+                            _linksDate = null;
+                            _linksDatePointer = -1;
                             Tasks.Sort(vc);
                             _currentTask = Tasks[0];
                             _tabPage.ToolTipText = GetProxyInfo() + _currentTask.GetInfo();
@@ -447,12 +452,15 @@ namespace PolandVisaAuto
                             {
                                 string error = webBrowser.Document.GetElementById("ctl00_plhMain_VS") != null?webBrowser.Document.GetElementById("ctl00_plhMain_VS").InnerText:
                                        webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage") != null?webBrowser.Document.GetElementById("ctl00_plhMain_LblMessage").InnerText:"";
-                                Logger.Error("Надо исправить ошибку: \r\n " + error);
-                                richText.Text ="Надо исправить ошибку: \r\n " + error;
-                                renewTask.Visible = true;
-                                deleteTask.Visible = true;
-                                _enum = RotEvents.FillEmail;
-                                break;
+                                if (error != "The verification words are incorrect.")
+                                {
+                                    Logger.Error("Надо исправить ошибку: \r\n " + error);
+                                    richText.Text = "Надо исправить ошибку: \r\n " + error;
+                                    renewTask.Visible = true;
+                                    deleteTask.Visible = true;
+                                    _enum = RotEvents.FillEmail;
+                                    break;
+                                }
                             }
 
                             Logger.Warning("заполняю информацию о человеке "+ _currentTask.GetInfo());
@@ -514,7 +522,9 @@ namespace PolandVisaAuto
                             //_tabPage.Text = _currentTask.CityV + "~" + (showStopper.Contains("No date(s) available") ? "No date(s)" : showStopper);
                             _countAttempt++;
 
-                            if (showStopper == null && _countAttempt <= 5)// && !showStopper.Contains("No date(s) available"))
+                            if (showStopper == null && _countAttempt <= 5 
+                                || showStopper == "Введений Вами текст не відповідає символам на зображенні"
+                                || showStopper == "The text you typed does not match the characters in the image.")// && !showStopper.Contains("No date(s) available"))
                             {
                                 Logger.Warning("проверяю наличие дат.");
 
@@ -661,6 +671,7 @@ namespace PolandVisaAuto
                             }
                             else
                             {
+                                ClickOKButton();
                                 if (webBrowser.Document.GetElementById("ApplicantDetalils") != null && !string.IsNullOrEmpty(webBrowser.Document.GetElementById("ApplicantDetalils").InnerText))
                                 {
                                     Logger.Info("Заявка успешно зарегистрирована. ");
@@ -699,6 +710,23 @@ namespace PolandVisaAuto
             }
         }
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+
+        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+        
+        private void ClickOKButton()
+        {
+            IntPtr hwnd = FindWindow("#32770", "Message from webpage");
+            hwnd = FindWindowEx(hwnd, IntPtr.Zero, "Button", "OK");
+            uint message = 0xf5;
+            SendMessage(hwnd, message, IntPtr.Zero, IntPtr.Zero);
+        }
+
         private void DoSomething()
         {
             Thread.Sleep(ImageResolver.Instance.ReqInterval);
@@ -734,12 +762,27 @@ namespace PolandVisaAuto
 //
 //            webBrowser.Document.GetElementById("ctl00_plhMain_btnSubmit").InvokeMember("click");
 //        }
+        private HtmlElementCollection _linksDate = null;
+        private int _linksDatePointer = 0;
 
         private void PressOnLinkOnCalendar()
         {
-            var links = webBrowser.Document.GetElementsByTagName("a");
-            foreach (HtmlElement link in links)
+//            var inputColl = webBrowser.Document.GetElementsByTagName("a");
+//            foreach (HtmlElement link in inputColl)
+//            {
+//                if (!link.GetAttribute("Title").Contains("Go to the"))
+//                {
+//                    link.Focus();
+//                    IHTMLElement nativeElement = link.DomElement as IHTMLElement;
+//                    nativeElement.click();
+//                    break;
+//                }
+//            }
+            _linksDate = webBrowser.Document.GetElementsByTagName("a");
+            _linksDatePointer++;
+            for (; _linksDatePointer < _linksDate.Count; _linksDatePointer++)
             {
+                HtmlElement link = _linksDate[_linksDatePointer];
                 //if (link.GetAttribute("classname") == "OpenDateAllocated")
                 //{
                 //    link.InvokeMember("click");
@@ -747,9 +790,26 @@ namespace PolandVisaAuto
                 //}
                 if (!link.GetAttribute("Title").Contains("Go to the"))
                 {
-                    link.InvokeMember("click", null);
+                    link.InvokeMember("click");
+//                   link.InvokeMember("click", null);
+//                    var obj = link.DomElement;
+//                    var mi = obj.GetType().GetMethod("click");
+//                    mi.Invoke(obj, new object[0]);     
                     break;
                 }
+            }//"Go to the next month"
+            if (_linksDatePointer == _linksDate.Count)
+            {
+                foreach (HtmlElement link in _linksDate)
+                {
+                    if (link.GetAttribute("Title").Contains("Go to the next month"))
+                    {
+                        link.InvokeMember("click");
+                        break;
+                    }
+                }
+                _linksDate = null;
+                _linksDatePointer = -1;
             }
         }
 
@@ -931,6 +991,14 @@ namespace PolandVisaAuto
             return dt;
         }
 
+        private void InjectAlertBlocker()
+        {
+            HtmlElement head = webBrowser.Document.GetElementsByTagName("head")[0];
+            HtmlElement scriptEl = webBrowser.Document.CreateElement("script");
+            string alertBlocker = "window.alert = function () { }";
+            scriptEl.SetAttribute("text", alertBlocker);
+            head.AppendChild(scriptEl);
+        }
 //        private void pressOnLink(WebBrowser webBrowser, string text)
 //        {
 //            try

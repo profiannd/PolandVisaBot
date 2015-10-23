@@ -783,5 +783,38 @@ namespace PolandVisaAuto
         }
 
         #endregion
+
+        public void FlashThis()
+        {
+            FlashWindowEx(this);
+        }
+        #region Flash
+        // To support flashing.
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool FlashWindowEx(ref pvhelper.FLASHWINFO pwfi);
+
+        //Flash both the window caption and taskbar button.
+        //This is equivalent to setting the FLASHW_CAPTION | FLASHW_TRAY flags. 
+        public const UInt32 FLASHW_ALL = 3;
+
+        // Flash continuously until the window comes to the foreground. 
+        public const UInt32 FLASHW_TIMERNOFG = 12;
+
+        // Do the flashing - this does not involve a raincoat.
+        public static bool FlashWindowEx(Form form)
+        {
+            IntPtr hWnd = form.Handle;
+            pvhelper.FLASHWINFO fInfo = new pvhelper.FLASHWINFO();
+
+            fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
+            fInfo.hwnd = hWnd;
+            fInfo.dwFlags = FLASHW_ALL | FLASHW_TIMERNOFG;
+            fInfo.uCount = UInt32.MaxValue;
+            fInfo.dwTimeout = 0;
+
+            return FlashWindowEx(ref fInfo);
+        }
+        #endregion
     }
 }
