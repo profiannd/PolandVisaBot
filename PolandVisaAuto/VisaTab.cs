@@ -701,12 +701,16 @@ namespace PolandVisaAuto
                 if (VisaEvent != null)
                     VisaEvent(this, false);
 
-                Thread t = new Thread(DoSomething);
-                t.Start();
-                if (!t.Join(TimeSpan.FromMilliseconds(ImageResolver.Instance.ReqInterval)))
-                {
-                    t.Abort();
-                }
+                Thread.Sleep(ImageResolver.Instance.ReqInterval);
+//
+//                Thread t = new Thread(DoSomething);
+//                t.Start();
+//                if (!t.Join(TimeSpan.FromMilliseconds(ImageResolver.Instance.ReqInterval)))
+//                {
+//                    t.Abort();
+                    _allowStep = true;
+                    _enum = RotEvents.Start;
+//                }
             }
         }
 
@@ -730,9 +734,6 @@ namespace PolandVisaAuto
         private void DoSomething()
         {
             Thread.Sleep(ImageResolver.Instance.ReqInterval);
-            _allowStep = true;
-            _enum = RotEvents.Start;
-
         }
         private bool checkOndateInInterval(IEnumerable<DateTime> allowedDays, DateTime greenTime, DateTime redTime)
         {
